@@ -32,9 +32,10 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    QJackClient::instance()->connectToServer("test");
-    QJackClient::instance()->registerAudioOutPort("test");
-    QJackClient::instance()->startAudioProcessing();
+    if(QJackClient::instance()->connectToServer("test")) {
+        QJackClient::instance()->registerAudioOutPort("test");
+        QJackClient::instance()->startAudioProcessing();
+    }
 }
 
 MainWindow::~MainWindow()
