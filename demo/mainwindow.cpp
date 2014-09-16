@@ -25,6 +25,7 @@
 #include "ui_mainwindow.h"
 
 #include <QJackClient>
+#include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -32,8 +33,9 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    if(QJackClient::instance()->connectToServer("test")) {
-        QJackClient::instance()->registerAudioOutPort("test");
+    if(QJackClient::instance()->connectToServer("QJackAudio Demo")) {
+        QJackPort *out1 = QJackClient::instance()->registerAudioOutPort("out_1");
+        QJackPort *out2 = QJackClient::instance()->registerAudioOutPort("out_2");
         QJackClient::instance()->startAudioProcessing();
     }
 }

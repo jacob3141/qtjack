@@ -27,8 +27,8 @@
 #include <QSemaphore>
 
 /**
-  * @class SemaphoreLocker
-  * @author Jacob Dawid ( jacob.dawid@cybercatalyst.net )
+  * @class QSemaphoreLocker
+  * @author Jacob Dawid ( jacob.dawid@omg-it.works )
   * Helper class for locking semaphores in scopes.
   */
 class QSemaphoreLocker {

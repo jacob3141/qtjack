@@ -29,7 +29,10 @@
 
 // Qt includes
 #include <QString>
-
+/**
+ * @class QJackPort
+ * @author Jacob Dawid ( jacob.dawid@omg-it.works )
+ */
 class QJackPort
 {
     friend class QJackClient;
@@ -39,9 +42,12 @@ public:
         MidiPort
     };
 
-    QJackPort();
+    bool isValid() { return _port != 0; }
+    QString name() { return _name; }
 
 private:
+    QJackPort();
+
     jack_port_t *_port;
     QString _name;
 };

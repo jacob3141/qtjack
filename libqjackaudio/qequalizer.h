@@ -32,12 +32,8 @@
 #include <QJackClient>
 
 /**
- * @class Equalizer
- *
- * @author Jacob Dawid ( jacob.dawid@cybercatalyst.net )
- * @author Otto Ritter ( otto.ritter.or@googlemail.com )
- * @date 09.2011
- *
+ * @class QEqualizer
+ * @author Jacob Dawid ( jacob.dawid@omg-it.works )
  * @brief Modifies the frequency spectrum of the sampled audio signal.
  */
 class QEqualizer

@@ -28,23 +28,16 @@
 // Qt includes:
 #include <QTime>
 
-class QJackClientPrivate
-{
-public:
-private:
-};
 
 QJackClient QJackClient::_instance;
 
 QJackClient::QJackClient() :
    QObject(),
-   _audioProcessor(new QAudioProcessor()),
-   _d(new QJackClientPrivate) {
+   _audioProcessor(new QAudioProcessor()) {
 }
 
 QJackClient::~QJackClient() {
     jack_client_close(_jackClient);
-    delete _d;
 }
 
 void QJackClient::emitError(const QString &errorMessage) {
@@ -56,7 +49,7 @@ QJackClient *QJackClient::instance() {
 }
 
 bool QJackClient::connectToServer(QString name) {
-    if((_jackClient = jack_client_open(name.toStdString().c_str(), JackNullOption, NULL)) == 0){
+    if((_jackClient = jack_client_open(name.toStdString().c_str(), JackNullOption, NULL)) == 0) {
         emitError("Can't connect to JACK Server.");
         return false;
     }
@@ -64,6 +57,7 @@ bool QJackClient::connectToServer(QString name) {
     jack_set_process_callback(_jackClient, QJackClient::process, 0);
     jack_set_buffer_size_callback(_jackClient, QJackClient::bufferSizeCallback, 0);
     jack_set_sample_rate_callback(_jackClient, QJackClient::sampleRateCallback, 0);
+    jack_set_xrun_callback(_jackClient, QJackClient::xrunCallback, 0);
     jack_set_error_function(QJackClient::errorCallback);
     jack_set_info_function(QJackClient::informationCallback);
     return true;
@@ -104,13 +98,21 @@ QJackPort *QJackClient::registerMidiInPort(QString name) {
 }
 
 void QJackClient::startAudioProcessing() {
-    if(jack_activate(_jackClient) != 0) {
-        emitError("Activation of JACK client failed.");
+    int result;
+    if((result = jack_activate(_jackClient)) != 0) {
+        emitError(QString("Starting audio processing failed with error code %1.").arg(result));
+    } else {
+        emit startedAudioProcessing();
     }
 }
 
 void QJackClient::stopAudioProcessing() {
-    jack_deactivate(_jackClient);
+    int result;
+    if((result = jack_deactivate(_jackClient)) != 0) {
+        emitError(QString("Stopping audio processing failed with error code %1.").arg(result));
+    } else {
+        emit stoppedAudioProcessing();
+    }
 }
 
 int QJackClient::sampleRate() {
@@ -125,6 +127,27 @@ float QJackClient::cpuLoad() {
     return jack_cpu_load(_jackClient);
 }
 
+bool QJackClient::isRealtime() {
+    return jack_is_realtime(_jackClient) == 1;
+}
+
+QString QJackClient::version() {
+    return QString(jack_get_version_string());
+}
+
+void QJackClient::setSampleRate(int sampleRate) {
+    _sampleRate = sampleRate;
+    emit sampleRateChanged(_sampleRate);
+}
+
+void QJackClient::setBufferSize(int bufferSize) {
+    _bufferSize = bufferSize;
+    emit bufferSizeChanged(_bufferSize);
+}
+
+void QJackClient::xrunOccurred() {
+    emit xrun();
+}
 
 void QJackClient::setAudioProcessor(QAudioProcessor *audioProcessor) {
     _audioProcessor = audioProcessor;
@@ -145,14 +168,20 @@ void QJackClient::processPrivate(int samples) {
 int QJackClient::sampleRateCallback(jack_nframes_t sampleCount,
                                    void *argument) {
     Q_UNUSED(argument);
-    instance()->_sampleRate = sampleCount;
+    instance()->setSampleRate(sampleCount);
     return 0;
 }
 
 int QJackClient::bufferSizeCallback(jack_nframes_t bufferSize,
                                    void *argument) {
     Q_UNUSED(argument);
-    instance()->_bufferSize = bufferSize;
+    instance()->setBufferSize(bufferSize);
+    return 0;
+}
+
+int QJackClient::xrunCallback(void *argument) {
+    Q_UNUSED(argument);
+    instance()->xrunOccurred();
     return 0;
 }
 

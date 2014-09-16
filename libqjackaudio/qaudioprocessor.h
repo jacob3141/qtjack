@@ -29,13 +29,8 @@
 
 /**
  * @class QAudioProcessor
- *
- * @author Jacob Dawid ( jacob.dawid@cybercatalyst.net )
- * @author Otto Ritter ( otto.ritter.or@googlemail.com )
- * @date 09.2011
- *
+ * @author Jacob Dawid ( jacob.dawid@omg-it.works )
  * @brief Defines an interface that must be met by audio processors.
- *
  */
 class QAudioProcessor : public QObject
 {
