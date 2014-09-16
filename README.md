@@ -16,12 +16,12 @@ How to use
 ==========
 
 All you need to do to be ready to go is calling:
-`
+```cpp
 if(QJackClient::instance()->connectToServer("application")) {
     QJackClient::instance()->registerAudioOutPort("out");
     QJackClient::instance()->startAudioProcessing();
 }
-`
+```
 
 This will connect to a running JACK server, or run it with the latest settings as "application". You can then set up as many ports as you like. Finally, call startAudioProcessing() and you're good to go. Of course, this is not a very useful example, but it boils down to the absolute minimum to write a Qt application for JACK with QJackAudio. Neat, isn't it?
 virtual method `process(int samples)`. Activate your processor by calling `setAudioProcessor(QAudioProcessor *processor)` on `QJackClient::instance()`. That's it.
