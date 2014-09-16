@@ -1,32 +1,38 @@
-/* This file is part of EAR, an audio processing tool.
- *
- * Copyright (C) 2011 Otto Ritter, Jacob Dawid
- * otto.ritter.or@googlemail.com
- * jacob.dawid@cybercatalyst.net
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the Affero GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the Affero GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+///////////////////////////////////////////////////////////////////////////////
+//                                                                           //
+//    This file is part of QJackAudio.                                       //
+//    Copyright (C) 2014 Jacob Dawid, jacob@omg-it.works                     //
+//                                                                           //
+//    QJackAudio is free software: you can redistribute it and/or modify     //
+//    it under the terms of the GNU General Public License as published by   //
+//    the Free Software Foundation, either version 3 of the License, or      //
+//    (at your option) any later version.                                    //
+//                                                                           //
+//    QJackAudio is distributed in the hope that it will be useful,          //
+//    but WITHOUT ANY WARRANTY; without even the implied warranty of         //
+//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the          //
+//    GNU General Public License for more details.                           //
+//                                                                           //
+//    You should have received a copy of the GNU General Public License      //
+//    along with QJackAudio. If not, see <http://www.gnu.org/licenses/>.     //
+//                                                                           //
+//    It is possible to obtain a closed-source license of QJackAudio.        //
+//    If you're interested, contact me at: jacob@omg-it.works                //
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
 
-#ifndef EQUALIZER_H
-#define EQUALIZER_H
+#ifndef QEQUALIZER_H
+#define QEQUALIZER_H
 
+// Qt includes
 #include <QVector>
 #include <QSemaphore>
-#include "jackadapter.h"
+
+// Own includes
+#include <QJackClient>
 
 /**
- * @class DigitalEqualizer
+ * @class Equalizer
  *
  * @author Jacob Dawid ( jacob.dawid@cybercatalyst.net )
  * @author Otto Ritter ( otto.ritter.or@googlemail.com )
@@ -34,14 +40,14 @@
  *
  * @brief Modifies the frequency spectrum of the sampled audio signal.
  */
-class DigitalEqualizer
+class QEqualizer
 {
 public:
     /** Constructs a new digital equalizer. */
-    DigitalEqualizer();
+    QEqualizer();
 
     /** Destructor. */
-    ~DigitalEqualizer();
+    ~QEqualizer();
 
     /** Sets the number of controls in linear frequency steps. */
     void setNumberOfControls(int n);
@@ -63,16 +69,6 @@ public:
     /** Releases exclusive access to equalizer controls. */
     void releaseControls();
 
-    /** Attempts to write control values into a file.
-      * @param fileName File name of the file that shall be saved.
-      * @return true on success, otherwise false. */
-    bool saveControlsToFile(QString fileName);
-
-    /** Attempts to restore control values from a file.
-      * @param fileName File name of the file form which shall be loaded.
-      * @return true on success, otherwise false. */
-    bool loadControlsFromFile(QString fileName);
-
     /**
       * Updates the filter from the given set of equalizer control values.
       * @param values Equalizer control values.
@@ -91,12 +87,6 @@ public:
     void process(fftw_complex *sampleBuffer, fftw_complex *result, int samples);
 
 private:
-    /** Serializes equalizer state into a string. */
-    QString serializeCSV();
-
-    /** Attempts to restore equalizer state based on the given string. */
-    void unserializeCSV(QString stream);
-
     /** Semaphore for accessing the number of equalizer controls. */
     QSemaphore *m_numberOfControlsAccessSemaphore;
 
@@ -133,4 +123,4 @@ private:
     fftw_complex m_ifftIdealFilter[MAX_NUMBER_OF_CONTROLS * 2];
 };
 
-#endif // EQUALIZER_H
+#endif // QEQUALIZER_H

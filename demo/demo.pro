@@ -1,4 +1,4 @@
-QT += core gui opengl
+QT += core gui
 OBJECTS_DIR = obj
 MOC_DIR = moc
 DESTDIR = bin
@@ -9,37 +9,20 @@ QMAKE_CXXFLAGS += -O3
 CONFIG -= console
 CONFIG += flat
 
-# On Windows we need the libraries provided in the 3rdparty folder.
-win32 {
-    LIBS += -L../3rdparty/fftw/lib \
-            -L../3rdparty/jack/lib
+INCLUDEPATH += ../libqjackaudio
 
-    INCLUDEPATH += ../3rdparty/fftw/include \
-                   ../3rdparty/jack/include
-}
-
-INCLUDEPATH += include \
-               ../libear/include \
-               ../libear/include/jnoise
-
-
-LIBS += -L../libear/lib \
-                -lear \
+LIBS += -L../libqjackaudio/lib \
+                -lqjackaudio \
                 -ljack \
                 -lfftw3
 
-
 SOURCES += \
-    src/launcher.cpp \
-    src/mainwindow.cpp \
-    src/visualizerwidget.cpp
+    mainwindow.cpp \
+    main.cpp
 
 HEADERS += \
-    include/mainwindow.h \
-    include/visualizerwidget.h
+    mainwindow.h
 
 FORMS += \
-    ui/mainwindow.ui
+    mainwindow.ui
 
-RESOURCES += \
-    Pics.qrc

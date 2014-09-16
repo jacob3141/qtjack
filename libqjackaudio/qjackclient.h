@@ -1,25 +1,28 @@
-/* This file is part of EAR, an audio processing tool.
- *
- * Copyright (C) 2011 Otto Ritter, Jacob Dawid
- * otto.ritter.or@googlemail.com
- * jacob.dawid@cybercatalyst.net
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the Affero GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the Affero GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+///////////////////////////////////////////////////////////////////////////////
+//                                                                           //
+//    This file is part of QJackAudio.                                       //
+//    Copyright (C) 2014 Jacob Dawid, jacob@omg-it.works                     //
+//                                                                           //
+//    QJackAudio is free software: you can redistribute it and/or modify     //
+//    it under the terms of the GNU General Public License as published by   //
+//    the Free Software Foundation, either version 3 of the License, or      //
+//    (at your option) any later version.                                    //
+//                                                                           //
+//    QJackAudio is distributed in the hope that it will be useful,          //
+//    but WITHOUT ANY WARRANTY; without even the implied warranty of         //
+//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the          //
+//    GNU General Public License for more details.                           //
+//                                                                           //
+//    You should have received a copy of the GNU General Public License      //
+//    along with QJackAudio. If not, see <http://www.gnu.org/licenses/>.     //
+//                                                                           //
+//    It is possible to obtain a closed-source license of QJackAudio.        //
+//    If you're interested, contact me at: jacob@omg-it.works                //
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
 
-#ifndef JACKADAPTER_H
-#define JACKADAPTER_H
+#ifndef QJACKAUDIO_H
+#define QJACKAUDIO_H
 
 // JACK includes:
 #include <jack/jack.h>
@@ -28,8 +31,9 @@
 #include <iostream>
 
 // Own includes:
-#include "fftwadapter.h"
-#include "processor.h"
+#include <QFFTW>
+#include <QAudioProcessor>
+#include <QJackPort>
 
 // Qt includes:
 #include <QObject>
@@ -38,34 +42,10 @@
 #include <QList>
 #include <QSemaphore>
 
-/**
-  * @class SemaphoreLocker
-  * @author Jacob Dawid ( jacob.dawid@cybercatalyst.net )
-  * Helper class for locking semaphores in scopes.
-  */
-class SemaphoreLocker {
-public:
-    /** Constructs a locker, locks the given semaphore on construction. */
-    SemaphoreLocker(QSemaphore *semaphore) {
-        Q_ASSERT(semaphore != 0);
-        m_semaphore = semaphore;
-        if(m_semaphore)
-            m_semaphore->acquire();
-    }
-
-    /** Destructor. Unlocks the semaphore. */
-    ~SemaphoreLocker() {
-        if(m_semaphore)
-            m_semaphore->release();
-    }
-private:
-    /** Semaphore that has been locked. */
-    QSemaphore *m_semaphore;
-};
 
 /** Defines a stereo port. */
 typedef struct StereoPort {
-    friend class JackAdapter;
+    friend class QJackClient;
     /**
      * Provides the address to the sample bufferfor the left channel.
      * @param samples Number of samples.
@@ -92,12 +72,10 @@ private:
     jack_port_t *m_rightPort;
 } StereoPort;
 
-
-
-
+class QJackClientPrivate;
 
 /**
- * @class JackAdapter
+ * @class QJackAudio
  *
  * @author Jacob Dawid ( jacob.dawid@cybercatalyst.net )
  * @author Otto Ritter ( otto.ritter.or@googlemail.com )
@@ -111,12 +89,13 @@ private:
  * to simplify the integration of fftw.
  *
  */
-class JackAdapter : public QObject {
+class QJackClient : public QObject {
     Q_OBJECT
 public:
+    virtual ~QJackClient();
 
     /** Returns the instance for this singleton. */
-    static JackAdapter *instance();
+    static QJackClient *instance();
 
     /**
       * This method attempts to connect to the audio server.
@@ -125,23 +104,19 @@ public:
       */
     bool connectToServer(QString name);
 
-    /**
-      * Tries to register a new stereo input port.
-      * @param label Name that will be used to register this port.
-      */
-    void registerStereoInputPort(QString label);
 
-    /**
-      * Tries to register a new stereo output port.
-      * @param label Name that will be used to register this port.
-      */
-    void registerStereoOutputPort(QString label);
+    QJackPort *registerPort(QString name, QJackPort::PortType portType, JackPortFlags jackPortFlags);
+    QJackPort *registerAudioOutPort(QString name);
+    QJackPort *registerAudioInPort(QString name);
+    QJackPort *registerMidiOutPort(QString name);
+    QJackPort *registerMidiInPort(QString name);
+
 
     /**
       * Assigns a processor that will handle audio processing.
       * @param processor The processor that will handle audio processing.
       */
-    void setProcessor(Processor *processor);
+    void setProcessor(QAudioProcessor *processor);
 
     /** Activates audio processing. */
     void startAudioProcessing();
@@ -182,12 +157,11 @@ signals:
     /** This signal will be emitted when an error occurs. */
     void error(const QString& errorMessage);
 
+    void portRegistered(QString name);
+
 private:
     /** Constructor. Initializes a new JackAdapter instance. */
-    JackAdapter();
-
-    /** Destructor. */
-    ~JackAdapter();
+    QJackClient();
 
     /** This signal will be emitted whenever an error occurs. */
     void emitError(const QString& errorMessage);
@@ -238,16 +212,16 @@ private:
     static void informationCallback(const char* message);
 
     /** JACK's C API client. */
-    jack_client_t *m_jackClient
-    ;
+    jack_client_t *_jackClient;
+
     /** Pointer to the current processor object. */
-    Processor *m_processor;
+    QAudioProcessor *_audioProcessor;
 
     /** The current sample rate. */
-    int m_sampleRate;
+    int _sampleRate;
 
     /** The current sample buffer size. */
-    int m_bufferSize;
+    int _bufferSize;
 
     /** Maps input port identifiers to stereo ports. */
     QMap<QString, StereoPort> m_stereoInputPorts;
@@ -256,7 +230,9 @@ private:
     QMap<QString, StereoPort> m_stereoOutputPorts;
 
     /** Singleton instance for this class. */
-    static JackAdapter m_instance;
+    static QJackClient _instance;
+
+    QJackClientPrivate *_d;
 };
 
-#endif // JACKADAPTER_H
+#endif // QJACKAUDIO_H

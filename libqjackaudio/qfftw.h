@@ -1,25 +1,28 @@
-/* This file is part of EAR, an audio processing tool.
- *
- * Copyright (C) 2011 Otto Ritter, Jacob Dawid
- * otto.ritter.or@googlemail.com
- * jacob.dawid@cybercatalyst.net
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the Affero GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the Affero GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+///////////////////////////////////////////////////////////////////////////////
+//                                                                           //
+//    This file is part of QJackAudio.                                       //
+//    Copyright (C) 2014 Jacob Dawid, jacob@omg-it.works                     //
+//                                                                           //
+//    QJackAudio is free software: you can redistribute it and/or modify     //
+//    it under the terms of the GNU General Public License as published by   //
+//    the Free Software Foundation, either version 3 of the License, or      //
+//    (at your option) any later version.                                    //
+//                                                                           //
+//    QJackAudio is distributed in the hope that it will be useful,          //
+//    but WITHOUT ANY WARRANTY; without even the implied warranty of         //
+//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the          //
+//    GNU General Public License for more details.                           //
+//                                                                           //
+//    You should have received a copy of the GNU General Public License      //
+//    along with QJackAudio. If not, see <http://www.gnu.org/licenses/>.     //
+//                                                                           //
+//    It is possible to obtain a closed-source license of QJackAudio.        //
+//    If you're interested, contact me at: jacob@omg-it.works                //
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
 
-#ifndef FFTWADAPTER_H
-#define FFTWADAPTER_H
+#ifndef QFFTW_H
+#define QFFTW_H
 
 // JACK includes:
 #include <jack/jack.h>
@@ -27,7 +30,7 @@
 // FFTW3 includes:
 #include "fftw3.h"
 
-namespace FftwAdapter {
+namespace QFFTW {
   /**
     * fftw works with arrays of fftw_complex numbers. In order to use fftw,
     * you have to convert between JACK samples, which are mere real numbers
@@ -69,4 +72,4 @@ namespace FftwAdapter {
   void performInverseFFT(fftw_complex *input, fftw_complex *result, int n);
 }
 
-#endif // FFTWADAPTER_H
+#endif // QFFTW_H
