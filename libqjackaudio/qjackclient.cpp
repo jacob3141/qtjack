@@ -37,9 +37,9 @@ private:
 QJackClient QJackClient::_instance;
 
 QJackClient::QJackClient() :
-   QObject (),
-   _d(new QJackClientPrivate),
-   _audioProcessor(0) {
+   QObject(),
+   _audioProcessor(new QAudioProcessor()),
+   _d(new QJackClientPrivate) {
 }
 
 QJackClient::~QJackClient() {
@@ -126,8 +126,8 @@ float QJackClient::cpuLoad() {
 }
 
 
-void QJackClient::setProcessor(QAudioProcessor *processor) {
-    _audioProcessor = processor;
+void QJackClient::setAudioProcessor(QAudioProcessor *audioProcessor) {
+    _audioProcessor = audioProcessor;
 }
 
 int QJackClient::process(jack_nframes_t sampleCount,

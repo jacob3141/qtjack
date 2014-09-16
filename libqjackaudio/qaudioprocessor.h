@@ -52,7 +52,7 @@ public:
      * Warning: This method is time-critical.
      * @param samples Number of samples.
      */
-    virtual void process(int samples) = 0;
+    virtual void process(int samples) { Q_UNUSED(samples); }
 };
 
 #endif // QAUDIOPROCESSOR_H

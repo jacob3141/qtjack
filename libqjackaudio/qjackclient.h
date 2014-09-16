@@ -42,36 +42,6 @@
 #include <QList>
 #include <QSemaphore>
 
-
-/** Defines a stereo port. */
-typedef struct StereoPort {
-    friend class QJackClient;
-    /**
-     * Provides the address to the sample bufferfor the left channel.
-     * @param samples Number of samples.
-     * @return Pointer to samples buffer.
-     */
-    jack_default_audio_sample_t *leftChannelBuffer(int samples)
-    {
-        return (jack_default_audio_sample_t*)jack_port_get_buffer(m_leftPort, samples);
-    }
-
-    /**
-     * Provides the address to the sample buffer for the right channel.
-     * @param samples Number of samples.
-     * @return Pointer to samples buffer.
-     */
-    jack_default_audio_sample_t *rightChannelBuffer(int samples)
-    {
-        return (jack_default_audio_sample_t*)jack_port_get_buffer(m_rightPort, samples);
-    }
-private:
-    /** Left JACK port associated with this stereo port. */
-    jack_port_t *m_leftPort;
-    /** Right JACK port associated with this stereo port. */
-    jack_port_t *m_rightPort;
-} StereoPort;
-
 class QJackClientPrivate;
 
 /**
@@ -116,7 +86,7 @@ public:
       * Assigns a processor that will handle audio processing.
       * @param processor The processor that will handle audio processing.
       */
-    void setProcessor(QAudioProcessor *processor);
+    void setAudioProcessor(QAudioProcessor *processor);
 
     /** Activates audio processing. */
     void startAudioProcessing();
@@ -138,20 +108,6 @@ public:
 
     /** Returns the current CPU load in percent. */
     float cpuLoad();
-
-    /**
-      * Returns the input stereo port associated with this label.
-      * @param label Name of the stereo port.
-      * @return Stereo port that has been requested.
-      */
-    StereoPort stereoInputPort(QString label);
-
-    /**
-      * Returns the output stereo port associated with this label.
-      * @param label Name of the stereo port.
-      * @return Stereo port that has been requested.
-      */
-    StereoPort stereoOutputPort(QString label);
 
 signals:
     /** This signal will be emitted when an error occurs. */
@@ -222,12 +178,6 @@ private:
 
     /** The current sample buffer size. */
     int _bufferSize;
-
-    /** Maps input port identifiers to stereo ports. */
-    QMap<QString, StereoPort> m_stereoInputPorts;
-
-    /** Maps output port identifiers to stereo ports. */
-    QMap<QString, StereoPort> m_stereoOutputPorts;
 
     /** Singleton instance for this class. */
     static QJackClient _instance;
