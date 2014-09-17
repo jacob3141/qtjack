@@ -21,39 +21,61 @@
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+// Own includes
+#include <QSampleBuffer>
 
-#include <QMainWindow>
-
-// QJackClient includes
-#include <QJackPort>
-#include <QAudioProcessor>
-
-namespace Ui {
-class MainWindow;
+QSampleBuffer::QSampleBuffer(const QSampleBuffer& other)
+{
+    _bufferType = other._bufferType;
+    _bufferSize = other._bufferSize;
+    _buffer = other._buffer;
 }
 
-class MainWindow : public QMainWindow, public QAudioProcessor
+QSampleBuffer::QSampleBuffer(QSampleBuffer::BufferType bufferType, int bufferSize, void *buffer)
 {
-    Q_OBJECT
+    _bufferType = bufferType;
+    _bufferSize = bufferSize;
+    _buffer = buffer;
+}
 
-public:
-    explicit MainWindow(QWidget *parent = 0);
-    ~MainWindow();
+QSampleBuffer::BufferType QSampleBuffer::bufferType()
+{
+    return _bufferType;
+}
 
-    void process();
+int QSampleBuffer::bufferSize()
+{
+    return _bufferSize;
+}
 
-public slots:
-    void handleError(QString error);
+double QSampleBuffer::readAudioSample(int i)
+{
+    if(_bufferType == AudioBuffer) {
+        return (i >= 0 && i < _bufferSize) ? ((double*)(_buffer))[i] : 0.0;
+    } else {
+        return 0.0;
+    }
+}
 
-private:
-    Ui::MainWindow *ui;
+void QSampleBuffer::writeAudioSample(int i, double value)
+{
+    if(_bufferType == AudioBuffer) {
+        if(i >= 0 && i < _bufferSize) {
+            ((double*)_buffer)[i] = value;
+        }
+    }
+}
 
-    QJackPort *_in1;
-    QJackPort *_in2;
-    QJackPort *_out1;
-    QJackPort *_out2;
-};
+QString QSampleBuffer::lastError() {
+    return _lastError;
+}
 
-#endif // MAINWINDOW_H
+bool QSampleBuffer::copyTo(QSampleBuffer sampleBuffer)
+{
+    if(_bufferSize != sampleBuffer._bufferSize) {
+        _lastError = QString("Trying to copy from a sample buffer with %1 samples to a sample buffer with %2.").arg(_bufferSize).arg(sampleBuffer._bufferSize);
+        return false;
+    }
+    memcpy(sampleBuffer._buffer, _buffer, _bufferSize);
+    return true;
+}

@@ -24,11 +24,15 @@
 #ifndef QJACKPORT_H
 #define QJACKPORT_H
 
+// Own includes
+#include <QSampleBuffer>
+
 // JACK includes
 #include <jack/jack.h>
 
 // Qt includes
 #include <QString>
+
 /**
  * @class QJackPort
  * @author Jacob Dawid ( jacob.dawid@omg-it.works )
@@ -43,11 +47,14 @@ public:
     };
 
     bool isValid() { return _port != 0; }
+    PortType portType() { return _portType; }
     QString name() { return _name; }
+    QSampleBuffer sampleBuffer();
 
 private:
-    QJackPort();
+    QJackPort(PortType portType, QString name);
 
+    PortType _portType;
     jack_port_t *_port;
     QString _name;
 };

@@ -23,7 +23,21 @@
 
 // Own includes
 #include <QJackPort>
+#include <QJackClient>
 
-QJackPort::QJackPort()
+QJackPort::QJackPort(QJackPort::PortType portType, QString name)
 {
+    _portType = portType;
+    _name = name;
+}
+
+QSampleBuffer QJackPort::sampleBuffer()
+{
+    QSampleBuffer::BufferType bufferType = QSampleBuffer::AudioBuffer;
+    switch(_portType) {
+    case AudioPort: bufferType = QSampleBuffer::AudioBuffer; break;
+    case MidiPort: bufferType = QSampleBuffer::MidiBuffer; break;
+    }
+    int bufferSize = QJackClient::instance()->bufferSize();
+    return QSampleBuffer(bufferType, bufferSize, jack_port_get_buffer(_port, bufferSize));
 }

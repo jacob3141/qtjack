@@ -33,7 +33,7 @@ QJackClient QJackClient::_instance;
 
 QJackClient::QJackClient() :
    QObject(),
-   _audioProcessor(new QAudioProcessor()) {
+   _audioProcessor(0) {
 }
 
 QJackClient::~QJackClient() {
@@ -70,13 +70,12 @@ QJackPort *QJackClient::registerPort(QString name, QJackPort::PortType portType,
     case QJackPort::MidiPort: portTypeString = JACK_DEFAULT_MIDI_TYPE; break;
     }
 
-    QJackPort *jackPort = new QJackPort();
+    QJackPort *jackPort = new QJackPort(portType, name);
     jackPort->_port = jack_port_register(
         _jackClient,
         name.toStdString().c_str(),
         portTypeString.toStdString().c_str(),
         jackPortFlags, 0);
-    jackPort->_name = name;
     emit portRegistered(name);
     return jackPort;
 }
@@ -161,8 +160,9 @@ int QJackClient::process(jack_nframes_t sampleCount,
 }
 
 void QJackClient::processPrivate(int samples) {
+    Q_UNUSED(samples);
     if(_audioProcessor)
-        _audioProcessor->process(samples);
+        _audioProcessor->process();
 }
 
 int QJackClient::sampleRateCallback(jack_nframes_t sampleCount,

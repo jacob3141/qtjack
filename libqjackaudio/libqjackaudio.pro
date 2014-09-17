@@ -11,7 +11,8 @@ SOURCES += \
     qequalizer.cpp \
     qfftw.cpp \
     qjackclient.cpp \
-    qjackport.cpp
+    qjackport.cpp \
+    qsamplebuffer.cpp
 
 HEADERS += \
     QAudioProcessor \
@@ -25,4 +26,6 @@ HEADERS += \
     qjackport.h \
     QFFTW \
     qsemaphorelocker.h \
-    QSemaphoreLocker
+    QSemaphoreLocker \
+    qsamplebuffer.h \
+    QSampleBuffer

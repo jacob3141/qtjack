@@ -21,39 +21,59 @@
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#ifndef QSAMPLEBUFFER_H
+#define QSAMPLEBUFFER_H
 
-#include <QMainWindow>
+// Qt includes
+#include <QString>
 
-// QJackClient includes
-#include <QJackPort>
-#include <QAudioProcessor>
-
-namespace Ui {
-class MainWindow;
-}
-
-class MainWindow : public QMainWindow, public QAudioProcessor
+/**
+ * @class QSampleBuffer
+ * @author Jacob Dawid ( jacob.dawid@omg-it.works )
+ * Handle to a JACK sample buffer. Buffer handles are lightweight objects
+ * that refer to a memory buffer, store some meta-information and provide
+ * convenience methods to read and write the buffer.
+ *
+ * Buffers cannot be created as standalone objects, instead they are bound to
+ * another object, for example a QJackPort.
+ */
+class QSampleBuffer
 {
-    Q_OBJECT
-
+    friend class QJackPort;
 public:
-    explicit MainWindow(QWidget *parent = 0);
-    ~MainWindow();
+    QSampleBuffer(const QSampleBuffer& other);
 
-    void process();
+    enum BufferType {
+        AudioBuffer,
+        MidiBuffer
+    };
 
-public slots:
-    void handleError(QString error);
+    /** @returns the buffer type. @see BufferType */
+    BufferType bufferType();
+
+    /** @return the buffer size. */
+    int bufferSize();
+
+    /** @returns sample at position i in the audio buffer. */
+    double readAudioSample(int i);
+
+    /** Writes sample at position i in the audio buffer. */
+    void writeAudioSample(int i, double value);
+
+    /** @returns a human-readable string containing the last error occurred. */
+    QString lastError();
+
+    /** Copies all samples from this buffer to the given sampleBuffer. */
+    bool copyTo(QSampleBuffer sampleBuffer);
 
 private:
-    Ui::MainWindow *ui;
+    QSampleBuffer(BufferType bufferType, int bufferSize, void* buffer);
 
-    QJackPort *_in1;
-    QJackPort *_in2;
-    QJackPort *_out1;
-    QJackPort *_out2;
+    QString _lastError;
+
+    BufferType _bufferType;
+    int _bufferSize;
+    void *_buffer;
 };
 
-#endif // MAINWINDOW_H
+#endif // QSAMPLEBUFFER_H

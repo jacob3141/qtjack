@@ -24,20 +24,16 @@
 #ifndef QAUDIOPROCESSOR_H
 #define QAUDIOPROCESSOR_H
 
-// Qt includes:
-#include <QObject>
-
 /**
  * @class QAudioProcessor
  * @author Jacob Dawid ( jacob.dawid@omg-it.works )
  * @brief Defines an interface that must be met by audio processors.
  */
-class QAudioProcessor : public QObject
+class QAudioProcessor
 {
-  Q_OBJECT
 public:
     /** Constructs a new processor. */
-    QAudioProcessor() : QObject() { }
+    QAudioProcessor() { }
 
     /** Destructor. */
     virtual ~QAudioProcessor() { }
@@ -45,9 +41,8 @@ public:
     /**
      * @brief Called whenever audio samples have to be processed.
      * Warning: This method is time-critical.
-     * @param samples Number of samples.
      */
-    virtual void process(int samples) { Q_UNUSED(samples); }
+    virtual void process() { }
 };
 
 #endif // QAUDIOPROCESSOR_H

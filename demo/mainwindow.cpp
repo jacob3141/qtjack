@@ -24,7 +24,10 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+// QJackClient includes
 #include <QJackClient>
+
+// Qt includes
 #include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -33,12 +36,36 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    if(QJackClient::instance()->connectToServer("QJackAudio Demo")) {
-        QJackPort *out1 = QJackClient::instance()->registerAudioOutPort("out_1");
-        QJackPort *out2 = QJackClient::instance()->registerAudioOutPort("out_2");
-        QJackClient::instance()->startAudioProcessing();
+    QJackClient* jackClient = QJackClient::instance();
+    connect(jackClient, SIGNAL(error(QString)), this, SLOT(handleError(QString)));
+
+    if(jackClient->connectToServer("qjackaudio")) {
+
+        _in1 = jackClient->registerAudioInPort("in_1");
+        _in2 = jackClient->registerAudioInPort("in_2");
+
+        _out1 = jackClient->registerAudioOutPort("out_1");
+        _out2 = jackClient->registerAudioOutPort("out_2");
+
+        jackClient->setAudioProcessor(this);
+        jackClient->startAudioProcessing();
     }
 }
+
+void MainWindow::process()
+{
+    QSampleBuffer buffer1 = _in1->sampleBuffer();
+    QSampleBuffer buffer2 = _in2->sampleBuffer();
+
+    buffer1.copyTo(_out1->sampleBuffer());
+    buffer2.copyTo(_out2->sampleBuffer());
+}
+
+void MainWindow::handleError(QString error)
+{
+    qDebug() << error;
+}
+
 
 MainWindow::~MainWindow()
 {
