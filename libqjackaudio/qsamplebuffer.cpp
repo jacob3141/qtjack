@@ -24,6 +24,9 @@
 // Own includes
 #include <QSampleBuffer>
 
+// JACK includes
+#include <jack/jack.h>
+
 QSampleBuffer::QSampleBuffer(const QSampleBuffer& other)
 {
     _bufferType = other._bufferType;
@@ -51,7 +54,7 @@ int QSampleBuffer::bufferSize()
 double QSampleBuffer::readAudioSample(int i)
 {
     if(_bufferType == AudioBuffer) {
-        return (i >= 0 && i < _bufferSize) ? ((double*)(_buffer))[i] : 0.0;
+        return (double)((i >= 0 && i < _bufferSize) ? ((jack_default_audio_sample_t*)(_buffer))[i] : 0.0);
     } else {
         return 0.0;
     }
@@ -61,7 +64,7 @@ void QSampleBuffer::writeAudioSample(int i, double value)
 {
     if(_bufferType == AudioBuffer) {
         if(i >= 0 && i < _bufferSize) {
-            ((double*)_buffer)[i] = value;
+            ((jack_default_audio_sample_t*)_buffer)[i] = (jack_default_audio_sample_t)value;
         }
     }
 }

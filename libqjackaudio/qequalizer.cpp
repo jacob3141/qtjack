@@ -47,7 +47,7 @@ QEqualizer::~QEqualizer() {
 
 void QEqualizer::computeFilterCoefficients()
 {
-    _numberOfControls = QJackClient::instance()->bufferSize() / 2;
+    _numberOfControls = 64;
 
     // Control values in frequency domain:
     // amplitude
@@ -153,6 +153,7 @@ void QEqualizer::process(QSampleBuffer sampleBuffer)
 
         for(int j = 0; j < FILTER_SPREAD * 2 + 1; j++)
             result += _filterCoefficients[j] * _delayLine[j];
+
         sampleBuffer.writeAudioSample(i, result);
 
         for(int j = _numberOfControls - 2; j >= 0; j--)

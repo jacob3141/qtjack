@@ -17,53 +17,58 @@ How to use
 
 Sample code:
 ```cpp
+// Own includes
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
 // QJackClient includes
 #include <QJackClient>
 
-// Qt includes
-#include <QDebug>
-
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
+    // Setup UI
     ui->setupUi(this);
 
+    // Setup QJackAudio
     QJackClient* jackClient = QJackClient::instance();
-    connect(jackClient, SIGNAL(error(QString)), this, SLOT(handleError(QString)));
-
     if(jackClient->connectToServer("qjackaudio")) {
-
+        // Create two inputs
         _in1 = jackClient->registerAudioInPort("in_1");
         _in2 = jackClient->registerAudioInPort("in_2");
 
+        // Create two outpus
         _out1 = jackClient->registerAudioOutPort("out_1");
         _out2 = jackClient->registerAudioOutPort("out_2");
 
+        // Create two equalizers, each for one side
+        _equalizerLeft = new QEqualizer();
+        _equalizerRight = new QEqualizer();
+
+        // Tell QJackAudio that this instance is responsible for processing
+        // audio. QJackAudio will automatically call process() when needed.
         jackClient->setAudioProcessor(this);
+
+        // Take off!
         jackClient->startAudioProcessing();
     }
 }
 
 void MainWindow::process()
 {
+    // Get handles to input buffers
     QSampleBuffer buffer1 = _in1->sampleBuffer();
     QSampleBuffer buffer2 = _in2->sampleBuffer();
 
-    // Modify signal here
+    // Process input with EQs
+    _equalizerLeft->process(buffer1);
+    _equalizerRight->process(buffer2);
 
+    // Write result to output buffers
     buffer1.copyTo(_out1->sampleBuffer());
     buffer2.copyTo(_out2->sampleBuffer());
 }
-
-void MainWindow::handleError(QString error)
-{
-    qDebug() << error;
-}
-
 
 MainWindow::~MainWindow()
 {
@@ -74,7 +79,7 @@ MainWindow::~MainWindow()
 
 License
 ========
-QJackAudio is licensed under the terms of the GNU GPL v3. I am not a huge fan of gratis licenses, though they're also free software. Gratis licenses have a huge negative economical impact for small projects, so either you can choose to use GPL and support the free software community by contributing back, or contact me to obtain a proprietary license (closed-source) at jacob@omg-it.works .
+QJackAudio is licensed under the terms of the GNU GPL v3. Contact me to obtain a proprietary license (closed-source) at jacob@omg-it.works .
 
 Happy hacking!
 

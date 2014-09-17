@@ -56,7 +56,8 @@ private:
     QJackPort *_out1;
     QJackPort *_out2;
 
-    QEqualizer *_equalizer;
+    QEqualizer *_equalizer1;
+    QEqualizer *_equalizer2;
 };
 
 #endif // MAINWINDOW_H
