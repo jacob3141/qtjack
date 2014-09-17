@@ -23,11 +23,6 @@
 
 // Own includes:
 #include <QJackClient>
-#include <QSemaphoreLocker>
-
-// Qt includes:
-#include <QTime>
-
 
 QJackClient QJackClient::_instance;
 

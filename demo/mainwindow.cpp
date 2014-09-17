@@ -49,6 +49,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
         jackClient->setAudioProcessor(this);
         jackClient->startAudioProcessing();
+
+        _equalizer = new QEqualizer();
     }
 }
 
@@ -57,7 +59,8 @@ void MainWindow::process()
     QSampleBuffer buffer1 = _in1->sampleBuffer();
     QSampleBuffer buffer2 = _in2->sampleBuffer();
 
-    // Modify signal here
+    _equalizer->process(buffer1);
+    _equalizer->process(buffer2);
 
     buffer1.copyTo(_out1->sampleBuffer());
     buffer2.copyTo(_out2->sampleBuffer());

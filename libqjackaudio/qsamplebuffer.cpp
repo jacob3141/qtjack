@@ -76,6 +76,10 @@ bool QSampleBuffer::copyTo(QSampleBuffer sampleBuffer)
         _lastError = QString("Trying to copy from a sample buffer with %1 samples to a sample buffer with %2.").arg(_bufferSize).arg(sampleBuffer._bufferSize);
         return false;
     }
-    memcpy(sampleBuffer._buffer, _buffer, _bufferSize);
+
+    for(int i = 0; i < _bufferSize; i++) {
+        sampleBuffer.writeAudioSample(i, readAudioSample(i));
+    }
+
     return true;
 }

@@ -29,6 +29,7 @@
 // QJackClient includes
 #include <QJackPort>
 #include <QAudioProcessor>
+#include <QEqualizer>
 
 namespace Ui {
 class MainWindow;
@@ -54,6 +55,8 @@ private:
     QJackPort *_in2;
     QJackPort *_out1;
     QJackPort *_out2;
+
+    QEqualizer *_equalizer;
 };
 
 #endif // MAINWINDOW_H

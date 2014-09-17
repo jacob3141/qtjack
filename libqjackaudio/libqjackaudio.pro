@@ -25,7 +25,7 @@ HEADERS += \
     QJackPort \
     qjackport.h \
     QFFTW \
-    qsemaphorelocker.h \
-    QSemaphoreLocker \
     qsamplebuffer.h \
-    QSampleBuffer
+    QSampleBuffer \
+    qdigitalfilter.h \
+    QDigitalFilter

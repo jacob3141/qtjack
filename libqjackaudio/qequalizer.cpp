@@ -23,63 +23,31 @@
 
 // Own includes
 #include <QEqualizer>
-#include <QSemaphoreLocker>
+#include <QFFTW>
 
 // Qt includes
 #include <cmath>
 #include <QStringList>
 
-QEqualizer::QEqualizer() {
-    m_numberOfControls = MAX_NUMBER_OF_CONTROLS;
+QEqualizer::QEqualizer()
+{
     for(int i = 0; i < MAX_NUMBER_OF_CONTROLS * 2; i++) {
-        m_delayLine[i] = 0.0;
+        _delayLine[i] = 0.0;
     }
-    m_numberOfControlsAccessSemaphore = new QSemaphore(1);
-    m_controlsAccessSemaphore = new QSemaphore(1);
-    acquireControls();
+
     for(int i = 0; i < MAX_NUMBER_OF_CONTROLS; i++) {
-        m_controls[i] = 1.0;
+        _controls[i] = 1.0;
     }
-    releaseControls();
-    generateFilter();
+
+    computeFilterCoefficients();
 }
 
 QEqualizer::~QEqualizer() {
-    delete m_numberOfControlsAccessSemaphore;
-    delete m_controlsAccessSemaphore;
 }
 
-void QEqualizer::setNumberOfControls(int n) {
-    // Add a scope, so the Locker-Object will unlock.
-    {
-        QSemaphoreLocker locker(m_numberOfControlsAccessSemaphore);
-        m_numberOfControls = n;
-    }
-    // Since the amount of controls has changed, generate a new filter to keep
-    // the equalizer in consistent state.
-    generateFilter();
-}
-
-int QEqualizer::numberOfControls() {
-    QSemaphoreLocker locker(m_numberOfControlsAccessSemaphore);
-    return m_numberOfControls;
-}
-
-void QEqualizer::acquireControls() {
-    m_controlsAccessSemaphore->acquire();
-}
-
-double *QEqualizer::controls() {
-    return m_controls;
-}
-
-void QEqualizer::releaseControls() {
-    m_controlsAccessSemaphore->release();
-}
-
-void QEqualizer::generateFilter() {
-    QSemaphoreLocker locker(m_numberOfControlsAccessSemaphore);
-    Q_UNUSED(locker);
+void QEqualizer::computeFilterCoefficients()
+{
+    _numberOfControls = QJackClient::instance()->bufferSize() / 2;
 
     // Control values in frequency domain:
     // amplitude
@@ -98,23 +66,20 @@ void QEqualizer::generateFilter() {
     // +------------------------------------------------> frequency
 
     // Construct an ideal filter in the frequency domain.
-    acquireControls(); // Lock access to equalizer controls.
-    for(int i = 0; i < m_numberOfControls * 2; i++) {
-        if(i < m_numberOfControls) {
+    for(int i = 0; i < _numberOfControls * 2; i++) {
+        if(i < _numberOfControls) {
             // "Draw" frequency response for the equalizer.
-            m_idealFilter[i][0] = m_controls[i];
-            m_idealFilter[i][1] = 0.0; // m_controls[i];
+            _idealFilter[i][0] = _controls[i];
+            _idealFilter[i][1] = 0.0;
         } else {
             // Mirror frequency response for the second half.
-            m_idealFilter[i][0] = m_controls[m_numberOfControls * 2 - 1 - i];
-            m_idealFilter[i][1] = 0.0; // m_controls[m_numberOfControls * 2 - 1 - i];
+            _idealFilter[i][0] = _controls[_numberOfControls * 2 - 1 - i];
+            _idealFilter[i][1] = 0.0;
         }
     }
-    releaseControls(); // Release equalizer controls.
-
 
     // Translate into the time domain.
-    QFFTW::performInverseFFT(m_idealFilter, m_ifftIdealFilter, m_numberOfControls * 2);
+    QFFTW::performInverseFFT(_idealFilter, _ifftIdealFilter, _numberOfControls * 2);
 
     // Time domain signal after inverse DFT:
     // value
@@ -133,12 +98,13 @@ void QEqualizer::generateFilter() {
     // +------------------------------------------------> coefficients
 
     // Shift and cut coefficients in order to use as a filter.
-    for(int i = 0; i < FILTER_SPREAD * 2 + 1; i++)
+    for(int i = 0; i < FILTER_SPREAD * 2 + 1; i++) {
         if(i < FILTER_SPREAD) {
-            m_filterCoefficients[i] = m_ifftIdealFilter[m_numberOfControls * 2 - FILTER_SPREAD + i][0];
+            _filterCoefficients[i] = _ifftIdealFilter[_numberOfControls * 2 - FILTER_SPREAD + i][0];
         } else {
-            m_filterCoefficients[i] = m_ifftIdealFilter[i - FILTER_SPREAD][0];
+            _filterCoefficients[i] = _ifftIdealFilter[i - FILTER_SPREAD][0];
         }
+    }
 
     // Lower filter coefficients by cutting of samples (determined by FILTER_SPREAD)
     // and shift result:
@@ -159,7 +125,7 @@ void QEqualizer::generateFilter() {
 
     // Apply a hamming window
     for(int i = -FILTER_SPREAD; i <= FILTER_SPREAD; i++)
-        m_filterCoefficients[i + FILTER_SPREAD] *= (0.54 + 0.46 * cos(M_PI * i / FILTER_SPREAD));
+        _filterCoefficients[i + FILTER_SPREAD] *= (0.54 + 0.46 * cos(M_PI * i / FILTER_SPREAD));
 
     // Apply a hamming windows to smooth the filter, which improves the frequency response a lot:
     // value
@@ -178,18 +144,19 @@ void QEqualizer::generateFilter() {
     // +------------------------------------------------> coefficients
 }
 
-void QEqualizer::process(fftw_complex *sampleBuffer, fftw_complex *result, int samples) {
-    QSemaphoreLocker locker(m_numberOfControlsAccessSemaphore);
-    Q_UNUSED(locker);
-
-    for(int i = 0; i < samples; i++) {
-        result[i][0] = 0.0;
-        m_delayLine[0] = sampleBuffer[i][0];
+void QEqualizer::process(QSampleBuffer sampleBuffer)
+{
+    int bufferSize = sampleBuffer.bufferSize();
+    for(int i = 0; i < bufferSize; i++) {
+        double result = 0.0;
+        _delayLine[0] = sampleBuffer.readAudioSample(i);
 
         for(int j = 0; j < FILTER_SPREAD * 2 + 1; j++)
-            result[i][0] += m_filterCoefficients[j] * m_delayLine[j];
+            result += _filterCoefficients[j] * _delayLine[j];
+        sampleBuffer.writeAudioSample(i, result);
 
-        for(int j = m_numberOfControls - 2; j >= 0; j--)
-            m_delayLine[j + 1] = m_delayLine[j];
+        for(int j = _numberOfControls - 2; j >= 0; j--)
+            _delayLine[j + 1] = _delayLine[j];
     }
 }
+

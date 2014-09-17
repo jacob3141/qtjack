@@ -21,34 +21,30 @@
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#ifndef QSEMAPHORELOCKER_H
-#define QSEMAPHORELOCKER_H
+#ifndef QDIGITALFILTER_H
+#define QDIGITALFILTER_H
 
-#include <QSemaphore>
+// Own includes
+#include <QSampleBuffer>
 
 /**
-  * @class QSemaphoreLocker
-  * @author Jacob Dawid ( jacob.dawid@omg-it.works )
-  * Helper class for locking semaphores in scopes.
-  */
-class QSemaphoreLocker {
+ * @class QDigitalFilter
+ * @author Jacob Dawid ( jacob.dawid@omg-it.works )
+ */
+class QDigitalFilter
+{
 public:
-    /** Constructs a locker, locks the given semaphore on construction. */
-    QSemaphoreLocker(QSemaphore *semaphore) {
-        Q_ASSERT(semaphore != 0);
-        _semaphore = semaphore;
-        if(_semaphore)
-            _semaphore->acquire();
-    }
+    /** Constructs a new processor. */
+    QDigitalFilter() { }
 
-    /** Destructor. Unlocks the semaphore. */
-    ~QSemaphoreLocker() {
-        if(_semaphore)
-            _semaphore->release();
-    }
-private:
-    /** Semaphore that has been locked. */
-    QSemaphore *_semaphore;
+    /** Destructor. */
+    virtual ~QDigitalFilter() { }
+
+    /**
+     * @brief Called whenever audio samples have to be processed.
+     * Warning: This method is time-critical.
+     */
+    virtual void process(QSampleBuffer sampleBuffer) { Q_UNUSED(sampleBuffer); }
 };
 
-#endif // QSEMAPHORELOCKER_H
+#endif // QDIGITALFILTER_H
