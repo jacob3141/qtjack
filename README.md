@@ -72,10 +72,6 @@ MainWindow::~MainWindow()
 
 ```
 
-This will connect to a running JACK server, or run it with the latest settings as "application". You can then set up as many ports as you like. Finally, call startAudioProcessing() and you're good to go. Of course, this is not a very useful example, but it boils down to the absolute minimum to write a Qt application for JACK with QJackAudio. Neat, isn't it?
-virtual method `process(int samples)`. Activate your processor by calling `setAudioProcessor(QAudioProcessor *processor)` on `QJackClient::instance()`. That's it.
-
-But how do you actually process audio? The C API of JACK uses callbacks, QJackAudio uses an interface called the *QAudioProcessor*. Just subclass QAudioProcessor and do your processing in the
 License
 ========
 QJackAudio is licensed under the terms of the GNU GPL v3. I am not a huge fan of gratis licenses, though they're also free software. Gratis licenses have a huge negative economical impact for small projects, so either you can choose to use GPL and support the free software community by contributing back, or contact me to obtain a proprietary license (closed-source) at jacob@omg-it.works .
