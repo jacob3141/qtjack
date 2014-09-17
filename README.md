@@ -15,12 +15,61 @@ Like any other Qt application, QJackAudio relies on qmake and the toolchain qmak
 How to use
 ==========
 
-All you need to do to be ready to go is calling:
+Sample code:
 ```cpp
-if(QJackClient::instance()->connectToServer("application")) {
-    QJackClient::instance()->registerAudioOutPort("out");
-    QJackClient::instance()->startAudioProcessing();
+#include "mainwindow.h"
+#include "ui_mainwindow.h"
+
+// QJackClient includes
+#include <QJackClient>
+
+// Qt includes
+#include <QDebug>
+
+MainWindow::MainWindow(QWidget *parent) :
+    QMainWindow(parent),
+    ui(new Ui::MainWindow)
+{
+    ui->setupUi(this);
+
+    QJackClient* jackClient = QJackClient::instance();
+    connect(jackClient, SIGNAL(error(QString)), this, SLOT(handleError(QString)));
+
+    if(jackClient->connectToServer("qjackaudio")) {
+
+        _in1 = jackClient->registerAudioInPort("in_1");
+        _in2 = jackClient->registerAudioInPort("in_2");
+
+        _out1 = jackClient->registerAudioOutPort("out_1");
+        _out2 = jackClient->registerAudioOutPort("out_2");
+
+        jackClient->setAudioProcessor(this);
+        jackClient->startAudioProcessing();
+    }
 }
+
+void MainWindow::process()
+{
+    QSampleBuffer buffer1 = _in1->sampleBuffer();
+    QSampleBuffer buffer2 = _in2->sampleBuffer();
+
+    // Modify signal here
+
+    buffer1.copyTo(_out1->sampleBuffer());
+    buffer2.copyTo(_out2->sampleBuffer());
+}
+
+void MainWindow::handleError(QString error)
+{
+    qDebug() << error;
+}
+
+
+MainWindow::~MainWindow()
+{
+    delete ui;
+}
+
 ```
 
 This will connect to a running JACK server, or run it with the latest settings as "application". You can then set up as many ports as you like. Finally, call startAudioProcessing() and you're good to go. Of course, this is not a very useful example, but it boils down to the absolute minimum to write a Qt application for JACK with QJackAudio. Neat, isn't it?

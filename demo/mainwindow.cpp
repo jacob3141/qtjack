@@ -57,6 +57,8 @@ void MainWindow::process()
     QSampleBuffer buffer1 = _in1->sampleBuffer();
     QSampleBuffer buffer2 = _in2->sampleBuffer();
 
+    // Modify signal here
+
     buffer1.copyTo(_out1->sampleBuffer());
     buffer2.copyTo(_out2->sampleBuffer());
 }
