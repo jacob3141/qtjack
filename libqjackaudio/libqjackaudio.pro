@@ -12,7 +12,9 @@ SOURCES += \
     qfftw.cpp \
     qjackclient.cpp \
     qjackport.cpp \
-    qsamplebuffer.cpp
+    qsamplebuffer.cpp \
+    qcompressor.cpp \
+    qunits.cpp
 
 HEADERS += \
     QAudioProcessor \
@@ -28,4 +30,8 @@ HEADERS += \
     qsamplebuffer.h \
     QSampleBuffer \
     qdigitalfilter.h \
-    QDigitalFilter
+    QDigitalFilter \
+    qcompressor.h \
+    QCompressor \
+    qunits.h \
+    QUnits

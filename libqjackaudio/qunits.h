@@ -21,67 +21,18 @@
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-// Own includes
-#include "mainwindow.h"
-#include "ui_mainwindow.h"
+#ifndef QUNITS_H
+#define QUNITS_H
 
-// QJackClient includes
-#include <QJackClient>
-
-MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::MainWindow)
+/**
+ * @brief The QUnits class
+ */
+class QUnits
 {
-    // Setup UI
-    ui->setupUi(this);
+public:
+    static double dbToLinear(double db);
+    static double linearToDb(float linear);
+    static double peak(double value);
+};
 
-    // Setup QJackAudio
-    QJackClient* jackClient = QJackClient::instance();
-    if(jackClient->connectToServer("qjackaudio")) {
-        // Create two inputs
-        _in1 = jackClient->registerAudioInPort("in_1");
-        _in2 = jackClient->registerAudioInPort("in_2");
-
-        // Create two outpus
-        _out1 = jackClient->registerAudioOutPort("out_1");
-        _out2 = jackClient->registerAudioOutPort("out_2");
-
-        // Create two equalizers, each for one side
-        _equalizerLeft = new QEqualizer();
-        _equalizerRight = new QEqualizer();
-
-        // Create two equalizers, each for one side
-        _compressorLeft = new QCompressor();
-        _compressorRight = new QCompressor();
-
-        // Tell QJackAudio that this instance is responsible for processing
-        // audio. QJackAudio will automatically call process() when needed.
-        jackClient->setAudioProcessor(this);
-
-        // Take off!
-        jackClient->startAudioProcessing();
-    }
-}
-
-void MainWindow::process()
-{
-    // Get handles to input buffers
-    QSampleBuffer buffer1 = _in1->sampleBuffer();
-    QSampleBuffer buffer2 = _in2->sampleBuffer();
-
-    // Process input with EQs
-    _equalizerLeft->process(buffer1);
-    _equalizerRight->process(buffer2);
-
-    _compressorLeft->process(buffer1);
-    _compressorRight->process(buffer2);
-
-    // Write result to output buffers
-    buffer1.copyTo(_out1->sampleBuffer());
-    buffer2.copyTo(_out2->sampleBuffer());
-}
-
-MainWindow::~MainWindow()
-{
-    delete ui;
-}
+#endif // QUNITS_H

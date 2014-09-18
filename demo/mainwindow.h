@@ -30,6 +30,7 @@
 #include <QJackPort>
 #include <QAudioProcessor>
 #include <QEqualizer>
+#include <QCompressor>
 
 namespace Ui {
 class MainWindow;
@@ -45,9 +46,6 @@ public:
 
     void process();
 
-public slots:
-    void handleError(QString error);
-
 private:
     Ui::MainWindow *ui;
 
@@ -56,8 +54,10 @@ private:
     QJackPort *_out1;
     QJackPort *_out2;
 
-    QEqualizer *_equalizer1;
-    QEqualizer *_equalizer2;
+    QEqualizer *_equalizerLeft;
+    QEqualizer *_equalizerRight;
+    QCompressor *_compressorLeft;
+    QCompressor *_compressorRight;
 };
 
 #endif // MAINWINDOW_H
