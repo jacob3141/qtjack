@@ -21,10 +21,14 @@
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
+// Qt includes
+#include <QMutexLocker>
+
 // Own includes
 #include <QCompressor>
 
-QCompressor::QCompressor()
+QCompressor::QCompressor(QObject *parent)
+    : QDigitalFilter(parent)
 {
     _threshold = -6.0;
     _ratio = 4.0;
@@ -40,9 +44,22 @@ QCompressor::~QCompressor()
 
 void QCompressor::process(QSampleBuffer sampleBuffer)
 {
+    _mutex.lock();
+    double threshold = _threshold;
+    double ratio = _ratio;
+    double attack = _attack;
+    double release = _release;
+    double inputGain = _inputGain;
+    double makeupGain = _makeupGain;
+    _mutex.unlock();
+
+    // TODO: To be implemented.
+    Q_UNUSED(attack);
+    Q_UNUSED(release);
+
     int bufferSize = sampleBuffer.bufferSize();
-    double inputGainMultiplier = QUnits::dbToLinear(_inputGain);
-    double makeupGainMultiplier = QUnits::dbToLinear(_makeupGain);
+    double inputGainMultiplier = QUnits::dbToLinear(inputGain);
+    double makeupGainMultiplier = QUnits::dbToLinear(makeupGain);
     for(int i = 0; i < bufferSize; i++) {
         // Read audio sample
         double sample = sampleBuffer.readAudioSample(i) * inputGainMultiplier;
@@ -50,10 +67,10 @@ void QCompressor::process(QSampleBuffer sampleBuffer)
         double peakDb = QUnits::linearToDb(QUnits::peak(sample));
 
         // Check if peak is over threshold
-        if(peakDb > _threshold) {
-            double dbOverThreshold = peakDb - _threshold;
-            double dbOverThresholdCompressed = dbOverThreshold / _ratio;
-            double dbResultingPeak = _threshold + dbOverThresholdCompressed;
+        if(peakDb > threshold) {
+            double dbOverThreshold = peakDb - threshold;
+            double dbOverThresholdCompressed = dbOverThreshold / ratio;
+            double dbResultingPeak = threshold + dbOverThresholdCompressed;
 
             double resultSample = QUnits::dbToLinear(dbResultingPeak * ( sample > 0.0 ? 1.0 : -1.0 ));
             sampleBuffer.writeAudioSample(i, resultSample * makeupGainMultiplier);
@@ -63,7 +80,9 @@ void QCompressor::process(QSampleBuffer sampleBuffer)
 
 void QCompressor::setThreshold(double threshold)
 {
+    QMutexLocker mutexLocker(&_mutex);
     _threshold = threshold;
+    emit thresholdChanged(_threshold);
 }
 
 double QCompressor::threshold()
@@ -73,7 +92,9 @@ double QCompressor::threshold()
 
 void QCompressor::setRatio(double ratio)
 {
+    QMutexLocker mutexLocker(&_mutex);
     _ratio = ratio;
+    emit ratioChanged(_ratio);
 }
 
 double QCompressor::ratio()
@@ -83,7 +104,9 @@ double QCompressor::ratio()
 
 void QCompressor::setAttack(double attack)
 {
+    QMutexLocker mutexLocker(&_mutex);
     _attack = attack;
+    emit attackChanged(_attack);
 }
 
 double QCompressor::attack()
@@ -93,7 +116,9 @@ double QCompressor::attack()
 
 void QCompressor::setRelease(double release)
 {
+    QMutexLocker mutexLocker(&_mutex);
     _release = release;
+    emit releaseChanged(_release);
 }
 
 double QCompressor::release()
@@ -103,7 +128,9 @@ double QCompressor::release()
 
 void QCompressor::setInputGain(double inputGain)
 {
+    QMutexLocker mutexLocker(&_mutex);
     _inputGain = inputGain;
+    emit inputGainChanged(_inputGain);
 }
 
 double QCompressor::inputGain()
@@ -113,7 +140,9 @@ double QCompressor::inputGain()
 
 void QCompressor::setMakeupGain(double makeupGain)
 {
+    QMutexLocker mutexLocker(&_mutex);
     _makeupGain = makeupGain;
+    emit makeupGainChanged(_makeupGain);
 }
 
 double QCompressor::makeupGain()

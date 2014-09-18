@@ -35,9 +35,10 @@
  */
 class QEqualizer : public QDigitalFilter
 {
+    Q_OBJECT
 public:
     /** Constructs a new digital equalizer. */
-    QEqualizer();
+    QEqualizer(QObject *parent = 0);
 
     /** Destructor. */
     ~QEqualizer();

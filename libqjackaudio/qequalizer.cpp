@@ -29,7 +29,8 @@
 #include <cmath>
 #include <QStringList>
 
-QEqualizer::QEqualizer()
+QEqualizer::QEqualizer(QObject *parent)
+    : QDigitalFilter(parent)
 {
     for(int i = 0; i < MAX_NUMBER_OF_CONTROLS * 2; i++) {
         _delayLine[i] = 0.0;

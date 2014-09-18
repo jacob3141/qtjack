@@ -24,6 +24,9 @@
 #ifndef QCOMPRESSOR_H
 #define QCOMPRESSOR_H
 
+// Qt includes
+#include <QMutex>
+
 // Own includes
 #include <QJackClient>
 #include <QDigitalFilter>
@@ -36,9 +39,10 @@
  */
 class QCompressor : public QDigitalFilter
 {
+    Q_OBJECT
 public:
     /** Constructs a new digital compressor. */
-    QCompressor();
+    QCompressor(QObject *parent = 0);
 
     /** Destructor. */
     ~QCompressor();
@@ -46,15 +50,39 @@ public:
     /** @overload QDigitalFilter */
     void process(QSampleBuffer sampleBuffer);
 
-    /**
+    /** @returns threshold. */
+    double threshold();
+
+    /** @returns compression ratio. */
+    double ratio();
+
+    /** @returns attack in ms. */
+    double attack();
+
+    /** @returns release in ms. */
+    double release();
+
+    /** @returns input gain in dB. */
+    double inputGain();
+
+    /** @returns makeup gain in dB. */
+    double makeupGain();
+
+signals:
+    void thresholdChanged(double threshold);
+    void ratioChanged(double ratio);
+    void attackChanged(double attack);
+    void releaseChanged(double release);
+    void inputGainChanged(double inputGain);
+    void makeupGainChanged(double makeupGain);
+
+public slots:
+        /**
      * Sets the threshold above which the compressor starts acting.
      * @brief setThreshold
      * @param threshold Threshold in dB.
      */
     void setThreshold(double threshold);
-
-    /** @returns threshold. */
-    double threshold();
 
     /**
      * Compression determines how strong loud signals will be decreased
@@ -69,9 +97,6 @@ public:
      */
     void setRatio(double ratio);
 
-    /** @returns compression ratio. */
-    double ratio();
-
     /**
      * Attack determines how fast the compressor reacts when the signal
      * goes above the threshold. Compression will increase linearly and
@@ -80,9 +105,6 @@ public:
      * @param attack Attack time in ms.
      */
     void setAttack(double attack);
-
-    /** @returns attack in ms. */
-    double attack();
 
     /**
      * Release determines how fast the compressor reacts when the signal
@@ -93,9 +115,6 @@ public:
      */
     void setRelease(double release);
 
-    /** @returns release in ms. */
-    double release();
-
     /**
      * Input gain is applied to the signal before compression.
      * @brief setInputGain
@@ -103,17 +122,11 @@ public:
      */
     void setInputGain(double inputGain);
 
-    /** @returns input gain in dB. */
-    double inputGain();
-
     /** Makeup gain is applied after compression.
      * @brief setMakeupGain
      * @param makeupGain Makeup gain in dB.
      */
     void setMakeupGain(double makeupGain);
-
-    /** @returns makeup gain in dB. */
-    double makeupGain();
 
 private:
     /** Threshold in dB. */
@@ -133,6 +146,9 @@ private:
 
     /** Make-up gain in dB. */
     double _makeupGain;
+
+    /** Mutex for thread-safety. */
+    QMutex _mutex;
 };
 
 #endif // QCOMPRESSOR_H

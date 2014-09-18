@@ -24,6 +24,9 @@
 #ifndef QDIGITALFILTER_H
 #define QDIGITALFILTER_H
 
+// Qt includes
+#include <QObject>
+
 // Own includes
 #include <QSampleBuffer>
 
@@ -31,11 +34,12 @@
  * @class QDigitalFilter
  * @author Jacob Dawid ( jacob.dawid@omg-it.works )
  */
-class QDigitalFilter
+class QDigitalFilter : public QObject
 {
+    Q_OBJECT
 public:
     /** Constructs a new processor. */
-    QDigitalFilter() { }
+    QDigitalFilter(QObject *parent = 0) : QObject(parent) { }
 
     /** Destructor. */
     virtual ~QDigitalFilter() { }
