@@ -30,12 +30,13 @@
 QCompressor::QCompressor(QObject *parent)
     : QDigitalFilter(parent)
 {
-    _threshold = -6.0;
-    _ratio = 4.0;
+    _threshold = 0.0;
+    _ratio = 1.0;
     _attack = 0.0;
     _release = 0.0;
     _inputGain = 0.0;
-    _makeupGain = 0.5;
+    _makeupGain = 0.0;
+    _bypass = false;
 }
 
 QCompressor::~QCompressor()
@@ -44,6 +45,9 @@ QCompressor::~QCompressor()
 
 void QCompressor::process(QSampleBuffer sampleBuffer)
 {
+    bool isClipping = false;
+    bool isActive = false;
+
     _mutex.lock();
     double threshold = _threshold;
     double ratio = _ratio;
@@ -51,7 +55,12 @@ void QCompressor::process(QSampleBuffer sampleBuffer)
     double release = _release;
     double inputGain = _inputGain;
     double makeupGain = _makeupGain;
+    bool bypass = _bypass;
     _mutex.unlock();
+
+    if(bypass) {
+        return;
+    }
 
     // TODO: To be implemented.
     Q_UNUSED(attack);
@@ -66,16 +75,76 @@ void QCompressor::process(QSampleBuffer sampleBuffer)
         // Determine peak in dB
         double peakDb = QUnits::linearToDb(QUnits::peak(sample));
 
+        double resultSample = sample;
+
         // Check if peak is over threshold
         if(peakDb > threshold) {
+            // Perform signal compression
+            isActive = true;
             double dbOverThreshold = peakDb - threshold;
             double dbOverThresholdCompressed = dbOverThreshold / ratio;
             double dbResultingPeak = threshold + dbOverThresholdCompressed;
 
-            double resultSample = QUnits::dbToLinear(dbResultingPeak * ( sample > 0.0 ? 1.0 : -1.0 ));
-            sampleBuffer.writeAudioSample(i, resultSample * makeupGainMultiplier);
+            resultSample = QUnits::dbToLinear(dbResultingPeak * ( sample > 0.0 ? 1.0 : -1.0 ));
         }
+
+        double result = resultSample * makeupGainMultiplier;
+
+        if(result > 1.0) {
+            result = 1.0;
+            isClipping = true;
+        }
+
+        if(result < -1.0) {
+            result = -1.0;
+            isClipping = true;
+        }
+
+        sampleBuffer.writeAudioSample(i, result);
     }
+
+    if(isClipping) {
+        emit clipping();
+    }
+
+    if(isActive) {
+        emit active();
+    }
+}
+
+double QCompressor::threshold()
+{
+    return _threshold;
+}
+
+double QCompressor::ratio()
+{
+    return _ratio;
+}
+
+double QCompressor::attack()
+{
+    return _attack;
+}
+
+double QCompressor::release()
+{
+    return _release;
+}
+
+double QCompressor::inputGain()
+{
+    return _inputGain;
+}
+
+double QCompressor::makeupGain()
+{
+    return _makeupGain;
+}
+
+bool QCompressor::bypass()
+{
+    return _bypass;
 }
 
 void QCompressor::setThreshold(double threshold)
@@ -85,21 +154,11 @@ void QCompressor::setThreshold(double threshold)
     emit thresholdChanged(_threshold);
 }
 
-double QCompressor::threshold()
-{
-    return _threshold;
-}
-
 void QCompressor::setRatio(double ratio)
 {
     QMutexLocker mutexLocker(&_mutex);
     _ratio = ratio;
     emit ratioChanged(_ratio);
-}
-
-double QCompressor::ratio()
-{
-    return _ratio;
 }
 
 void QCompressor::setAttack(double attack)
@@ -109,21 +168,11 @@ void QCompressor::setAttack(double attack)
     emit attackChanged(_attack);
 }
 
-double QCompressor::attack()
-{
-    return _attack;
-}
-
 void QCompressor::setRelease(double release)
 {
     QMutexLocker mutexLocker(&_mutex);
     _release = release;
     emit releaseChanged(_release);
-}
-
-double QCompressor::release()
-{
-    return _release;
 }
 
 void QCompressor::setInputGain(double inputGain)
@@ -133,11 +182,6 @@ void QCompressor::setInputGain(double inputGain)
     emit inputGainChanged(_inputGain);
 }
 
-double QCompressor::inputGain()
-{
-    return _inputGain;
-}
-
 void QCompressor::setMakeupGain(double makeupGain)
 {
     QMutexLocker mutexLocker(&_mutex);
@@ -145,8 +189,9 @@ void QCompressor::setMakeupGain(double makeupGain)
     emit makeupGainChanged(_makeupGain);
 }
 
-double QCompressor::makeupGain()
+void QCompressor::setBypass(bool bypass)
 {
-    return _makeupGain;
+    QMutexLocker mutexLocker(&_mutex);
+   _bypass = bypass;
+   emit bypassChanged(bypass);
 }
-

@@ -68,6 +68,9 @@ public:
     /** @returns makeup gain in dB. */
     double makeupGain();
 
+    /** @returns whether compressor is in bypass. */
+    bool bypass();
+
 signals:
     void thresholdChanged(double threshold);
     void ratioChanged(double ratio);
@@ -75,6 +78,10 @@ signals:
     void releaseChanged(double release);
     void inputGainChanged(double inputGain);
     void makeupGainChanged(double makeupGain);
+    void bypassChanged(bool bypass);
+
+    void clipping();
+    void active();
 
 public slots:
         /**
@@ -83,6 +90,7 @@ public slots:
      * @param threshold Threshold in dB.
      */
     void setThreshold(double threshold);
+    void setThreshold(int threshold) { setThreshold((double)threshold); }
 
     /**
      * Compression determines how strong loud signals will be decreased
@@ -96,6 +104,7 @@ public slots:
      * @param ratio Compression ratio.
      */
     void setRatio(double ratio);
+    void setRatio(int ratio) { setRatio((double)ratio); }
 
     /**
      * Attack determines how fast the compressor reacts when the signal
@@ -105,6 +114,7 @@ public slots:
      * @param attack Attack time in ms.
      */
     void setAttack(double attack);
+    void setAttack(int attack) { setAttack((double)attack); }
 
     /**
      * Release determines how fast the compressor reacts when the signal
@@ -114,6 +124,7 @@ public slots:
      * @param release Release time in ms.
      */
     void setRelease(double release);
+    void setRelease(int release) { setRelease((double)release); }
 
     /**
      * Input gain is applied to the signal before compression.
@@ -121,12 +132,16 @@ public slots:
      * @param inputGain Input gain in dB.
      */
     void setInputGain(double inputGain);
+    void setInputGain(int inputGain) { setInputGain((double)inputGain); }
 
     /** Makeup gain is applied after compression.
      * @brief setMakeupGain
      * @param makeupGain Makeup gain in dB.
      */
     void setMakeupGain(double makeupGain);
+    void setMakeupGain(int makeupGain) { setMakeupGain((double)makeupGain); }
+
+    void setBypass(bool bypass);
 
 private:
     /** Threshold in dB. */
@@ -146,6 +161,9 @@ private:
 
     /** Make-up gain in dB. */
     double _makeupGain;
+
+    /** Bypass flag. */
+    bool _bypass;
 
     /** Mutex for thread-safety. */
     QMutex _mutex;

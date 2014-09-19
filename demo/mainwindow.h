@@ -24,7 +24,9 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+// Qt includes
 #include <QMainWindow>
+#include <QTimer>
 
 // QJackClient includes
 #include <QJackPort>
@@ -46,6 +48,13 @@ public:
 
     void process();
 
+public slots:
+    void clipping();
+    void clipRemove();
+
+    void active();
+    void activeRemove();
+
 private:
     Ui::MainWindow *ui;
 
@@ -58,6 +67,9 @@ private:
     QEqualizer *_equalizerRight;
     QCompressor *_compressorLeft;
     QCompressor *_compressorRight;
+
+    QTimer _clipRemoveTimer;
+    QTimer _activeRemoveTimer;
 };
 
 #endif // MAINWINDOW_H

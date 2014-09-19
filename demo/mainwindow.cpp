@@ -54,6 +54,32 @@ MainWindow::MainWindow(QWidget *parent) :
         _compressorLeft = new QCompressor();
         _compressorRight = new QCompressor();
 
+        connect(ui->inputGainDial, SIGNAL(valueChanged(int)), _compressorLeft, SLOT(setInputGain(int)));
+        connect(ui->thresholdDial, SIGNAL(valueChanged(int)), _compressorLeft, SLOT(setThreshold(int)));
+        connect(ui->ratioDial, SIGNAL(valueChanged(int)), _compressorLeft, SLOT(setRatio(int)));
+        connect(ui->attackDial, SIGNAL(valueChanged(int)), _compressorLeft, SLOT(setAttack(int)));
+        connect(ui->releaseDial, SIGNAL(valueChanged(int)), _compressorLeft, SLOT(setRelease(int)));
+        connect(ui->makeupGainDial, SIGNAL(valueChanged(int)), _compressorLeft, SLOT(setMakeupGain(int)));
+        connect(ui->bypassPushButton, SIGNAL(toggled(bool)), _compressorLeft, SLOT(setBypass(bool)));
+
+        connect(ui->inputGainDial, SIGNAL(valueChanged(int)), _compressorRight, SLOT(setInputGain(int)));
+        connect(ui->thresholdDial, SIGNAL(valueChanged(int)), _compressorRight, SLOT(setThreshold(int)));
+        connect(ui->ratioDial, SIGNAL(valueChanged(int)), _compressorRight, SLOT(setRatio(int)));
+        connect(ui->attackDial, SIGNAL(valueChanged(int)), _compressorRight, SLOT(setAttack(int)));
+        connect(ui->releaseDial, SIGNAL(valueChanged(int)), _compressorRight, SLOT(setRelease(int)));
+        connect(ui->makeupGainDial, SIGNAL(valueChanged(int)), _compressorRight, SLOT(setMakeupGain(int)));
+        connect(ui->bypassPushButton, SIGNAL(toggled(bool)), _compressorRight, SLOT(setBypass(bool)));
+
+        connect(_compressorLeft, SIGNAL(clipping()), this, SLOT(clipping()));
+        connect(&_clipRemoveTimer, SIGNAL(timeout()), this, SLOT(clipRemove()));
+        _clipRemoveTimer.setInterval(20);
+        _clipRemoveTimer.setSingleShot(true);
+
+        connect(_compressorLeft, SIGNAL(active()), this, SLOT(active()));
+        connect(&_activeRemoveTimer, SIGNAL(timeout()), this, SLOT(activeRemove()));
+        _activeRemoveTimer.setInterval(20);
+        _activeRemoveTimer.setSingleShot(true);
+
         // Tell QJackAudio that this instance is responsible for processing
         // audio. QJackAudio will automatically call process() when needed.
         jackClient->setAudioProcessor(this);
@@ -79,6 +105,28 @@ void MainWindow::process()
     // Write result to output buffers
     buffer1.copyTo(_out1->sampleBuffer());
     buffer2.copyTo(_out2->sampleBuffer());
+}
+
+void MainWindow::clipping()
+{
+    ui->clipLabel->setStyleSheet("background: red;");
+    _clipRemoveTimer.start();
+}
+
+void MainWindow::clipRemove()
+{
+    ui->clipLabel->setStyleSheet("background: black;");
+}
+
+void MainWindow::active()
+{
+    ui->activeLabel->setStyleSheet("background: blue;");
+    _activeRemoveTimer.start();
+}
+
+void MainWindow::activeRemove()
+{
+    ui->activeLabel->setStyleSheet("background: black;");
 }
 
 MainWindow::~MainWindow()
