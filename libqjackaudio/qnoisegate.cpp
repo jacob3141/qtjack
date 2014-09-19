@@ -21,58 +21,88 @@
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+// Own includes
+#include <QNoiseGate>
+#include <QUnits>
 
 // Qt includes
-#include <QMainWindow>
-#include <QTimer>
+#include <QMutexLocker>
 
-// QJackClient includes
-#include <QJackPort>
-#include <QAudioProcessor>
-#include <QEqualizer>
-#include <QCompressor>
-#include <QNoiseGate>
-
-namespace Ui {
-class MainWindow;
+QNoiseGate::QNoiseGate(QObject *parent)
+    : QDigitalFilter(parent)
+{
+    _threshold = -60.0;
+    _bypass = false;
 }
 
-class MainWindow : public QMainWindow, public QAudioProcessor
+double QNoiseGate::threshold()
 {
-    Q_OBJECT
+    QMutexLocker mutexLucker(&_mutex);
+    return _threshold;
+}
 
-public:
-    explicit MainWindow(QWidget *parent = 0);
-    ~MainWindow();
+void QNoiseGate::process(QSampleBuffer sampleBuffer)
+{
+    bool isClipping = false;
+    bool isActive = false;
 
-    void process();
+    _mutex.lock();
+    double threshold = _threshold;
+    bool bypass = _bypass;
+    _mutex.unlock();
 
-public slots:
-    void clipping();
-    void clipRemove();
+    if(bypass) {
+        return;
+    }
 
-    void active();
-    void activeRemove();
+    int bufferSize = sampleBuffer.bufferSize();
+    for(int i = 0; i < bufferSize; i++) {
+        // Read audio sample
+        double sample = sampleBuffer.readAudioSample(i);
+        // Determine peak in dB
+        double peakDb = QUnits::linearToDb(QUnits::peak(sample));
+        double result = sample;
 
-private:
-    Ui::MainWindow *ui;
+        // Check if peak is under threshold
+        if(peakDb < threshold) {
+            // Cutoff signal
+            isActive = true;
+            result = 0.0;
+        }
 
-    QJackPort *_in1;
-    QJackPort *_in2;
-    QJackPort *_out1;
-    QJackPort *_out2;
+        if(result > 1.0) {
+            result = 1.0;
+            isClipping = true;
+        }
 
-    QEqualizer *_equalizerLeft;
-    QEqualizer *_equalizerRight;
-    QCompressor *_compressorLeft;
-    QCompressor *_compressorRight;
-    QNoiseGate *_noiseGateLeft;
-    QNoiseGate *_noiseGateRight;
+        if(result < -1.0) {
+            result = -1.0;
+            isClipping = true;
+        }
 
-    QTimer _clipRemoveTimer;
-    QTimer _activeRemoveTimer;
-};
+        sampleBuffer.writeAudioSample(i, result);
+    }
 
-#endif // MAINWINDOW_H
+    if(isClipping) {
+        emit clipping();
+    }
+
+    if(isActive) {
+        emit active();
+    }
+}
+
+void QNoiseGate::setThreshold(double threshold)
+{
+    QMutexLocker mutexLucker(&_mutex);
+    _threshold = threshold;
+    emit thresholdChanged(threshold);
+}
+
+
+void QNoiseGate::setBypass(bool bypass)
+{
+    QMutexLocker mutexLucker(&_mutex);
+    _bypass = bypass;
+    emit bypassChanged(_bypass);
+}

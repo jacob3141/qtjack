@@ -114,36 +114,43 @@ void QCompressor::process(QSampleBuffer sampleBuffer)
 
 double QCompressor::threshold()
 {
+    QMutexLocker mutexLocker(&_mutex);
     return _threshold;
 }
 
 double QCompressor::ratio()
 {
+    QMutexLocker mutexLocker(&_mutex);
     return _ratio;
 }
 
 double QCompressor::attack()
 {
+    QMutexLocker mutexLocker(&_mutex);
     return _attack;
 }
 
 double QCompressor::release()
 {
+    QMutexLocker mutexLocker(&_mutex);
     return _release;
 }
 
 double QCompressor::inputGain()
 {
+    QMutexLocker mutexLocker(&_mutex);
     return _inputGain;
 }
 
 double QCompressor::makeupGain()
 {
+    QMutexLocker mutexLocker(&_mutex);
     return _makeupGain;
 }
 
 bool QCompressor::bypass()
 {
+    QMutexLocker mutexLocker(&_mutex);
     return _bypass;
 }
 

@@ -54,6 +54,9 @@ MainWindow::MainWindow(QWidget *parent) :
         _compressorLeft = new QCompressor();
         _compressorRight = new QCompressor();
 
+        _noiseGateLeft = new QNoiseGate();
+        _noiseGateRight = new QNoiseGate();
+
         connect(ui->inputGainDial, SIGNAL(valueChanged(int)), _compressorLeft, SLOT(setInputGain(int)));
         connect(ui->thresholdDial, SIGNAL(valueChanged(int)), _compressorLeft, SLOT(setThreshold(int)));
         connect(ui->ratioDial, SIGNAL(valueChanged(int)), _compressorLeft, SLOT(setRatio(int)));
@@ -69,6 +72,11 @@ MainWindow::MainWindow(QWidget *parent) :
         connect(ui->releaseDial, SIGNAL(valueChanged(int)), _compressorRight, SLOT(setRelease(int)));
         connect(ui->makeupGainDial, SIGNAL(valueChanged(int)), _compressorRight, SLOT(setMakeupGain(int)));
         connect(ui->bypassPushButton, SIGNAL(toggled(bool)), _compressorRight, SLOT(setBypass(bool)));
+
+        connect(ui->thresholdNoiseGateDial, SIGNAL(valueChanged(int)), _noiseGateLeft, SLOT(setThreshold(int)));
+        connect(ui->thresholdNoiseGateDial, SIGNAL(valueChanged(int)), _noiseGateRight, SLOT(setThreshold(int)));
+        connect(ui->bypassNoiseGatePushButton, SIGNAL(toggled(bool)), _noiseGateLeft, SLOT(setBypass(bool)));
+        connect(ui->bypassNoiseGatePushButton, SIGNAL(toggled(bool)), _noiseGateRight, SLOT(setBypass(bool)));
 
         connect(_compressorLeft, SIGNAL(clipping()), this, SLOT(clipping()));
         connect(&_clipRemoveTimer, SIGNAL(timeout()), this, SLOT(clipRemove()));
@@ -94,6 +102,9 @@ void MainWindow::process()
     // Get handles to input buffers
     QSampleBuffer buffer1 = _in1->sampleBuffer();
     QSampleBuffer buffer2 = _in2->sampleBuffer();
+
+    _noiseGateLeft->process(buffer1);
+    _noiseGateRight->process(buffer2);
 
     // Process input with EQs
     _equalizerLeft->process(buffer1);

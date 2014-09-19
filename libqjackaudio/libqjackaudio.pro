@@ -14,7 +14,8 @@ SOURCES += \
     qjackport.cpp \
     qsamplebuffer.cpp \
     qcompressor.cpp \
-    qunits.cpp
+    qunits.cpp \
+    qnoisegate.cpp
 
 HEADERS += \
     QAudioProcessor \
@@ -34,4 +35,6 @@ HEADERS += \
     qcompressor.h \
     QCompressor \
     qunits.h \
-    QUnits
+    QUnits \
+    qnoisegate.h \
+    QNoiseGate

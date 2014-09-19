@@ -21,58 +21,68 @@
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#ifndef QNOISEGATE_H
+#define QNOISEGATE_H
+
+// Own includes
+#include <QDigitalFilter>
 
 // Qt includes
-#include <QMainWindow>
-#include <QTimer>
+#include <QMutex>
 
-// QJackClient includes
-#include <QJackPort>
-#include <QAudioProcessor>
-#include <QEqualizer>
-#include <QCompressor>
-#include <QNoiseGate>
-
-namespace Ui {
-class MainWindow;
-}
-
-class MainWindow : public QMainWindow, public QAudioProcessor
+/**
+ * @class QNoiseGate
+ * @author Jacob Dawid ( jacob.dawid@omg-it.works )
+ * @brief Noise gate.
+ */
+class QNoiseGate : public QDigitalFilter
 {
     Q_OBJECT
-
 public:
-    explicit MainWindow(QWidget *parent = 0);
-    ~MainWindow();
+    /** Constructs a new noise gate. */
+    QNoiseGate(QObject *parent = 0);
 
-    void process();
+    /** @return true, when bypassed. */
+    bool bypass();
+
+    /** @returns the noise gate threshold in dB. */
+    double threshold();
+
+    /** @overload @see QDigitalFilter */
+    void process(QSampleBuffer sampleBuffer);
+
+signals:
+    /** Emitted when signals is clipping. */
+    void clipping();
+
+    /** Emitted when signal is below threshold. */
+    void active();
+
+    /** Emitted whenever the threshold has changed. */
+    void thresholdChanged(double threshold);
+
+    void bypassChanged(bool bypass);
 
 public slots:
-    void clipping();
-    void clipRemove();
+    /**
+     * Set the threshold for the noise gate in dB. The noise gate will kill
+     * all signals below threshold.
+     * @brief setThreshold
+     * @param threshold Threshold in dB.
+     */
+    void setThreshold(double threshold);
+    void setThreshold(int threshold) { setThreshold((double)threshold); }
 
-    void active();
-    void activeRemove();
-
+    void setBypass(bool bypass);
 private:
-    Ui::MainWindow *ui;
+    /** Noise gate threshold in dB. */
+    double _threshold;
 
-    QJackPort *_in1;
-    QJackPort *_in2;
-    QJackPort *_out1;
-    QJackPort *_out2;
+    /** Bypass flag. */
+    bool _bypass;
 
-    QEqualizer *_equalizerLeft;
-    QEqualizer *_equalizerRight;
-    QCompressor *_compressorLeft;
-    QCompressor *_compressorRight;
-    QNoiseGate *_noiseGateLeft;
-    QNoiseGate *_noiseGateRight;
-
-    QTimer _clipRemoveTimer;
-    QTimer _activeRemoveTimer;
+    /** Mutex for thread-safe access of filter parameters. */
+    QMutex _mutex;
 };
 
-#endif // MAINWINDOW_H
+#endif // QNOISEGATE_H
