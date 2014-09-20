@@ -69,19 +69,23 @@ void QCompressor::process(QSampleBuffer sampleBuffer)
         // Read audio sample
         double sample = sampleBuffer.readAudioSample(i) * inputGainMultiplier;
         // Determine peak in dB
-        double peakDb = QUnits::linearToDb(QUnits::peak(sample));
+        double peak = QUnits::peak(sample);
 
         double resultSample = sample;
 
         // Check if peak is over threshold
-        if(peakDb > threshold) {
+        if(peak > QUnits::dbToLinear(threshold)) {
             // Perform signal compression
             isActive = true;
-            double dbOverThreshold = peakDb - threshold;
-            double dbOverThresholdCompressed = dbOverThreshold / ratio;
-            double dbResultingPeak = threshold + dbOverThresholdCompressed;
+            // Calculate over treshold in linear space
+            double overThreshold = peak - QUnits::dbToLinear(threshold);
 
-            resultSample = QUnits::dbToLinear(dbResultingPeak * ( sample > 0.0 ? 1.0 : -1.0 ));
+            // Compress signal in logarithmic space
+            double dbOverThresholdCompressed = QUnits::linearToDb(overThreshold) / ratio;
+
+            double resultingPeak = QUnits::dbToLinear(threshold + dbOverThresholdCompressed);
+
+            resultSample = resultingPeak * ( sample > 0.0 ? 1.0 : -1.0 );
         }
 
         double result = resultSample * makeupGainMultiplier;
