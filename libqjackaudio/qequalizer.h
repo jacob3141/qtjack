@@ -59,6 +59,8 @@ public:
     /** @overload QDigitalFilter */
     void process(QSampleBuffer sampleBuffer);
 
+    int controlsSize();
+
 private:
 
     /** The current filter coefficients for the FIR filter.

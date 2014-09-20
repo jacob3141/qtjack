@@ -53,6 +53,12 @@ signals:
     void thresholdChanged(double threshold);
     void thresholdChanged(int threshold);
 
+    void sensitivityChanged(double sensitivity);
+    void sensitivityChanged(int sensitivity);
+
+    void resistanceChanged(double resistance);
+    void resistanceChanged(int resistance);
+
 public slots:
     /**
      * Set the threshold for the noise gate in dB. The noise gate will kill
@@ -63,10 +69,28 @@ public slots:
     void setThreshold(double threshold);
     void setThreshold(int threshold) { setThreshold((double)threshold); }
 
+    void setSensitivy(double sensitivity);
+    void setSensitivy(int sensitivity) { setSensitivy((double)sensitivity); }
+
+    void setResistance(double resistance);
+    void setResistance(int resistance) { setResistance((double)resistance); }
+
 private:
     /** Noise gate threshold in dB. */
     double _threshold;
 
+    /** Sensitivity determines how long the signal must be below threshold
+     * before the noise gate kicks in. In ms.
+     */
+    double _sensitivity;
+
+    /** Resistance determines how long the signal must be above threshold
+     * in order to disable the noise gate. In ms.
+     */
+    double _resistance;
+
+    bool _muting;
+    int _sampleCount;
 };
 
 #endif // QNOISEGATE_H

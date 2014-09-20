@@ -61,7 +61,7 @@ QEqualizer::QEqualizer(int resolution, int convResolution, QObject *parent)
     }
 
     for(int i = 0; i < _controlsSize; i++) {
-        _controls[i] = 1.0;
+        _controls[i] = 0.0;
     }
 
     computeFilterCoefficients();
@@ -95,11 +95,11 @@ void QEqualizer::computeFilterCoefficients()
     for(int i = 0; i < _controlsSize * 2; i++) {
         if(i < _controlsSize) {
             // "Draw" frequency response for the equalizer.
-            idealFilter[i][0] = _controls[i];
+            idealFilter[i][0] = QUnits::dbToLinear(_controls[i]);
             idealFilter[i][1] = 0.0;
         } else {
             // Mirror frequency response for the second half.
-            idealFilter[i][0] = _controls[_controlsSize * 2 - 1 - i];
+            idealFilter[i][0] = QUnits::dbToLinear(_controls[_controlsSize * 2 - 1 - i]);
             idealFilter[i][1] = 0.0;
         }
     }
@@ -125,6 +125,7 @@ void QEqualizer::computeFilterCoefficients()
 
     int alpha = (_filterCoefficientsSize - 1) / 2;
 
+    QMutexLocker mutexLocker(&_mutex);
     // Shift and cut coefficients in order to use as a filter.
     for(int i = 0; i < _filterCoefficientsSize; i++) {
         if(i < alpha) {
@@ -174,6 +175,7 @@ void QEqualizer::computeFilterCoefficients()
 
 void QEqualizer::process(QSampleBuffer sampleBuffer)
 {
+    QMutexLocker mutexLocker(&_mutex);
     int bufferSize = sampleBuffer.bufferSize();
     for(int i = 0; i < bufferSize; i++) {
         double result = 0.0;
@@ -187,5 +189,10 @@ void QEqualizer::process(QSampleBuffer sampleBuffer)
         for(int j = _controlsSize - 2; j >= 0; j--)
             _delayLine[j + 1] = _delayLine[j];
     }
+}
+
+int QEqualizer::controlsSize()
+{
+    return _controlsSize;
 }
 

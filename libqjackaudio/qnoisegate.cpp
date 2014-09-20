@@ -32,6 +32,11 @@ QNoiseGate::QNoiseGate(QObject *parent)
     : QDigitalFilter(parent)
 {
     _threshold = -60.0;
+    _sensitivity = 5.0;
+    _resistance = 20.0;
+
+    _muting = false;
+    _sampleCount = 0;
 }
 
 void QNoiseGate::process(QSampleBuffer sampleBuffer)
@@ -42,6 +47,9 @@ void QNoiseGate::process(QSampleBuffer sampleBuffer)
     _mutex.lock();
     double threshold = _threshold;
     bool bypass = _bypass;
+
+    int samplesSensitvity = QUnits::msToSamples(_sensitivity);
+    int samplesResistance = QUnits::msToSamples(_resistance);
     _mutex.unlock();
 
     if(bypass) {
@@ -55,9 +63,37 @@ void QNoiseGate::process(QSampleBuffer sampleBuffer)
         // Determine peak in dB
         double peakDb = QUnits::linearToDb(QUnits::peak(sample));
         double result = sample;
+        bool peakUnderThreshold = (peakDb < threshold);
 
-        // Check if peak is under threshold
-        if(peakDb < threshold) {
+        if(_muting) {
+            if(peakUnderThreshold) {
+                _sampleCount--;
+                if(_sampleCount < 0) {
+                    _sampleCount = 0;
+                }
+            } else {
+                _sampleCount++;
+                if(_sampleCount > samplesResistance) {
+                    _muting = false;
+                    _sampleCount = 0;
+                }
+            }
+        } else {
+            if(peakUnderThreshold) {
+                _sampleCount++;
+                if(_sampleCount > samplesSensitvity) {
+                    _muting = true;
+                    _sampleCount = 0;
+                }
+            } else {
+                _sampleCount--;
+                if(_sampleCount < 0) {
+                    _sampleCount  = 0;
+                }
+            }
+        }
+
+        if(_muting) {
             // Cutoff signal
             isActive = true;
             result = 0.0;
@@ -95,6 +131,22 @@ void QNoiseGate::setThreshold(double threshold)
 {
     QMutexLocker mutexLocker(&_mutex);
     _threshold = threshold;
-    emit thresholdChanged(threshold);
-    emit thresholdChanged((int)threshold);
+    emit thresholdChanged(_threshold);
+    emit thresholdChanged((int)_threshold);
+}
+
+void QNoiseGate::setSensitivy(double sensitivity)
+{
+    QMutexLocker mutexLocker(&_mutex);
+    _sensitivity = sensitivity;
+    emit sensitivityChanged(_sensitivity);
+    emit sensitivityChanged((int)_sensitivity);
+}
+
+void QNoiseGate::setResistance(double resistance)
+{
+    QMutexLocker mutexLocker(&_mutex);
+    _resistance = resistance;
+    emit resistanceChanged(_resistance);
+    emit resistanceChanged((int)_resistance);
 }
