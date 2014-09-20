@@ -46,6 +46,8 @@ MainWindow::MainWindow(QWidget *parent) :
         _out1 = jackClient->registerAudioOutPort("out_1");
         _out2 = jackClient->registerAudioOutPort("out_2");
 
+        _outSignal = jackClient->registerAudioOutPort("out_sig");
+
         // Create two equalizers, each for one side
         _equalizerLeft = new QEqualizer();
         _equalizerRight = new QEqualizer();
@@ -56,6 +58,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
         _noiseGateLeft = new QNoiseGate();
         _noiseGateRight = new QNoiseGate();
+
+        _signalGenerator = new QSignalGenerator();
 
         connect(ui->inputGainDial, SIGNAL(valueChanged(int)), _compressorLeft, SLOT(setInputGain(int)));
         connect(ui->thresholdDial, SIGNAL(valueChanged(int)), _compressorLeft, SLOT(setThreshold(int)));
@@ -116,6 +120,8 @@ void MainWindow::process()
     // Write result to output buffers
     buffer1.copyTo(_out1->sampleBuffer());
     buffer2.copyTo(_out2->sampleBuffer());
+
+    _signalGenerator->process(_outSignal->sampleBuffer());
 }
 
 void MainWindow::clipping()

@@ -21,63 +21,71 @@
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#ifndef QSIGNALGENERATOR_H
+#define QSIGNALGENERATOR_H
 
-// Qt includes
-#include <QMainWindow>
-#include <QTimer>
+// Own includes
+#include <QDigitalFilter>
 
-// QJackClient includes
-#include <QJackPort>
-#include <QAudioProcessor>
-#include <QEqualizer>
-#include <QCompressor>
-#include <QNoiseGate>
-#include <QSignalGenerator>
-
-namespace Ui {
-class MainWindow;
-}
-
-class MainWindow : public QMainWindow, public QAudioProcessor
+class QSignalGenerator : public QDigitalFilter
 {
     Q_OBJECT
-
 public:
-    explicit MainWindow(QWidget *parent = 0);
-    ~MainWindow();
+    enum SignalType {
+        Sine,
+        Square,
+        Triangle,
+        Sawtooth,
+        ReverseSawtooth
+    };
 
-    void process();
+    QSignalGenerator(QObject *parent = 0);
+
+    /** @overload @see QDigitalFilter */
+    void process(QSampleBuffer sampleBuffer);
+
+    SignalType signalType();
+    double phase();
+    double amplitude();
+    double frequency();
+
+signals:
+    void signalTypeChanged(SignalType signalType);
+    void phaseChanged(double phase);
+    void phaseChanged(int phase);
+
+    void amplitudeChanged(double amplitude);
+    void amplitudeChanged(int amplitude);
+
+    void frequencyChanged(double frequency);
+    void frequencyChanged(int frequency);
 
 public slots:
-    void clipping();
-    void clipRemove();
+    void setSignalType(SignalType signalType);
 
-    void active();
-    void activeRemove();
+    void setPhase(double phase);
+    void setPhase(int phase) { setPhase((double)phase); }
+
+    void setAmplitude(double amplitude);
+    void setAmplitude(int amplitude) { setAmplitude((double)amplitude); }
+
+    void setFrequency(double frequency);
+    void setFrequency(int frequency) { setFrequency((double)frequency); }
 
 private:
-    Ui::MainWindow *ui;
+    double _time;
 
-    QJackPort *_in1;
-    QJackPort *_in2;
-    QJackPort *_out1;
-    QJackPort *_out2;
+    /** Signal type. */
+    SignalType _signalType;
 
-    QJackPort *_outSignal;
+    /** Phase shift in degrees. */
+    double _phase;
 
-    QEqualizer *_equalizerLeft;
-    QEqualizer *_equalizerRight;
-    QCompressor *_compressorLeft;
-    QCompressor *_compressorRight;
-    QNoiseGate *_noiseGateLeft;
-    QNoiseGate *_noiseGateRight;
+    /** Amplitude in dB. */
+    double _amplitude;
 
-    QSignalGenerator *_signalGenerator;
-
-    QTimer _clipRemoveTimer;
-    QTimer _activeRemoveTimer;
+    /** Signal frequency in Hz. */
+    double _frequency;
 };
 
-#endif // MAINWINDOW_H
+#endif // QSIGNALGENERATOR_H

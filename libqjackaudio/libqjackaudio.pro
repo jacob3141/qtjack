@@ -16,7 +16,8 @@ SOURCES += \
     qcompressor.cpp \
     qunits.cpp \
     qnoisegate.cpp \
-    qamplifier.cpp
+    qamplifier.cpp \
+    qsignalgenerator.cpp
 
 HEADERS += \
     QAudioProcessor \
@@ -40,4 +41,6 @@ HEADERS += \
     qnoisegate.h \
     QNoiseGate \
     qamplifier.h \
-    QAmplifier
+    QAmplifier \
+    qsignalgenerator.h \
+    QSignalGenerator
