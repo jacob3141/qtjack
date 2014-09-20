@@ -26,16 +26,44 @@
 
 // Own includes
 #include <QDigitalFilter>
-#include <QUnits>
 
-// Qt includes
-#include <QMutex>
-
+/**
+ * @class QAmplifier
+ * @author Jacob Dawid ( jacob.dawid@omg-it.works )
+ * @brief Amplifier.
+ */
 class QAmplifier : public QDigitalFilter
 {
     Q_OBJECT
 public:
     QAmplifier(QObject *parent = 0);
+
+    /** @overload */
+    void process(QSampleBuffer sampleBuffer);
+
+    /** @returns gain in dB. */
+    double gain();
+
+public slots:
+    /**
+     * Sets the gain of the amplifier.
+     * @param gain
+     */
+    void setGain(double gain);
+
+    /**
+     * For convenience, so that setting the gain works with widgets that
+     * expose their current value as integers.
+     */
+    void setGain(int gain) { setGain((double)gain); }
+
+signals:
+    void gainChanged(double gain);
+    void gainChanged(int gain);
+
+private:
+    /** Gain in dB. */
+    double _gain;
 };
 
 #endif // QAMPLIFIER_H

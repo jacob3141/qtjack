@@ -26,4 +26,61 @@
 QAmplifier::QAmplifier(QObject *parent)
     : QDigitalFilter(parent)
 {
+    _gain = 0.0;
+}
+
+void QAmplifier::process(QSampleBuffer sampleBuffer)
+{
+    bool isClipping = false;
+    bool isActive = false;
+
+    _mutex.lock();
+    double gain = _gain;
+    bool bypass = _bypass;
+    _mutex.unlock();
+
+    if(bypass) {
+        return;
+    }
+
+    isActive = true;
+
+    int bufferSize = sampleBuffer.bufferSize();
+    for(int i = 0; i < bufferSize; i++) {
+        // Read audio sample
+        double result = sampleBuffer.readAudioSample(i) * QUnits::dbToLinear(gain);
+
+        if(result > 1.0) {
+            result = 1.0;
+            isClipping = true;
+        }
+
+        if(result < -1.0) {
+            result = -1.0;
+            isClipping = true;
+        }
+        sampleBuffer.writeAudioSample(i, result);
+    }
+
+    if(isClipping) {
+        emit clipping();
+    }
+
+    if(isActive) {
+        emit active();
+    }
+}
+
+double QAmplifier::gain()
+{
+    QMutexLocker mutexLocker(&_mutex);
+    return _gain;
+}
+
+void QAmplifier::setGain(double gain)
+{
+    QMutexLocker mutexLocker(&_mutex);
+    _gain = gain;
+    emit gainChanged(_gain);
+    emit gainChanged((int)_gain);
 }

@@ -31,6 +31,7 @@
 
 // Own includes
 #include <QSampleBuffer>
+#include <QUnits>
 
 /**
  * @class QDigitalFilter
