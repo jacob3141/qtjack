@@ -32,13 +32,6 @@ QNoiseGate::QNoiseGate(QObject *parent)
     : QDigitalFilter(parent)
 {
     _threshold = -60.0;
-    _bypass = false;
-}
-
-double QNoiseGate::threshold()
-{
-    QMutexLocker mutexLucker(&_mutex);
-    return _threshold;
 }
 
 void QNoiseGate::process(QSampleBuffer sampleBuffer)
@@ -92,17 +85,15 @@ void QNoiseGate::process(QSampleBuffer sampleBuffer)
     }
 }
 
-void QNoiseGate::setThreshold(double threshold)
+double QNoiseGate::threshold()
 {
-    QMutexLocker mutexLucker(&_mutex);
-    _threshold = threshold;
-    emit thresholdChanged(threshold);
+    QMutexLocker mutexLocker(&_mutex);
+    return _threshold;
 }
 
-
-void QNoiseGate::setBypass(bool bypass)
+void QNoiseGate::setThreshold(double threshold)
 {
-    QMutexLocker mutexLucker(&_mutex);
-    _bypass = bypass;
-    emit bypassChanged(_bypass);
+    QMutexLocker mutexLocker(&_mutex);
+    _threshold = threshold;
+    emit thresholdChanged(threshold);
 }

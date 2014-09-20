@@ -21,51 +21,21 @@
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#ifndef QNOISEGATE_H
-#define QNOISEGATE_H
+#ifndef QAMPLIFIER_H
+#define QAMPLIFIER_H
 
 // Own includes
 #include <QDigitalFilter>
+#include <QUnits>
 
 // Qt includes
 #include <QMutex>
 
-/**
- * @class QNoiseGate
- * @author Jacob Dawid ( jacob.dawid@omg-it.works )
- * @brief Noise gate.
- */
-class QNoiseGate : public QDigitalFilter
+class QAmplifier : public QDigitalFilter
 {
     Q_OBJECT
 public:
-    /** Constructs a new noise gate. */
-    QNoiseGate(QObject *parent = 0);
-
-    /** @returns the noise gate threshold in dB. */
-    double threshold();
-
-    /** @overload @see QDigitalFilter */
-    void process(QSampleBuffer sampleBuffer);
-
-signals:
-    /** Emitted whenever the threshold has changed. */
-    void thresholdChanged(double threshold);
-
-public slots:
-    /**
-     * Set the threshold for the noise gate in dB. The noise gate will kill
-     * all signals below threshold.
-     * @brief setThreshold
-     * @param threshold Threshold in dB.
-     */
-    void setThreshold(double threshold);
-    void setThreshold(int threshold) { setThreshold((double)threshold); }
-
-private:
-    /** Noise gate threshold in dB. */
-    double _threshold;
-
+    QAmplifier(QObject *parent = 0);
 };
 
-#endif // QNOISEGATE_H
+#endif // QAMPLIFIER_H

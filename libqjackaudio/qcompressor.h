@@ -24,9 +24,6 @@
 #ifndef QCOMPRESSOR_H
 #define QCOMPRESSOR_H
 
-// Qt includes
-#include <QMutex>
-
 // Own includes
 #include <QJackClient>
 #include <QDigitalFilter>
@@ -68,9 +65,6 @@ public:
     /** @returns makeup gain in dB. */
     double makeupGain();
 
-    /** @returns whether compressor is in bypass. */
-    bool bypass();
-
 signals:
     void thresholdChanged(double threshold);
     void ratioChanged(double ratio);
@@ -78,10 +72,6 @@ signals:
     void releaseChanged(double release);
     void inputGainChanged(double inputGain);
     void makeupGainChanged(double makeupGain);
-    void bypassChanged(bool bypass);
-
-    void clipping();
-    void active();
 
 public slots:
         /**
@@ -141,8 +131,6 @@ public slots:
     void setMakeupGain(double makeupGain);
     void setMakeupGain(int makeupGain) { setMakeupGain((double)makeupGain); }
 
-    void setBypass(bool bypass);
-
 private:
     /** Threshold in dB. */
     double _threshold;
@@ -161,12 +149,6 @@ private:
 
     /** Make-up gain in dB. */
     double _makeupGain;
-
-    /** Bypass flag. */
-    bool _bypass;
-
-    /** Mutex for thread-safety. */
-    QMutex _mutex;
 };
 
 #endif // QCOMPRESSOR_H

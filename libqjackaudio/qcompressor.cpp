@@ -21,9 +21,6 @@
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-// Qt includes
-#include <QMutexLocker>
-
 // Own includes
 #include <QCompressor>
 
@@ -36,7 +33,6 @@ QCompressor::QCompressor(QObject *parent)
     _release = 0.0;
     _inputGain = 0.0;
     _makeupGain = 0.0;
-    _bypass = false;
 }
 
 QCompressor::~QCompressor()
@@ -148,12 +144,6 @@ double QCompressor::makeupGain()
     return _makeupGain;
 }
 
-bool QCompressor::bypass()
-{
-    QMutexLocker mutexLocker(&_mutex);
-    return _bypass;
-}
-
 void QCompressor::setThreshold(double threshold)
 {
     QMutexLocker mutexLocker(&_mutex);
@@ -194,11 +184,4 @@ void QCompressor::setMakeupGain(double makeupGain)
     QMutexLocker mutexLocker(&_mutex);
     _makeupGain = makeupGain;
     emit makeupGainChanged(_makeupGain);
-}
-
-void QCompressor::setBypass(bool bypass)
-{
-    QMutexLocker mutexLocker(&_mutex);
-   _bypass = bypass;
-   emit bypassChanged(bypass);
 }

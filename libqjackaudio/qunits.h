@@ -35,8 +35,8 @@ public:
 
     static double peak(double value);
 
-    static int msToSamples(double ms);
-    static double samplesToMs(int samples);
+    static double msToSamples(double ms);
+    static double samplesToMs(double samples);
 };
 
 #endif // QUNITS_H

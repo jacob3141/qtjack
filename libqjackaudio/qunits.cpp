@@ -43,12 +43,12 @@ double QUnits::peak(double value)
     return value > 0.0 ? value : -value;
 }
 
-static double QUnits::msToSamples(double ms)
+double QUnits::msToSamples(double ms)
 {
     return (double)QJackClient::instance()->sampleRate() * ms / 1000.0 ;
 }
 
-static double QUnits::samplesToMs(double samples)
+double QUnits::samplesToMs(double samples)
 {
     return samples * 1000.0 / (double)QJackClient::instance()->sampleRate();
 }

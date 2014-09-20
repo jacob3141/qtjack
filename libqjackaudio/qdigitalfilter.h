@@ -26,6 +26,8 @@
 
 // Qt includes
 #include <QObject>
+#include <QMutex>
+#include <QMutexLocker>
 
 // Own includes
 #include <QSampleBuffer>
@@ -39,7 +41,9 @@ class QDigitalFilter : public QObject
     Q_OBJECT
 public:
     /** Constructs a new processor. */
-    QDigitalFilter(QObject *parent = 0) : QObject(parent) { }
+    QDigitalFilter(QObject *parent = 0) : QObject(parent) {
+        _bypass = false;
+    }
 
     /** Destructor. */
     virtual ~QDigitalFilter() { }
@@ -48,7 +52,39 @@ public:
      * @brief Called whenever audio samples have to be processed.
      * Warning: This method is time-critical.
      */
-    virtual void process(QSampleBuffer sampleBuffer) { Q_UNUSED(sampleBuffer); }
+    virtual void process(QSampleBuffer sampleBuffer) {
+        Q_UNUSED(sampleBuffer);
+    }
+
+    /** @return true, when bypassed. */
+    bool bypass() {
+        QMutexLocker mutexLocker(&_mutex);
+        return _bypass;
+    }
+
+signals:
+    /** Emitted when signals is clipping. */
+    void clipping();
+
+    /** Emitted when signal is below threshold. */
+    void active();
+
+    /** Emitted when bypass changed. */
+    void bypassChanged(bool bypass);
+
+public slots:
+    void setBypass(bool bypass) {
+        QMutexLocker mutexLocker(&_mutex);
+       _bypass = bypass;
+       emit bypassChanged(bypass);
+    }
+
+protected:
+    /** Bypass flag. */
+    bool _bypass;
+
+    /** Mutex for thread-safe access of filter parameters. */
+    QMutex _mutex;
 };
 
 #endif // QDIGITALFILTER_H
