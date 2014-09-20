@@ -51,6 +51,7 @@ public:
 signals:
     /** Emitted whenever the threshold has changed. */
     void thresholdChanged(double threshold);
+    void thresholdChanged(int threshold);
 
 public slots:
     /**

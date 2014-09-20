@@ -27,16 +27,40 @@
 
 // Qt includes
 #include <cmath>
-#include <QStringList>
 
-QEqualizer::QEqualizer(QObject *parent)
+QEqualizer::QEqualizer(int resolution, int convResolution, QObject *parent)
     : QDigitalFilter(parent)
 {
-    for(int i = 0; i < MAX_NUMBER_OF_CONTROLS * 2; i++) {
+    if(resolution > 2048) {
+        resolution = 2048;
+    }
+
+    if(resolution < 64) {
+        resolution = 64;
+    }
+
+    if(convResolution > resolution / 2) {
+        convResolution = resolution / 2;
+    }
+
+    if(convResolution < 32) {
+        convResolution = 32;
+    }
+
+    _delayLineSize = resolution * 2;
+    _delayLine = new double[_delayLineSize];
+
+    _controlsSize = resolution;
+    _controls = new double[_controlsSize];
+
+    _filterCoefficientsSize = convResolution + 1;
+    _filterCoefficients = new double[_filterCoefficientsSize];
+
+    for(int i = 0; i < _delayLineSize; i++) {
         _delayLine[i] = 0.0;
     }
 
-    for(int i = 0; i < MAX_NUMBER_OF_CONTROLS; i++) {
+    for(int i = 0; i < _controlsSize; i++) {
         _controls[i] = 1.0;
     }
 
@@ -48,7 +72,8 @@ QEqualizer::~QEqualizer() {
 
 void QEqualizer::computeFilterCoefficients()
 {
-    _numberOfControls = 64;
+    fftw_complex idealFilter[_controlsSize * 2];
+    fftw_complex ifftIdealFilter[_controlsSize * 2];
 
     // Control values in frequency domain:
     // amplitude
@@ -67,20 +92,20 @@ void QEqualizer::computeFilterCoefficients()
     // +------------------------------------------------> frequency
 
     // Construct an ideal filter in the frequency domain.
-    for(int i = 0; i < _numberOfControls * 2; i++) {
-        if(i < _numberOfControls) {
+    for(int i = 0; i < _controlsSize * 2; i++) {
+        if(i < _controlsSize) {
             // "Draw" frequency response for the equalizer.
-            _idealFilter[i][0] = _controls[i];
-            _idealFilter[i][1] = 0.0;
+            idealFilter[i][0] = _controls[i];
+            idealFilter[i][1] = 0.0;
         } else {
             // Mirror frequency response for the second half.
-            _idealFilter[i][0] = _controls[_numberOfControls * 2 - 1 - i];
-            _idealFilter[i][1] = 0.0;
+            idealFilter[i][0] = _controls[_controlsSize * 2 - 1 - i];
+            idealFilter[i][1] = 0.0;
         }
     }
 
     // Translate into the time domain.
-    QFFTW::performInverseFFT(_idealFilter, _ifftIdealFilter, _numberOfControls * 2);
+    QFFTW::performInverseFFT(idealFilter, ifftIdealFilter, _controlsSize * 2);
 
     // Time domain signal after inverse DFT:
     // value
@@ -98,12 +123,14 @@ void QEqualizer::computeFilterCoefficients()
     // |      oo       oo   o ooo o    oo       oo
     // +------------------------------------------------> coefficients
 
+    int alpha = (_filterCoefficientsSize - 1) / 2;
+
     // Shift and cut coefficients in order to use as a filter.
-    for(int i = 0; i < FILTER_SPREAD * 2 + 1; i++) {
-        if(i < FILTER_SPREAD) {
-            _filterCoefficients[i] = _ifftIdealFilter[_numberOfControls * 2 - FILTER_SPREAD + i][0];
+    for(int i = 0; i < _filterCoefficientsSize; i++) {
+        if(i < alpha) {
+            _filterCoefficients[i] = ifftIdealFilter[_controlsSize * 2 - alpha + i][0];
         } else {
-            _filterCoefficients[i] = _ifftIdealFilter[i - FILTER_SPREAD][0];
+            _filterCoefficients[i] = ifftIdealFilter[i - alpha][0];
         }
     }
 
@@ -125,8 +152,8 @@ void QEqualizer::computeFilterCoefficients()
     // +------------------------------------------------> coefficients
 
     // Apply a hamming window
-    for(int i = -FILTER_SPREAD; i <= FILTER_SPREAD; i++)
-        _filterCoefficients[i + FILTER_SPREAD] *= (0.54 + 0.46 * cos(M_PI * i / FILTER_SPREAD));
+    for(int i = -alpha; i <= alpha; i++)
+        _filterCoefficients[i + alpha] *= (0.54 + 0.46 * cos(M_PI * i / alpha));
 
     // Apply a hamming windows to smooth the filter, which improves the frequency response a lot:
     // value
@@ -152,12 +179,12 @@ void QEqualizer::process(QSampleBuffer sampleBuffer)
         double result = 0.0;
         _delayLine[0] = sampleBuffer.readAudioSample(i);
 
-        for(int j = 0; j < FILTER_SPREAD * 2 + 1; j++)
+        for(int j = 0; j < _filterCoefficientsSize; j++)
             result += _filterCoefficients[j] * _delayLine[j];
 
         sampleBuffer.writeAudioSample(i, result);
 
-        for(int j = _numberOfControls - 2; j >= 0; j--)
+        for(int j = _controlsSize - 2; j >= 0; j--)
             _delayLine[j + 1] = _delayLine[j];
     }
 }

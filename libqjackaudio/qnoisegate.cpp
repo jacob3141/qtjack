@@ -96,4 +96,5 @@ void QNoiseGate::setThreshold(double threshold)
     QMutexLocker mutexLocker(&_mutex);
     _threshold = threshold;
     emit thresholdChanged(threshold);
+    emit thresholdChanged((int)threshold);
 }

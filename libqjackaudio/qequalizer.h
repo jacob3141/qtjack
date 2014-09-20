@@ -37,8 +37,15 @@ class QEqualizer : public QDigitalFilter
 {
     Q_OBJECT
 public:
-    /** Constructs a new digital equalizer. */
-    QEqualizer(QObject *parent = 0);
+    /**
+     * Constructs a new digital equalizer. convResolution may not be greater than
+     * half the filter resolution.
+     * @param resolution Total resolution of the equalizer.
+     * @param convResolution Resulting filter size of the filter that will be applid
+     * to the signal.
+     * @param parent
+     */
+    QEqualizer(int resolution = 2048, int convResolution = 256, QObject *parent = 0);
 
     /** Destructor. */
     ~QEqualizer();
@@ -53,34 +60,24 @@ public:
     void process(QSampleBuffer sampleBuffer);
 
 private:
-    /** Maximum number of controls for which memory should be allocated. */
-    static const int MAX_NUMBER_OF_CONTROLS = 2048;
 
-    /** Filter spread. Lower values lead to less computation time. */
-    static const int FILTER_SPREAD = 16;
-
-    /** Stores the number of controls. */
-    int _numberOfControls;
-
-    /** The current filter coefficients for the FIR filter. */
-    double _filterCoefficients[FILTER_SPREAD * 2 + 1];
+    /** The current filter coefficients for the FIR filter.
+      * These will be convoluted with the signals and need to be calculated
+      * beforehand.
+      */
+    int _filterCoefficientsSize;
+    double *_filterCoefficients;
 
     /**
       * Delay line for the convolution. This memory makes it possible
       * to access previous values and thus continous convolution.
       */
-    double _delayLine[MAX_NUMBER_OF_CONTROLS * 2];
+    int _delayLineSize;
+    double *_delayLine;
 
     /** State of the equalizer controls. */
-    double _controls[MAX_NUMBER_OF_CONTROLS];
-
-    /** Memory to compute filter coefficients. Allocated once to avoid
-      * memory reallocation, which is pretty expensive. */
-    fftw_complex _idealFilter[MAX_NUMBER_OF_CONTROLS * 2];
-
-    /** Memory to compute filter coefficients. Allocated once to avoid
-      * memory reallocation, which is pretty expensive. */
-    fftw_complex _ifftIdealFilter[MAX_NUMBER_OF_CONTROLS * 2];
+    int _controlsSize;
+    double *_controls;
 };
 
 #endif // QEQUALIZER_H
