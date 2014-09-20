@@ -32,7 +32,11 @@ class QUnits
 public:
     static double dbToLinear(double db);
     static double linearToDb(float linear);
+
     static double peak(double value);
+
+    static int msToSamples(double ms);
+    static double samplesToMs(int samples);
 };
 
 #endif // QUNITS_H
