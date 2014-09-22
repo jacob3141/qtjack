@@ -18,11 +18,16 @@ LIBS += -L../libqjackaudio/lib \
 
 SOURCES += \
     mainwindow.cpp \
-    main.cpp
+    main.cpp \
+    channelwidget.cpp
 
 HEADERS += \
-    mainwindow.h
+    mainwindow.h \
+    channelwidget.h
 
 FORMS += \
-    mainwindow.ui
+    mainwindow.ui \
+    channelwidget.ui
+
+RESOURCES +=
 

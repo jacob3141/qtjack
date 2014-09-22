@@ -24,9 +24,13 @@
 // Own includes
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "channelwidget.h"
 
 // QJackClient includes
 #include <QJackClient>
+
+// Qt includes
+#include <QHBoxLayout>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -37,113 +41,49 @@ MainWindow::MainWindow(QWidget *parent) :
 
     // Setup QJackAudio
     QJackClient* jackClient = QJackClient::instance();
-    if(jackClient->connectToServer("qjackaudio")) {
-        // Create two inputs
-        _in1 = jackClient->registerAudioInPort("in_1");
-        _in2 = jackClient->registerAudioInPort("in_2");
-
-        // Create two outpus
-        _out1 = jackClient->registerAudioOutPort("out_1");
-        _out2 = jackClient->registerAudioOutPort("out_2");
-
-        _outSignal = jackClient->registerAudioOutPort("out_sig");
-
-        // Create two equalizers, each for one side
-        _equalizerLeft = new QEqualizer();
-        _equalizerRight = new QEqualizer();
-
-        // Create two equalizers, each for one side
-        _compressorLeft = new QCompressor();
-        _compressorRight = new QCompressor();
-
-        _noiseGateLeft = new QNoiseGate();
-        _noiseGateRight = new QNoiseGate();
-
-        _signalGenerator = new QSignalGenerator();
-
-        connect(ui->inputGainDial, SIGNAL(valueChanged(int)), _compressorLeft, SLOT(setInputGain(int)));
-        connect(ui->thresholdDial, SIGNAL(valueChanged(int)), _compressorLeft, SLOT(setThreshold(int)));
-        connect(ui->ratioDial, SIGNAL(valueChanged(int)), _compressorLeft, SLOT(setRatio(int)));
-        connect(ui->attackDial, SIGNAL(valueChanged(int)), _compressorLeft, SLOT(setAttack(int)));
-        connect(ui->releaseDial, SIGNAL(valueChanged(int)), _compressorLeft, SLOT(setRelease(int)));
-        connect(ui->makeupGainDial, SIGNAL(valueChanged(int)), _compressorLeft, SLOT(setMakeupGain(int)));
-        connect(ui->bypassPushButton, SIGNAL(toggled(bool)), _compressorLeft, SLOT(setBypass(bool)));
-
-        connect(ui->inputGainDial, SIGNAL(valueChanged(int)), _compressorRight, SLOT(setInputGain(int)));
-        connect(ui->thresholdDial, SIGNAL(valueChanged(int)), _compressorRight, SLOT(setThreshold(int)));
-        connect(ui->ratioDial, SIGNAL(valueChanged(int)), _compressorRight, SLOT(setRatio(int)));
-        connect(ui->attackDial, SIGNAL(valueChanged(int)), _compressorRight, SLOT(setAttack(int)));
-        connect(ui->releaseDial, SIGNAL(valueChanged(int)), _compressorRight, SLOT(setRelease(int)));
-        connect(ui->makeupGainDial, SIGNAL(valueChanged(int)), _compressorRight, SLOT(setMakeupGain(int)));
-        connect(ui->bypassPushButton, SIGNAL(toggled(bool)), _compressorRight, SLOT(setBypass(bool)));
-
-        connect(ui->thresholdNoiseGateDial, SIGNAL(valueChanged(int)), _noiseGateLeft, SLOT(setThreshold(int)));
-        connect(ui->thresholdNoiseGateDial, SIGNAL(valueChanged(int)), _noiseGateRight, SLOT(setThreshold(int)));
-        connect(ui->bypassNoiseGatePushButton, SIGNAL(toggled(bool)), _noiseGateLeft, SLOT(setBypass(bool)));
-        connect(ui->bypassNoiseGatePushButton, SIGNAL(toggled(bool)), _noiseGateRight, SLOT(setBypass(bool)));
-
-        connect(_compressorLeft, SIGNAL(clipping()), this, SLOT(clipping()));
-        connect(&_clipRemoveTimer, SIGNAL(timeout()), this, SLOT(clipRemove()));
-        _clipRemoveTimer.setInterval(20);
-        _clipRemoveTimer.setSingleShot(true);
-
-        connect(_compressorLeft, SIGNAL(active()), this, SLOT(active()));
-        connect(&_activeRemoveTimer, SIGNAL(timeout()), this, SLOT(activeRemove()));
-        _activeRemoveTimer.setInterval(20);
-        _activeRemoveTimer.setSingleShot(true);
-
-        // Tell QJackAudio that this instance is responsible for processing
-        // audio. QJackAudio will automatically call process() when needed.
+    if(jackClient->connectToServer("MX2482")) {
         jackClient->setAudioProcessor(this);
-
-        // Take off!
-        jackClient->startAudioProcessing();
     }
+
+    QHBoxLayout *hBoxLayout = new QHBoxLayout();
+    hBoxLayout->addStretch();
+    hBoxLayout->setSpacing(0);
+    hBoxLayout->setMargin(0);
+    for(int i = 0; i < 24; i++) {
+        ChannelWidget *channelWidget = new ChannelWidget(i + 1);
+        hBoxLayout->addWidget(channelWidget);
+    }
+
+    QWidget *widget = new QWidget();
+    widget->setStyleSheet("background-color: rgb(120, 120, 120);");
+    widget->setLayout(hBoxLayout);
+    setCentralWidget(widget);
+
+    // Take off!
+    jackClient->startAudioProcessing();
 }
 
 void MainWindow::process()
 {
-    // Get handles to input buffers
-    QSampleBuffer buffer1 = _in1->sampleBuffer();
-    QSampleBuffer buffer2 = _in2->sampleBuffer();
+//    // Get handles to input buffers
+//    QSampleBuffer buffer1 = _in1->sampleBuffer();
+//    QSampleBuffer buffer2 = _in2->sampleBuffer();
 
-    _noiseGateLeft->process(buffer1);
-    _noiseGateRight->process(buffer2);
+//    _noiseGateLeft->process(buffer1);
+//    _noiseGateRight->process(buffer2);
 
-    // Process input with EQs
-    _equalizerLeft->process(buffer1);
-    _equalizerRight->process(buffer2);
+//    // Process input with EQs
+//    _equalizerLeft->process(buffer1);
+//    _equalizerRight->process(buffer2);
 
-    _compressorLeft->process(buffer1);
-    _compressorRight->process(buffer2);
+//    _compressorLeft->process(buffer1);
+//    _compressorRight->process(buffer2);
 
-    // Write result to output buffers
-    buffer1.copyTo(_out1->sampleBuffer());
-    buffer2.copyTo(_out2->sampleBuffer());
+//    // Write result to output buffers
+//    buffer1.copyTo(_out1->sampleBuffer());
+//    buffer2.copyTo(_out2->sampleBuffer());
 
-    _signalGenerator->process(_outSignal->sampleBuffer());
-}
-
-void MainWindow::clipping()
-{
-    ui->clipLabel->setStyleSheet("background: red;");
-    _clipRemoveTimer.start();
-}
-
-void MainWindow::clipRemove()
-{
-    ui->clipLabel->setStyleSheet("background: black;");
-}
-
-void MainWindow::active()
-{
-    ui->activeLabel->setStyleSheet("background: blue;");
-    _activeRemoveTimer.start();
-}
-
-void MainWindow::activeRemove()
-{
-    ui->activeLabel->setStyleSheet("background: black;");
+//    _signalGenerator->process(_outSignal->sampleBuffer());
 }
 
 MainWindow::~MainWindow()

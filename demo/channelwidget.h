@@ -21,38 +21,34 @@
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#ifndef CHANNELWIDGET_H
+#define CHANNELWIDGET_H
 
-// Qt includes
-#include <QMainWindow>
-#include <QTimer>
+#include <QWidget>
 
-// QJackClient includes
-#include <QJackPort>
-#include <QAudioProcessor>
+
+#include <QJackClient>
 #include <QEqualizer>
-#include <QCompressor>
-#include <QNoiseGate>
-#include <QSignalGenerator>
+#include <QJackPort>
 
 namespace Ui {
-class MainWindow;
+class ChannelWidget;
 }
 
-class MainWindow : public QMainWindow, public QAudioProcessor
+class ChannelWidget : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit MainWindow(QWidget *parent = 0);
-    ~MainWindow();
-
-    void process();
+    explicit ChannelWidget(int channelNumber, QWidget *parent = 0);
+    ~ChannelWidget();
 
 private:
-    Ui::MainWindow *ui;
-
+    Ui::ChannelWidget *ui;
+    QJackPort *_channelIn;
+    QJackPort *_auxSend;
+    QJackPort *_auxReturn;
+    QJackPort *_channelOut;
 };
 
-#endif // MAINWINDOW_H
+#endif // CHANNELWIDGET_H
