@@ -19,15 +19,19 @@ LIBS += -L../libqjackaudio/lib \
 SOURCES += \
     mainwindow.cpp \
     main.cpp \
-    channelwidget.cpp
+    channelwidget.cpp \
+    mainmixerwidget.cpp
 
 HEADERS += \
     mainwindow.h \
-    channelwidget.h
+    channelwidget.h \
+    mainmixerwidget.h
 
 FORMS += \
     mainwindow.ui \
-    channelwidget.ui
+    channelwidget.ui \
+    mainmixerwidget.ui
 
-RESOURCES +=
+RESOURCES += \
+    resources.qrc
 

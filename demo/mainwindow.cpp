@@ -25,6 +25,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "channelwidget.h"
+#include "mainmixerwidget.h"
 
 // QJackClient includes
 #include <QJackClient>
@@ -49,10 +50,14 @@ MainWindow::MainWindow(QWidget *parent) :
     hBoxLayout->addStretch();
     hBoxLayout->setSpacing(0);
     hBoxLayout->setMargin(0);
+
+    MainMixerWidget *mainMixerWidget = new MainMixerWidget();
     for(int i = 0; i < 24; i++) {
         ChannelWidget *channelWidget = new ChannelWidget(i + 1);
+        mainMixerWidget->registerChannel(i + 1, channelWidget);
         hBoxLayout->addWidget(channelWidget);
     }
+    hBoxLayout->addWidget(mainMixerWidget);
 
     QWidget *widget = new QWidget();
     widget->setStyleSheet("background-color: rgb(120, 120, 120);");

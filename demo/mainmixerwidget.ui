@@ -1,0 +1,2955 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainMixerWidget</class>
+ <widget class="QWidget" name="MainMixerWidget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>562</width>
+    <height>767</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QWidget {
+	background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:0, y2:0.528, stop:0 rgba(91, 91, 91, 255), stop:1 rgba(112, 112, 112, 255));
+}
+
+QPushButton {
+background-color: qlineargradient(spread:pad, x1:0.701, y1:1, x2:0.701, y2:0.5175, stop:0 rgba(191, 191, 191, 255), stop:1 rgba(225, 225, 225, 225));
+border-radius: 3px;
+border: 1px solid rgb(160, 160, 160);
+font-size: 12px;
+color: black;
+}
+QPushButton:checked {
+	background-color: qlineargradient(spread:pad, x1:0.701, y1:1, x2:0.692, y2:0.046, stop:0 rgba(208, 47, 0, 255), stop:1 rgba(255, 255, 255, 255));
+border: 2px solid rgb(120, 60, 60);
+}
+
+QFrame {
+border: none;
+}</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_27">
+   <property name="leftMargin">
+    <number>2</number>
+   </property>
+   <property name="topMargin">
+    <number>2</number>
+   </property>
+   <property name="rightMargin">
+    <number>2</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <item>
+    <spacer name="verticalSpacer_11">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>265</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item>
+    <widget class="QLabel" name="label_28">
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap resource="resources.qrc">:/images/mx2482logo.png</pixmap>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QFrame" name="frame_7">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>243</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>243</height>
+      </size>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_26">
+      <property name="leftMargin">
+       <number>2</number>
+      </property>
+      <property name="rightMargin">
+       <number>2</number>
+      </property>
+      <item>
+       <widget class="QFrame" name="frame_6">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>220</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>220</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QFrame {
+	border: 2px solid rgb(30, 30, 30);
+border-radius: 4px;
+	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(31, 31, 31, 255));
+color: white;
+font-size: 12px;
+}</string>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_7">
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_16">
+           <property name="leftMargin">
+            <number>10</number>
+           </property>
+           <property name="rightMargin">
+            <number>10</number>
+           </property>
+           <item>
+            <widget class="QProgressBar" name="progressBar">
+             <property name="styleSheet">
+              <string notr="true"> QProgressBar {
+     border: 0px solid rgb(50, 50, 50);
+	 background-color: black;
+	padding: 0px 2px;
+ }
+
+QProgressBar::chunk:vertical{ 
+	background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(3, 226, 11, 255), stop:1 rgba(159, 255, 159, 255));
+height: 5px; 
+margin: 0.5px; 
+} </string>
+             </property>
+             <property name="value">
+              <number>24</number>
+             </property>
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="format">
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_8">
+             <property name="styleSheet">
+              <string notr="true">background-color: rgba(0, 0, 0, 0.0);
+color: white;
+border: 0px;</string>
+             </property>
+             <property name="text">
+              <string>L</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_10">
+             <property name="styleSheet">
+              <string notr="true">background-color: rgba(0, 0, 0, 0.0);
+color: white;
+border: 0px;</string>
+             </property>
+             <property name="text">
+              <string>1</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_17">
+           <property name="leftMargin">
+            <number>10</number>
+           </property>
+           <property name="rightMargin">
+            <number>10</number>
+           </property>
+           <item>
+            <widget class="QProgressBar" name="progressBar_2">
+             <property name="styleSheet">
+              <string notr="true"> QProgressBar {
+     border: 0px solid rgb(50, 50, 50);
+	 background-color: black;
+	padding: 0px 2px;
+ }
+
+QProgressBar::chunk:vertical{ 
+	background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(3, 226, 11, 255), stop:1 rgba(159, 255, 159, 255));
+height: 5px; 
+margin: 0.5px; 
+} </string>
+             </property>
+             <property name="value">
+              <number>24</number>
+             </property>
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="format">
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_9">
+             <property name="styleSheet">
+              <string notr="true">background-color: rgba(0, 0, 0, 0.0);
+color: white;
+border: 0px;</string>
+             </property>
+             <property name="text">
+              <string>R</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_11">
+             <property name="styleSheet">
+              <string notr="true">background-color: rgba(0, 0, 0, 0.0);
+color: white;
+border: 0px;</string>
+             </property>
+             <property name="text">
+              <string>2</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_12">
+           <property name="minimumSize">
+            <size>
+             <width>1</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>1</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">border: 0px;
+background-color: white;</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_19">
+           <property name="leftMargin">
+            <number>10</number>
+           </property>
+           <property name="rightMargin">
+            <number>10</number>
+           </property>
+           <item>
+            <widget class="QProgressBar" name="progressBar_4">
+             <property name="styleSheet">
+              <string notr="true"> QProgressBar {
+     border: 0px solid rgb(50, 50, 50);
+	 background-color: black;
+	padding: 0px 2px;
+ }
+
+QProgressBar::chunk:vertical{ 
+	background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(3, 226, 11, 255), stop:1 rgba(159, 255, 159, 255));
+height: 5px; 
+margin: 0.5px; 
+} </string>
+             </property>
+             <property name="value">
+              <number>24</number>
+             </property>
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="format">
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_15">
+             <property name="styleSheet">
+              <string notr="true">background-color: rgba(0, 0, 0, 0.0);
+color: white;
+border: 0px;</string>
+             </property>
+             <property name="text">
+              <string>L</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_16">
+             <property name="styleSheet">
+              <string notr="true">background-color: rgba(0, 0, 0, 0.0);
+color: white;
+border: 0px;</string>
+             </property>
+             <property name="text">
+              <string>3</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_18">
+           <property name="leftMargin">
+            <number>10</number>
+           </property>
+           <property name="rightMargin">
+            <number>10</number>
+           </property>
+           <item>
+            <widget class="QProgressBar" name="progressBar_3">
+             <property name="styleSheet">
+              <string notr="true"> QProgressBar {
+     border: 0px solid rgb(50, 50, 50);
+	 background-color: black;
+	padding: 0px 2px;
+ }
+
+QProgressBar::chunk:vertical{ 
+	background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(3, 226, 11, 255), stop:1 rgba(159, 255, 159, 255));
+height: 5px; 
+margin: 0.5px; 
+} </string>
+             </property>
+             <property name="value">
+              <number>24</number>
+             </property>
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="format">
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_13">
+             <property name="styleSheet">
+              <string notr="true">background-color: rgba(0, 0, 0, 0.0);
+color: white;
+border: 0px;</string>
+             </property>
+             <property name="text">
+              <string>R</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_14">
+             <property name="styleSheet">
+              <string notr="true">background-color: rgba(0, 0, 0, 0.0);
+color: white;
+border: 0px;</string>
+             </property>
+             <property name="text">
+              <string>4</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_17">
+           <property name="minimumSize">
+            <size>
+             <width>1</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>1</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">border: 0px;
+background-color: white;</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_21">
+           <property name="leftMargin">
+            <number>10</number>
+           </property>
+           <property name="rightMargin">
+            <number>10</number>
+           </property>
+           <item>
+            <widget class="QProgressBar" name="progressBar_6">
+             <property name="styleSheet">
+              <string notr="true"> QProgressBar {
+     border: 0px solid rgb(50, 50, 50);
+	 background-color: black;
+	padding: 0px 2px;
+ }
+
+QProgressBar::chunk:vertical{ 
+	background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(3, 226, 11, 255), stop:1 rgba(159, 255, 159, 255));
+height: 5px; 
+margin: 0.5px; 
+} </string>
+             </property>
+             <property name="value">
+              <number>24</number>
+             </property>
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="format">
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_21">
+             <property name="styleSheet">
+              <string notr="true">background-color: rgba(0, 0, 0, 0.0);
+color: white;
+border: 0px;</string>
+             </property>
+             <property name="text">
+              <string>L</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_22">
+             <property name="styleSheet">
+              <string notr="true">background-color: rgba(0, 0, 0, 0.0);
+color: white;
+border: 0px;</string>
+             </property>
+             <property name="text">
+              <string>5</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_20">
+           <property name="leftMargin">
+            <number>10</number>
+           </property>
+           <property name="rightMargin">
+            <number>10</number>
+           </property>
+           <item>
+            <widget class="QProgressBar" name="progressBar_5">
+             <property name="styleSheet">
+              <string notr="true"> QProgressBar {
+     border: 0px solid rgb(50, 50, 50);
+	 background-color: black;
+	padding: 0px 2px;
+ }
+
+QProgressBar::chunk:vertical{ 
+	background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(3, 226, 11, 255), stop:1 rgba(159, 255, 159, 255));
+height: 5px; 
+margin: 0.5px; 
+} </string>
+             </property>
+             <property name="value">
+              <number>24</number>
+             </property>
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="format">
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_18">
+             <property name="styleSheet">
+              <string notr="true">background-color: rgba(0, 0, 0, 0.0);
+color: white;
+border: 0px;</string>
+             </property>
+             <property name="text">
+              <string>R</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_19">
+             <property name="styleSheet">
+              <string notr="true">background-color: rgba(0, 0, 0, 0.0);
+color: white;
+border: 0px;</string>
+             </property>
+             <property name="text">
+              <string>6</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_20">
+           <property name="minimumSize">
+            <size>
+             <width>1</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>1</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">border: 0px;
+background-color: white;</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_23">
+           <property name="leftMargin">
+            <number>10</number>
+           </property>
+           <property name="rightMargin">
+            <number>10</number>
+           </property>
+           <item>
+            <widget class="QProgressBar" name="progressBar_8">
+             <property name="styleSheet">
+              <string notr="true"> QProgressBar {
+     border: 0px solid rgb(50, 50, 50);
+	 background-color: black;
+	padding: 0px 2px;
+ }
+
+QProgressBar::chunk:vertical{ 
+	background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(3, 226, 11, 255), stop:1 rgba(159, 255, 159, 255));
+height: 5px; 
+margin: 0.5px; 
+} </string>
+             </property>
+             <property name="value">
+              <number>24</number>
+             </property>
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="format">
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_26">
+             <property name="styleSheet">
+              <string notr="true">background-color: rgba(0, 0, 0, 0.0);
+color: white;
+border: 0px;</string>
+             </property>
+             <property name="text">
+              <string>L</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_27">
+             <property name="styleSheet">
+              <string notr="true">background-color: rgba(0, 0, 0, 0.0);
+color: white;
+border: 0px;</string>
+             </property>
+             <property name="text">
+              <string>7</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_22">
+           <property name="leftMargin">
+            <number>10</number>
+           </property>
+           <property name="rightMargin">
+            <number>10</number>
+           </property>
+           <item>
+            <widget class="QProgressBar" name="progressBar_7">
+             <property name="styleSheet">
+              <string notr="true"> QProgressBar {
+     border: 0px solid rgb(50, 50, 50);
+	 background-color: black;
+	padding: 0px 2px;
+ }
+
+QProgressBar::chunk:vertical{ 
+	background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(3, 226, 11, 255), stop:1 rgba(159, 255, 159, 255));
+height: 5px; 
+margin: 0.5px; 
+} </string>
+             </property>
+             <property name="value">
+              <number>24</number>
+             </property>
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="format">
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_24">
+             <property name="styleSheet">
+              <string notr="true">background-color: rgba(0, 0, 0, 0.0);
+color: white;
+border: 0px;</string>
+             </property>
+             <property name="text">
+              <string>R</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_25">
+             <property name="styleSheet">
+              <string notr="true">background-color: rgba(0, 0, 0, 0.0);
+color: white;
+border: 0px;</string>
+             </property>
+             <property name="text">
+              <string>8</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_23">
+           <property name="minimumSize">
+            <size>
+             <width>1</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>1</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">border: 0px;
+background-color: white;</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_25">
+           <property name="leftMargin">
+            <number>10</number>
+           </property>
+           <property name="rightMargin">
+            <number>10</number>
+           </property>
+           <item>
+            <widget class="QProgressBar" name="progressBar_10">
+             <property name="styleSheet">
+              <string notr="true"> QProgressBar {
+     border: 0px solid rgb(50, 50, 50);
+	 background-color: black;
+	padding: 0px 2px;
+ }
+
+QProgressBar::chunk:vertical{ 
+	background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(3, 226, 11, 255), stop:1 rgba(159, 255, 159, 255));
+height: 5px; 
+margin: 0.5px; 
+} </string>
+             </property>
+             <property name="value">
+              <number>24</number>
+             </property>
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="format">
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_31">
+             <property name="styleSheet">
+              <string notr="true">background-color: rgba(0, 0, 0, 0.0);
+color: white;
+border: 0px;</string>
+             </property>
+             <property name="text">
+              <string>L</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_32">
+             <property name="styleSheet">
+              <string notr="true">background-color: rgba(0, 0, 0, 0.0);
+color: white;
+border: 0px;</string>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_24">
+           <property name="leftMargin">
+            <number>10</number>
+           </property>
+           <property name="rightMargin">
+            <number>10</number>
+           </property>
+           <item>
+            <widget class="QProgressBar" name="progressBar_9">
+             <property name="styleSheet">
+              <string notr="true"> QProgressBar {
+     border: 0px solid rgb(50, 50, 50);
+	 background-color: black;
+	padding: 0px 2px;
+ }
+
+QProgressBar::chunk:vertical{ 
+	background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(3, 226, 11, 255), stop:1 rgba(159, 255, 159, 255));
+height: 5px; 
+margin: 0.5px; 
+} </string>
+             </property>
+             <property name="value">
+              <number>24</number>
+             </property>
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="format">
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_29">
+             <property name="styleSheet">
+              <string notr="true">background-color: rgba(0, 0, 0, 0.0);
+color: white;
+border: 0px;</string>
+             </property>
+             <property name="text">
+              <string>R</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_30">
+             <property name="styleSheet">
+              <string notr="true">background-color: rgba(0, 0, 0, 0.0);
+color: white;
+border: 0px;</string>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_6">
+     <property name="spacing">
+      <number>2</number>
+     </property>
+     <item>
+      <widget class="QFrame" name="frame">
+       <property name="minimumSize">
+        <size>
+         <width>95</width>
+         <height>235</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>95</width>
+         <height>235</height>
+        </size>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::StyledPanel</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Raised</enum>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout_11">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+        <item>
+         <widget class="QLabel" name="label">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>20</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>20</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QLabel {
+color: black;
+background: rgb(220, 220, 220);
+font-size: 12px;
+}</string>
+          </property>
+          <property name="text">
+           <string>Group 1 &amp; 2</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout">
+          <property name="spacing">
+           <number>2</number>
+          </property>
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout">
+            <property name="spacing">
+             <number>2</number>
+            </property>
+            <property name="leftMargin">
+             <number>2</number>
+            </property>
+            <property name="topMargin">
+             <number>2</number>
+            </property>
+            <property name="rightMargin">
+             <number>2</number>
+            </property>
+            <property name="bottomMargin">
+             <number>2</number>
+            </property>
+            <item>
+             <spacer name="verticalSpacer">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>40</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="Line" name="line_4">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="subgroup12PushButton_2">
+              <property name="minimumSize">
+               <size>
+                <width>42</width>
+                <height>24</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>42</width>
+                <height>24</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QPushButton:checked {
+	background-color: qlineargradient(spread:pad, x1:0.701, y1:1, x2:0.692, y2:0.046, stop:0 rgba(47, 208, 0, 255), stop:1 rgba(255, 255, 255, 255));
+border: 2px solid rgb(60, 120, 60);
+}</string>
+              </property>
+              <property name="text">
+               <string>Mute</string>
+              </property>
+              <property name="checkable">
+               <bool>true</bool>
+              </property>
+              <property name="checked">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="subgroup12PushButton_3">
+              <property name="minimumSize">
+               <size>
+                <width>42</width>
+                <height>24</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>42</width>
+                <height>24</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QPushButton:checked {
+	background-color: qlineargradient(spread:pad, x1:0.701, y1:1, x2:0.692, y2:0.046, stop:0 rgba(0, 47, 208, 255), stop:1 rgba(255, 255, 255, 255));
+border: 2px solid rgb(60, 60, 120);
+}</string>
+              </property>
+              <property name="text">
+               <string>Solo</string>
+              </property>
+              <property name="checkable">
+               <bool>true</bool>
+              </property>
+              <property name="checked">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QSlider" name="volumeVerticalSlider">
+              <property name="minimumSize">
+               <size>
+                <width>42</width>
+                <height>120</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>42</width>
+                <height>120</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QSlider {
+	padding-top: 5px;
+}
+
+ QSlider::groove:vertical {
+
+		width: 2px;
+	background-color: black;
+	border: 1px solid rgb(50, 50, 50);
+	border-radius: 8px;
+ }
+
+ QSlider::handle:vertical {
+	background-color: qlineargradient(spread:reflect, x1:1, y1:0.493818, x2:1, y2:0, stop:0 rgba(159, 159, 159, 255), stop:1 rgba(225, 225, 225, 255));
+	border: 1px solid rgb(120, 120, 120);
+     width: 10px;
+		height: 26px;
+     border-radius: 4px;
+	margin: 0px -8px;
+ }
+QSlider::handle:vertical:hover {
+	background-color: qlineargradient(spread:reflect, x1:1, y1:0.493818, x2:1, y2:0, stop:0 rgba(109, 135, 255, 255), stop:1 rgba(175, 205, 255, 255));
+}</string>
+              </property>
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="mainPushButton">
+              <property name="minimumSize">
+               <size>
+                <width>42</width>
+                <height>24</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>42</width>
+                <height>24</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>Main</string>
+              </property>
+              <property name="checkable">
+               <bool>true</bool>
+              </property>
+              <property name="checked">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_2">
+            <property name="spacing">
+             <number>2</number>
+            </property>
+            <property name="leftMargin">
+             <number>2</number>
+            </property>
+            <property name="topMargin">
+             <number>2</number>
+            </property>
+            <property name="rightMargin">
+             <number>2</number>
+            </property>
+            <property name="bottomMargin">
+             <number>2</number>
+            </property>
+            <item>
+             <spacer name="verticalSpacer_2">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>40</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="Line" name="line_6">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="subgroup12PushButton_4">
+              <property name="minimumSize">
+               <size>
+                <width>42</width>
+                <height>24</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>42</width>
+                <height>24</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QPushButton:checked {
+	background-color: qlineargradient(spread:pad, x1:0.701, y1:1, x2:0.692, y2:0.046, stop:0 rgba(47, 208, 0, 255), stop:1 rgba(255, 255, 255, 255));
+border: 2px solid rgb(60, 120, 60);
+}</string>
+              </property>
+              <property name="text">
+               <string>Mute</string>
+              </property>
+              <property name="checkable">
+               <bool>true</bool>
+              </property>
+              <property name="checked">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="subgroup12PushButton_5">
+              <property name="minimumSize">
+               <size>
+                <width>42</width>
+                <height>24</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>42</width>
+                <height>24</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QPushButton:checked {
+	background-color: qlineargradient(spread:pad, x1:0.701, y1:1, x2:0.692, y2:0.046, stop:0 rgba(0, 47, 208, 255), stop:1 rgba(255, 255, 255, 255));
+border: 2px solid rgb(60, 60, 120);
+}</string>
+              </property>
+              <property name="text">
+               <string>Solo</string>
+              </property>
+              <property name="checkable">
+               <bool>true</bool>
+              </property>
+              <property name="checked">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QSlider" name="volumeVerticalSlider_2">
+              <property name="minimumSize">
+               <size>
+                <width>42</width>
+                <height>120</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>42</width>
+                <height>120</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QSlider {
+	padding-top: 5px;
+}
+
+ QSlider::groove:vertical {
+
+		width: 2px;
+	background-color: black;
+	border: 1px solid rgb(50, 50, 50);
+	border-radius: 8px;
+ }
+
+ QSlider::handle:vertical {
+	background-color: qlineargradient(spread:reflect, x1:1, y1:0.493818, x2:1, y2:0, stop:0 rgba(159, 159, 159, 255), stop:1 rgba(225, 225, 225, 255));
+	border: 1px solid rgb(120, 120, 120);
+     width: 10px;
+		height: 26px;
+     border-radius: 4px;
+	margin: 0px -8px;
+ }
+QSlider::handle:vertical:hover {
+	background-color: qlineargradient(spread:reflect, x1:1, y1:0.493818, x2:1, y2:0, stop:0 rgba(109, 135, 255, 255), stop:1 rgba(175, 205, 255, 255));
+}</string>
+              </property>
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="mainPushButton_2">
+              <property name="minimumSize">
+               <size>
+                <width>42</width>
+                <height>24</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>42</width>
+                <height>24</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>Main</string>
+              </property>
+              <property name="checkable">
+               <bool>true</bool>
+              </property>
+              <property name="checked">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <widget class="QFrame" name="frame_2">
+       <property name="minimumSize">
+        <size>
+         <width>95</width>
+         <height>235</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>95</width>
+         <height>235</height>
+        </size>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::StyledPanel</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Raised</enum>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout_12">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+        <item>
+         <widget class="QLabel" name="label_2">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>20</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>20</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QLabel {
+color: black;
+background: rgb(220, 220, 220);
+font-size: 12px;
+}</string>
+          </property>
+          <property name="text">
+           <string>Group 3 &amp; 4</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_2">
+          <property name="spacing">
+           <number>2</number>
+          </property>
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_3">
+            <property name="spacing">
+             <number>2</number>
+            </property>
+            <property name="leftMargin">
+             <number>2</number>
+            </property>
+            <property name="topMargin">
+             <number>2</number>
+            </property>
+            <property name="rightMargin">
+             <number>2</number>
+            </property>
+            <property name="bottomMargin">
+             <number>2</number>
+            </property>
+            <item>
+             <spacer name="verticalSpacer_3">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>40</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="Line" name="line_8">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="subgroup12PushButton_6">
+              <property name="minimumSize">
+               <size>
+                <width>42</width>
+                <height>24</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>42</width>
+                <height>24</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QPushButton:checked {
+	background-color: qlineargradient(spread:pad, x1:0.701, y1:1, x2:0.692, y2:0.046, stop:0 rgba(47, 208, 0, 255), stop:1 rgba(255, 255, 255, 255));
+border: 2px solid rgb(60, 120, 60);
+}</string>
+              </property>
+              <property name="text">
+               <string>Mute</string>
+              </property>
+              <property name="checkable">
+               <bool>true</bool>
+              </property>
+              <property name="checked">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="subgroup12PushButton_7">
+              <property name="minimumSize">
+               <size>
+                <width>42</width>
+                <height>24</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>42</width>
+                <height>24</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QPushButton:checked {
+	background-color: qlineargradient(spread:pad, x1:0.701, y1:1, x2:0.692, y2:0.046, stop:0 rgba(0, 47, 208, 255), stop:1 rgba(255, 255, 255, 255));
+border: 2px solid rgb(60, 60, 120);
+}</string>
+              </property>
+              <property name="text">
+               <string>Solo</string>
+              </property>
+              <property name="checkable">
+               <bool>true</bool>
+              </property>
+              <property name="checked">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QSlider" name="volumeVerticalSlider_3">
+              <property name="minimumSize">
+               <size>
+                <width>42</width>
+                <height>120</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>42</width>
+                <height>120</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QSlider {
+	padding-top: 5px;
+}
+
+ QSlider::groove:vertical {
+
+		width: 2px;
+	background-color: black;
+	border: 1px solid rgb(50, 50, 50);
+	border-radius: 8px;
+ }
+
+ QSlider::handle:vertical {
+	background-color: qlineargradient(spread:reflect, x1:1, y1:0.493818, x2:1, y2:0, stop:0 rgba(159, 159, 159, 255), stop:1 rgba(225, 225, 225, 255));
+	border: 1px solid rgb(120, 120, 120);
+     width: 10px;
+		height: 26px;
+     border-radius: 4px;
+	margin: 0px -8px;
+ }
+QSlider::handle:vertical:hover {
+	background-color: qlineargradient(spread:reflect, x1:1, y1:0.493818, x2:1, y2:0, stop:0 rgba(109, 135, 255, 255), stop:1 rgba(175, 205, 255, 255));
+}</string>
+              </property>
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="mainPushButton_3">
+              <property name="minimumSize">
+               <size>
+                <width>42</width>
+                <height>24</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>42</width>
+                <height>24</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>Main</string>
+              </property>
+              <property name="checkable">
+               <bool>true</bool>
+              </property>
+              <property name="checked">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_4">
+            <property name="spacing">
+             <number>2</number>
+            </property>
+            <property name="leftMargin">
+             <number>2</number>
+            </property>
+            <property name="topMargin">
+             <number>2</number>
+            </property>
+            <property name="rightMargin">
+             <number>2</number>
+            </property>
+            <property name="bottomMargin">
+             <number>2</number>
+            </property>
+            <item>
+             <spacer name="verticalSpacer_4">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>40</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="Line" name="line_10">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="subgroup12PushButton_8">
+              <property name="minimumSize">
+               <size>
+                <width>42</width>
+                <height>24</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>42</width>
+                <height>24</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QPushButton:checked {
+	background-color: qlineargradient(spread:pad, x1:0.701, y1:1, x2:0.692, y2:0.046, stop:0 rgba(47, 208, 0, 255), stop:1 rgba(255, 255, 255, 255));
+border: 2px solid rgb(60, 120, 60);
+}</string>
+              </property>
+              <property name="text">
+               <string>Mute</string>
+              </property>
+              <property name="checkable">
+               <bool>true</bool>
+              </property>
+              <property name="checked">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="subgroup12PushButton_9">
+              <property name="minimumSize">
+               <size>
+                <width>42</width>
+                <height>24</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>42</width>
+                <height>24</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QPushButton:checked {
+	background-color: qlineargradient(spread:pad, x1:0.701, y1:1, x2:0.692, y2:0.046, stop:0 rgba(0, 47, 208, 255), stop:1 rgba(255, 255, 255, 255));
+border: 2px solid rgb(60, 60, 120);
+}</string>
+              </property>
+              <property name="text">
+               <string>Solo</string>
+              </property>
+              <property name="checkable">
+               <bool>true</bool>
+              </property>
+              <property name="checked">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QSlider" name="volumeVerticalSlider_4">
+              <property name="minimumSize">
+               <size>
+                <width>42</width>
+                <height>120</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>42</width>
+                <height>120</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QSlider {
+	padding-top: 5px;
+}
+
+ QSlider::groove:vertical {
+
+		width: 2px;
+	background-color: black;
+	border: 1px solid rgb(50, 50, 50);
+	border-radius: 8px;
+ }
+
+ QSlider::handle:vertical {
+	background-color: qlineargradient(spread:reflect, x1:1, y1:0.493818, x2:1, y2:0, stop:0 rgba(159, 159, 159, 255), stop:1 rgba(225, 225, 225, 255));
+	border: 1px solid rgb(120, 120, 120);
+     width: 10px;
+		height: 26px;
+     border-radius: 4px;
+	margin: 0px -8px;
+ }
+QSlider::handle:vertical:hover {
+	background-color: qlineargradient(spread:reflect, x1:1, y1:0.493818, x2:1, y2:0, stop:0 rgba(109, 135, 255, 255), stop:1 rgba(175, 205, 255, 255));
+}</string>
+              </property>
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="mainPushButton_4">
+              <property name="minimumSize">
+               <size>
+                <width>42</width>
+                <height>24</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>42</width>
+                <height>24</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>Main</string>
+              </property>
+              <property name="checkable">
+               <bool>true</bool>
+              </property>
+              <property name="checked">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <widget class="QFrame" name="frame_3">
+       <property name="minimumSize">
+        <size>
+         <width>95</width>
+         <height>235</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>95</width>
+         <height>235</height>
+        </size>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::StyledPanel</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Raised</enum>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout_13">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+        <item>
+         <widget class="QLabel" name="label_3">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>20</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>20</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QLabel {
+color: black;
+background: rgb(220, 220, 220);
+font-size: 12px;
+}</string>
+          </property>
+          <property name="text">
+           <string>Group 5 &amp; 6</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_3">
+          <property name="spacing">
+           <number>2</number>
+          </property>
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_5">
+            <property name="spacing">
+             <number>2</number>
+            </property>
+            <property name="leftMargin">
+             <number>2</number>
+            </property>
+            <property name="topMargin">
+             <number>2</number>
+            </property>
+            <property name="rightMargin">
+             <number>2</number>
+            </property>
+            <property name="bottomMargin">
+             <number>2</number>
+            </property>
+            <item>
+             <spacer name="verticalSpacer_5">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>40</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="Line" name="line_12">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="subgroup12PushButton_10">
+              <property name="minimumSize">
+               <size>
+                <width>42</width>
+                <height>24</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>42</width>
+                <height>24</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QPushButton:checked {
+	background-color: qlineargradient(spread:pad, x1:0.701, y1:1, x2:0.692, y2:0.046, stop:0 rgba(47, 208, 0, 255), stop:1 rgba(255, 255, 255, 255));
+border: 2px solid rgb(60, 120, 60);
+}</string>
+              </property>
+              <property name="text">
+               <string>Mute</string>
+              </property>
+              <property name="checkable">
+               <bool>true</bool>
+              </property>
+              <property name="checked">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="subgroup12PushButton_11">
+              <property name="minimumSize">
+               <size>
+                <width>42</width>
+                <height>24</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>42</width>
+                <height>24</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QPushButton:checked {
+	background-color: qlineargradient(spread:pad, x1:0.701, y1:1, x2:0.692, y2:0.046, stop:0 rgba(0, 47, 208, 255), stop:1 rgba(255, 255, 255, 255));
+border: 2px solid rgb(60, 60, 120);
+}</string>
+              </property>
+              <property name="text">
+               <string>Solo</string>
+              </property>
+              <property name="checkable">
+               <bool>true</bool>
+              </property>
+              <property name="checked">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QSlider" name="volumeVerticalSlider_5">
+              <property name="minimumSize">
+               <size>
+                <width>42</width>
+                <height>120</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>42</width>
+                <height>120</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QSlider {
+	padding-top: 5px;
+}
+
+ QSlider::groove:vertical {
+
+		width: 2px;
+	background-color: black;
+	border: 1px solid rgb(50, 50, 50);
+	border-radius: 8px;
+ }
+
+ QSlider::handle:vertical {
+	background-color: qlineargradient(spread:reflect, x1:1, y1:0.493818, x2:1, y2:0, stop:0 rgba(159, 159, 159, 255), stop:1 rgba(225, 225, 225, 255));
+	border: 1px solid rgb(120, 120, 120);
+     width: 10px;
+		height: 26px;
+     border-radius: 4px;
+	margin: 0px -8px;
+ }
+QSlider::handle:vertical:hover {
+	background-color: qlineargradient(spread:reflect, x1:1, y1:0.493818, x2:1, y2:0, stop:0 rgba(109, 135, 255, 255), stop:1 rgba(175, 205, 255, 255));
+}</string>
+              </property>
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="mainPushButton_5">
+              <property name="minimumSize">
+               <size>
+                <width>42</width>
+                <height>24</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>42</width>
+                <height>24</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>Main</string>
+              </property>
+              <property name="checkable">
+               <bool>true</bool>
+              </property>
+              <property name="checked">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_6">
+            <property name="spacing">
+             <number>2</number>
+            </property>
+            <property name="leftMargin">
+             <number>2</number>
+            </property>
+            <property name="topMargin">
+             <number>2</number>
+            </property>
+            <property name="rightMargin">
+             <number>2</number>
+            </property>
+            <property name="bottomMargin">
+             <number>2</number>
+            </property>
+            <item>
+             <spacer name="verticalSpacer_6">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>40</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="Line" name="line_14">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="subgroup12PushButton_12">
+              <property name="minimumSize">
+               <size>
+                <width>42</width>
+                <height>24</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>42</width>
+                <height>24</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QPushButton:checked {
+	background-color: qlineargradient(spread:pad, x1:0.701, y1:1, x2:0.692, y2:0.046, stop:0 rgba(47, 208, 0, 255), stop:1 rgba(255, 255, 255, 255));
+border: 2px solid rgb(60, 120, 60);
+}</string>
+              </property>
+              <property name="text">
+               <string>Mute</string>
+              </property>
+              <property name="checkable">
+               <bool>true</bool>
+              </property>
+              <property name="checked">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="subgroup12PushButton_13">
+              <property name="minimumSize">
+               <size>
+                <width>42</width>
+                <height>24</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>42</width>
+                <height>24</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QPushButton:checked {
+	background-color: qlineargradient(spread:pad, x1:0.701, y1:1, x2:0.692, y2:0.046, stop:0 rgba(0, 47, 208, 255), stop:1 rgba(255, 255, 255, 255));
+border: 2px solid rgb(60, 60, 120);
+}</string>
+              </property>
+              <property name="text">
+               <string>Solo</string>
+              </property>
+              <property name="checkable">
+               <bool>true</bool>
+              </property>
+              <property name="checked">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QSlider" name="volumeVerticalSlider_6">
+              <property name="minimumSize">
+               <size>
+                <width>42</width>
+                <height>120</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>42</width>
+                <height>120</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QSlider {
+	padding-top: 5px;
+}
+
+ QSlider::groove:vertical {
+
+		width: 2px;
+	background-color: black;
+	border: 1px solid rgb(50, 50, 50);
+	border-radius: 8px;
+ }
+
+ QSlider::handle:vertical {
+	background-color: qlineargradient(spread:reflect, x1:1, y1:0.493818, x2:1, y2:0, stop:0 rgba(159, 159, 159, 255), stop:1 rgba(225, 225, 225, 255));
+	border: 1px solid rgb(120, 120, 120);
+     width: 10px;
+		height: 26px;
+     border-radius: 4px;
+	margin: 0px -8px;
+ }
+QSlider::handle:vertical:hover {
+	background-color: qlineargradient(spread:reflect, x1:1, y1:0.493818, x2:1, y2:0, stop:0 rgba(109, 135, 255, 255), stop:1 rgba(175, 205, 255, 255));
+}</string>
+              </property>
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="mainPushButton_6">
+              <property name="minimumSize">
+               <size>
+                <width>42</width>
+                <height>24</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>42</width>
+                <height>24</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>Main</string>
+              </property>
+              <property name="checkable">
+               <bool>true</bool>
+              </property>
+              <property name="checked">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <widget class="QFrame" name="frame_4">
+       <property name="minimumSize">
+        <size>
+         <width>95</width>
+         <height>235</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>95</width>
+         <height>235</height>
+        </size>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::StyledPanel</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Raised</enum>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout_14">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+        <item>
+         <widget class="QLabel" name="label_4">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>20</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>20</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QLabel {
+color: black;
+background: rgb(220, 220, 220);
+font-size: 12px;
+}</string>
+          </property>
+          <property name="text">
+           <string>Group 7 &amp; 8</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_4">
+          <property name="spacing">
+           <number>2</number>
+          </property>
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_7">
+            <property name="spacing">
+             <number>2</number>
+            </property>
+            <property name="leftMargin">
+             <number>2</number>
+            </property>
+            <property name="topMargin">
+             <number>2</number>
+            </property>
+            <property name="rightMargin">
+             <number>2</number>
+            </property>
+            <property name="bottomMargin">
+             <number>2</number>
+            </property>
+            <item>
+             <spacer name="verticalSpacer_7">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>40</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="Line" name="line_16">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="subgroup12PushButton_14">
+              <property name="minimumSize">
+               <size>
+                <width>42</width>
+                <height>24</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>42</width>
+                <height>24</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QPushButton:checked {
+	background-color: qlineargradient(spread:pad, x1:0.701, y1:1, x2:0.692, y2:0.046, stop:0 rgba(47, 208, 0, 255), stop:1 rgba(255, 255, 255, 255));
+border: 2px solid rgb(60, 120, 60);
+}</string>
+              </property>
+              <property name="text">
+               <string>Mute</string>
+              </property>
+              <property name="checkable">
+               <bool>true</bool>
+              </property>
+              <property name="checked">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="subgroup12PushButton_15">
+              <property name="minimumSize">
+               <size>
+                <width>42</width>
+                <height>24</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>42</width>
+                <height>24</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QPushButton:checked {
+	background-color: qlineargradient(spread:pad, x1:0.701, y1:1, x2:0.692, y2:0.046, stop:0 rgba(0, 47, 208, 255), stop:1 rgba(255, 255, 255, 255));
+border: 2px solid rgb(60, 60, 120);
+}</string>
+              </property>
+              <property name="text">
+               <string>Solo</string>
+              </property>
+              <property name="checkable">
+               <bool>true</bool>
+              </property>
+              <property name="checked">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QSlider" name="volumeVerticalSlider_7">
+              <property name="minimumSize">
+               <size>
+                <width>42</width>
+                <height>120</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>42</width>
+                <height>120</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QSlider {
+	padding-top: 5px;
+}
+
+ QSlider::groove:vertical {
+
+		width: 2px;
+	background-color: black;
+	border: 1px solid rgb(50, 50, 50);
+	border-radius: 8px;
+ }
+
+ QSlider::handle:vertical {
+	background-color: qlineargradient(spread:reflect, x1:1, y1:0.493818, x2:1, y2:0, stop:0 rgba(159, 159, 159, 255), stop:1 rgba(225, 225, 225, 255));
+	border: 1px solid rgb(120, 120, 120);
+     width: 10px;
+		height: 26px;
+     border-radius: 4px;
+	margin: 0px -8px;
+ }
+QSlider::handle:vertical:hover {
+	background-color: qlineargradient(spread:reflect, x1:1, y1:0.493818, x2:1, y2:0, stop:0 rgba(109, 135, 255, 255), stop:1 rgba(175, 205, 255, 255));
+}</string>
+              </property>
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="mainPushButton_7">
+              <property name="minimumSize">
+               <size>
+                <width>42</width>
+                <height>24</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>42</width>
+                <height>24</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>Main</string>
+              </property>
+              <property name="checkable">
+               <bool>true</bool>
+              </property>
+              <property name="checked">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_8">
+            <property name="spacing">
+             <number>2</number>
+            </property>
+            <property name="leftMargin">
+             <number>2</number>
+            </property>
+            <property name="topMargin">
+             <number>2</number>
+            </property>
+            <property name="rightMargin">
+             <number>2</number>
+            </property>
+            <property name="bottomMargin">
+             <number>2</number>
+            </property>
+            <item>
+             <spacer name="verticalSpacer_8">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>40</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="Line" name="line_18">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="subgroup12PushButton_16">
+              <property name="minimumSize">
+               <size>
+                <width>42</width>
+                <height>24</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>42</width>
+                <height>24</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QPushButton:checked {
+	background-color: qlineargradient(spread:pad, x1:0.701, y1:1, x2:0.692, y2:0.046, stop:0 rgba(47, 208, 0, 255), stop:1 rgba(255, 255, 255, 255));
+border: 2px solid rgb(60, 120, 60);
+}</string>
+              </property>
+              <property name="text">
+               <string>Mute</string>
+              </property>
+              <property name="checkable">
+               <bool>true</bool>
+              </property>
+              <property name="checked">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="subgroup12PushButton_17">
+              <property name="minimumSize">
+               <size>
+                <width>42</width>
+                <height>24</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>42</width>
+                <height>24</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QPushButton:checked {
+	background-color: qlineargradient(spread:pad, x1:0.701, y1:1, x2:0.692, y2:0.046, stop:0 rgba(0, 47, 208, 255), stop:1 rgba(255, 255, 255, 255));
+border: 2px solid rgb(60, 60, 120);
+}</string>
+              </property>
+              <property name="text">
+               <string>Solo</string>
+              </property>
+              <property name="checkable">
+               <bool>true</bool>
+              </property>
+              <property name="checked">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QSlider" name="volumeVerticalSlider_8">
+              <property name="minimumSize">
+               <size>
+                <width>42</width>
+                <height>120</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>42</width>
+                <height>120</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QSlider {
+	padding-top: 5px;
+}
+
+ QSlider::groove:vertical {
+
+		width: 2px;
+	background-color: black;
+	border: 1px solid rgb(50, 50, 50);
+	border-radius: 8px;
+ }
+
+ QSlider::handle:vertical {
+	background-color: qlineargradient(spread:reflect, x1:1, y1:0.493818, x2:1, y2:0, stop:0 rgba(159, 159, 159, 255), stop:1 rgba(225, 225, 225, 255));
+	border: 1px solid rgb(120, 120, 120);
+     width: 10px;
+		height: 26px;
+     border-radius: 4px;
+	margin: 0px -8px;
+ }
+QSlider::handle:vertical:hover {
+	background-color: qlineargradient(spread:reflect, x1:1, y1:0.493818, x2:1, y2:0, stop:0 rgba(109, 135, 255, 255), stop:1 rgba(175, 205, 255, 255));
+}</string>
+              </property>
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="mainPushButton_8">
+              <property name="minimumSize">
+               <size>
+                <width>42</width>
+                <height>24</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>42</width>
+                <height>24</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>Main</string>
+              </property>
+              <property name="checkable">
+               <bool>true</bool>
+              </property>
+              <property name="checked">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <widget class="QFrame" name="frame_5">
+       <property name="minimumSize">
+        <size>
+         <width>95</width>
+         <height>235</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>95</width>
+         <height>235</height>
+        </size>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::StyledPanel</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Raised</enum>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout_15">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+        <item>
+         <widget class="QLabel" name="label_5">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>20</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>20</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QLabel {
+color: black;
+background: rgb(220, 120, 120);
+font-size: 12px;
+}</string>
+          </property>
+          <property name="text">
+           <string>Main</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_5">
+          <property name="spacing">
+           <number>2</number>
+          </property>
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_9">
+            <property name="spacing">
+             <number>2</number>
+            </property>
+            <property name="leftMargin">
+             <number>2</number>
+            </property>
+            <property name="topMargin">
+             <number>2</number>
+            </property>
+            <property name="rightMargin">
+             <number>2</number>
+            </property>
+            <property name="bottomMargin">
+             <number>2</number>
+            </property>
+            <item>
+             <spacer name="verticalSpacer_9">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>40</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="Line" name="line_20">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="subgroup12PushButton_18">
+              <property name="minimumSize">
+               <size>
+                <width>42</width>
+                <height>24</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>42</width>
+                <height>24</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QPushButton:checked {
+	background-color: qlineargradient(spread:pad, x1:0.701, y1:1, x2:0.692, y2:0.046, stop:0 rgba(47, 208, 0, 255), stop:1 rgba(255, 255, 255, 255));
+border: 2px solid rgb(60, 120, 60);
+}</string>
+              </property>
+              <property name="text">
+               <string>Mute</string>
+              </property>
+              <property name="checkable">
+               <bool>true</bool>
+              </property>
+              <property name="checked">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="subgroup12PushButton_19">
+              <property name="minimumSize">
+               <size>
+                <width>42</width>
+                <height>24</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>42</width>
+                <height>24</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QPushButton:checked {
+	background-color: qlineargradient(spread:pad, x1:0.701, y1:1, x2:0.692, y2:0.046, stop:0 rgba(0, 47, 208, 255), stop:1 rgba(255, 255, 255, 255));
+border: 2px solid rgb(60, 60, 120);
+}</string>
+              </property>
+              <property name="text">
+               <string>Solo</string>
+              </property>
+              <property name="checkable">
+               <bool>true</bool>
+              </property>
+              <property name="checked">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QSlider" name="volumeVerticalSlider_9">
+              <property name="minimumSize">
+               <size>
+                <width>42</width>
+                <height>120</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>42</width>
+                <height>120</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QSlider {
+	padding-top: 5px;
+}
+
+ QSlider::groove:vertical {
+
+		width: 2px;
+	background-color: black;
+	border: 1px solid rgb(50, 50, 50);
+	border-radius: 8px;
+ }
+
+ QSlider::handle:vertical {
+	background-color: qlineargradient(spread:reflect, x1:1, y1:0.493818, x2:1, y2:0, stop:0 rgba(159, 159, 159, 255), stop:1 rgba(225, 225, 225, 255));
+	border: 1px solid rgb(120, 120, 120);
+     width: 10px;
+		height: 26px;
+     border-radius: 4px;
+	margin: 0px -8px;
+ }
+QSlider::handle:vertical:hover {
+	background-color: qlineargradient(spread:reflect, x1:1, y1:0.493818, x2:1, y2:0, stop:0 rgba(109, 135, 255, 255), stop:1 rgba(175, 205, 255, 255));
+}</string>
+              </property>
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="label_6">
+              <property name="minimumSize">
+               <size>
+                <width>42</width>
+                <height>24</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>42</width>
+                <height>24</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">background: rgba(0, 0, 0, 0.0);</string>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_10">
+            <property name="spacing">
+             <number>2</number>
+            </property>
+            <property name="leftMargin">
+             <number>2</number>
+            </property>
+            <property name="topMargin">
+             <number>2</number>
+            </property>
+            <property name="rightMargin">
+             <number>2</number>
+            </property>
+            <property name="bottomMargin">
+             <number>2</number>
+            </property>
+            <item>
+             <spacer name="verticalSpacer_10">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>40</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="Line" name="line_22">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="subgroup12PushButton_20">
+              <property name="minimumSize">
+               <size>
+                <width>42</width>
+                <height>24</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>42</width>
+                <height>24</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QPushButton:checked {
+	background-color: qlineargradient(spread:pad, x1:0.701, y1:1, x2:0.692, y2:0.046, stop:0 rgba(47, 208, 0, 255), stop:1 rgba(255, 255, 255, 255));
+border: 2px solid rgb(60, 120, 60);
+}</string>
+              </property>
+              <property name="text">
+               <string>Mute</string>
+              </property>
+              <property name="checkable">
+               <bool>true</bool>
+              </property>
+              <property name="checked">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="subgroup12PushButton_21">
+              <property name="minimumSize">
+               <size>
+                <width>42</width>
+                <height>24</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>42</width>
+                <height>24</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QPushButton:checked {
+	background-color: qlineargradient(spread:pad, x1:0.701, y1:1, x2:0.692, y2:0.046, stop:0 rgba(0, 47, 208, 255), stop:1 rgba(255, 255, 255, 255));
+border: 2px solid rgb(60, 60, 120);
+}</string>
+              </property>
+              <property name="text">
+               <string>Solo</string>
+              </property>
+              <property name="checkable">
+               <bool>true</bool>
+              </property>
+              <property name="checked">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QSlider" name="volumeVerticalSlider_10">
+              <property name="minimumSize">
+               <size>
+                <width>42</width>
+                <height>120</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>42</width>
+                <height>120</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QSlider {
+	padding-top: 5px;
+}
+
+ QSlider::groove:vertical {
+
+		width: 2px;
+	background-color: black;
+	border: 1px solid rgb(50, 50, 50);
+	border-radius: 8px;
+ }
+
+ QSlider::handle:vertical {
+	background-color: qlineargradient(spread:reflect, x1:1, y1:0.493818, x2:1, y2:0, stop:0 rgba(159, 159, 159, 255), stop:1 rgba(225, 225, 225, 255));
+	border: 1px solid rgb(120, 120, 120);
+     width: 10px;
+		height: 26px;
+     border-radius: 4px;
+	margin: 0px -8px;
+ }
+QSlider::handle:vertical:hover {
+	background-color: qlineargradient(spread:reflect, x1:1, y1:0.493818, x2:1, y2:0, stop:0 rgba(109, 135, 255, 255), stop:1 rgba(175, 205, 255, 255));
+}</string>
+              </property>
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="label_7">
+              <property name="minimumSize">
+               <size>
+                <width>42</width>
+                <height>24</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>42</width>
+                <height>24</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">background: rgba(0, 0, 0, 0.0);</string>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources>
+  <include location="resources.qrc"/>
+ </resources>
+ <connections/>
+</ui>
