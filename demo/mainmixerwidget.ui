@@ -12,7 +12,7 @@
   </property>
   <property name="minimumSize">
    <size>
-    <width>508</width>
+    <width>504</width>
     <height>0</height>
    </size>
   </property>
@@ -47,38 +47,37 @@ border: none;
 }</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_27">
+   <property name="spacing">
+    <number>0</number>
+   </property>
    <property name="leftMargin">
-    <number>2</number>
+    <number>0</number>
    </property>
    <property name="topMargin">
-    <number>2</number>
+    <number>0</number>
    </property>
    <property name="rightMargin">
-    <number>2</number>
+    <number>0</number>
    </property>
    <property name="bottomMargin">
     <number>0</number>
    </property>
    <item>
-    <spacer name="verticalSpacer_11">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
+    <widget class="QLabel" name="mxLogoLabel">
+     <property name="minimumSize">
       <size>
-       <width>20</width>
-       <height>265</height>
+       <width>508</width>
+       <height>0</height>
       </size>
      </property>
-    </spacer>
-   </item>
-   <item>
-    <widget class="QLabel" name="mxLogoLabel">
      <property name="maximumSize">
       <size>
-       <width>500</width>
+       <width>508</width>
        <height>500</height>
       </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(31, 31, 31, 255));</string>
      </property>
      <property name="text">
       <string/>
@@ -90,6 +89,11 @@ border: none;
    </item>
    <item>
     <widget class="QFrame" name="frame_8">
+     <property name="styleSheet">
+      <string notr="true">QFrame {
+background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(31, 31, 31, 255));
+}</string>
+     </property>
      <property name="frameShape">
       <enum>QFrame::StyledPanel</enum>
      </property>
@@ -102,13 +106,13 @@ border: none;
         <property name="minimumSize">
          <size>
           <width>0</width>
-          <height>24</height>
+          <height>32</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
           <width>16777215</width>
-          <height>24</height>
+          <height>32</height>
          </size>
         </property>
         <property name="text">
@@ -121,13 +125,13 @@ border: none;
         <property name="minimumSize">
          <size>
           <width>0</width>
-          <height>24</height>
+          <height>32</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
           <width>16777215</width>
-          <height>24</height>
+          <height>32</height>
          </size>
         </property>
         <property name="text">
@@ -140,13 +144,13 @@ border: none;
         <property name="minimumSize">
          <size>
           <width>0</width>
-          <height>24</height>
+          <height>32</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
           <width>16777215</width>
-          <height>24</height>
+          <height>32</height>
          </size>
         </property>
         <property name="text">
@@ -159,13 +163,13 @@ border: none;
         <property name="minimumSize">
          <size>
           <width>0</width>
-          <height>24</height>
+          <height>32</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
           <width>16777215</width>
-          <height>24</height>
+          <height>32</height>
          </size>
         </property>
         <property name="text">
@@ -181,13 +185,13 @@ border: none;
      <property name="minimumSize">
       <size>
        <width>0</width>
-       <height>200</height>
+       <height>195</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
        <width>16777215</width>
-       <height>200</height>
+       <height>195</height>
       </size>
      </property>
      <property name="styleSheet">
@@ -209,14 +213,15 @@ font-size: 12px;
       <item>
        <widget class="QFrame" name="frame_10">
         <property name="styleSheet">
-         <string notr="true">background-color: qlineargradient(spread:reflect, x1:1, y1:1, x2:0.179735, y2:0.295, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(65, 65, 65, 255));
+         <string notr="true">background-color: qlineargradient(spread:reflect, x1:1, y1:1, x2:0.204, y2:0.403, stop:0 rgba(106, 199, 255, 255), stop:1 rgba(224, 242, 255, 255));
 border-radius: 5px;
 border-bottom: 3px solid rgb(35, 35, 35);
 border-right: 3px solid rgb(40, 40, 40);
 
 border-top: 3px solid rgb(20, 20, 20);
 
-border-left: 3px solid rgb(20, 20, 20);</string>
+border-left: 3px solid rgb(20, 20, 20);
+color: rgb(0, 30, 40);</string>
         </property>
         <property name="frameShape">
          <enum>QFrame::StyledPanel</enum>
@@ -228,9 +233,12 @@ border-left: 3px solid rgb(20, 20, 20);</string>
          <item>
           <widget class="QLabel" name="displayLabel">
            <property name="styleSheet">
-            <string notr="true">border: 0px;
-font-size: 16px;
-font-family: Mono;</string>
+            <string notr="true">background-color: qlineargradient(spread:reflect, x1:1, y1:1, x2:0.204, y2:0.403, stop:0 rgba(96, 189, 235, 255), stop:1 rgba(214, 232, 245, 255));
+
+border: 0px;
+border-radius: 0px;
+
+font-size: 32px;</string>
            </property>
            <property name="text">
             <string>MX2482 Mixing Console</string>
@@ -260,6 +268,9 @@ font-family: Mono;</string>
        <height>243</height>
       </size>
      </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(31, 31, 31, 255));</string>
+     </property>
      <property name="frameShape">
       <enum>QFrame::StyledPanel</enum>
      </property>
@@ -270,8 +281,14 @@ font-family: Mono;</string>
       <property name="leftMargin">
        <number>2</number>
       </property>
+      <property name="topMargin">
+       <number>5</number>
+      </property>
       <property name="rightMargin">
        <number>2</number>
+      </property>
+      <property name="bottomMargin">
+       <number>5</number>
       </property>
       <item>
        <widget class="QFrame" name="frame_6">
@@ -329,8 +346,14 @@ height: 5px;
 margin: 0.5px; 
 } </string>
              </property>
+             <property name="minimum">
+              <number>-60</number>
+             </property>
+             <property name="maximum">
+              <number>10</number>
+             </property>
              <property name="value">
-              <number>24</number>
+              <number>-60</number>
              </property>
              <property name="orientation">
               <enum>Qt::Vertical</enum>
@@ -395,8 +418,14 @@ height: 5px;
 margin: 0.5px; 
 } </string>
              </property>
+             <property name="minimum">
+              <number>-60</number>
+             </property>
+             <property name="maximum">
+              <number>10</number>
+             </property>
              <property name="value">
-              <number>24</number>
+              <number>-60</number>
              </property>
              <property name="orientation">
               <enum>Qt::Vertical</enum>
@@ -484,8 +513,14 @@ height: 5px;
 margin: 0.5px; 
 } </string>
              </property>
+             <property name="minimum">
+              <number>-60</number>
+             </property>
+             <property name="maximum">
+              <number>10</number>
+             </property>
              <property name="value">
-              <number>24</number>
+              <number>-60</number>
              </property>
              <property name="orientation">
               <enum>Qt::Vertical</enum>
@@ -550,8 +585,14 @@ height: 5px;
 margin: 0.5px; 
 } </string>
              </property>
+             <property name="minimum">
+              <number>-60</number>
+             </property>
+             <property name="maximum">
+              <number>10</number>
+             </property>
              <property name="value">
-              <number>24</number>
+              <number>-60</number>
              </property>
              <property name="orientation">
               <enum>Qt::Vertical</enum>
@@ -639,8 +680,14 @@ height: 5px;
 margin: 0.5px; 
 } </string>
              </property>
+             <property name="minimum">
+              <number>-60</number>
+             </property>
+             <property name="maximum">
+              <number>10</number>
+             </property>
              <property name="value">
-              <number>24</number>
+              <number>-60</number>
              </property>
              <property name="orientation">
               <enum>Qt::Vertical</enum>
@@ -705,8 +752,14 @@ height: 5px;
 margin: 0.5px; 
 } </string>
              </property>
+             <property name="minimum">
+              <number>-60</number>
+             </property>
+             <property name="maximum">
+              <number>10</number>
+             </property>
              <property name="value">
-              <number>24</number>
+              <number>-60</number>
              </property>
              <property name="orientation">
               <enum>Qt::Vertical</enum>
@@ -794,8 +847,14 @@ height: 5px;
 margin: 0.5px; 
 } </string>
              </property>
+             <property name="minimum">
+              <number>-60</number>
+             </property>
+             <property name="maximum">
+              <number>10</number>
+             </property>
              <property name="value">
-              <number>24</number>
+              <number>-60</number>
              </property>
              <property name="orientation">
               <enum>Qt::Vertical</enum>
@@ -860,8 +919,14 @@ height: 5px;
 margin: 0.5px; 
 } </string>
              </property>
+             <property name="minimum">
+              <number>-60</number>
+             </property>
+             <property name="maximum">
+              <number>10</number>
+             </property>
              <property name="value">
-              <number>24</number>
+              <number>-60</number>
              </property>
              <property name="orientation">
               <enum>Qt::Vertical</enum>
@@ -949,8 +1014,14 @@ height: 5px;
 margin: 0.5px; 
 } </string>
              </property>
+             <property name="minimum">
+              <number>-60</number>
+             </property>
+             <property name="maximum">
+              <number>10</number>
+             </property>
              <property name="value">
-              <number>24</number>
+              <number>-60</number>
              </property>
              <property name="orientation">
               <enum>Qt::Vertical</enum>
@@ -1015,8 +1086,14 @@ height: 5px;
 margin: 0.5px; 
 } </string>
              </property>
+             <property name="minimum">
+              <number>-60</number>
+             </property>
+             <property name="maximum">
+              <number>10</number>
+             </property>
              <property name="value">
-              <number>24</number>
+              <number>-60</number>
              </property>
              <property name="orientation">
               <enum>Qt::Vertical</enum>
@@ -1060,6 +1137,19 @@ border: 0px;</string>
          </item>
         </layout>
        </widget>
+      </item>
+      <item>
+       <spacer name="verticalSpacer_12">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>40</height>
+         </size>
+        </property>
+       </spacer>
       </item>
      </layout>
     </widget>
@@ -1276,6 +1366,12 @@ QSlider::handle:vertical:hover {
               </property>
               <property name="orientation">
                <enum>Qt::Vertical</enum>
+              </property>
+              <property name="tickPosition">
+               <enum>QSlider::NoTicks</enum>
+              </property>
+              <property name="tickInterval">
+               <number>10</number>
               </property>
              </widget>
             </item>

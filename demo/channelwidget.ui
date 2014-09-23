@@ -180,11 +180,20 @@ height: 5px;
 margin: 0.5px; 
 } </string>
         </property>
+        <property name="minimum">
+         <number>-60</number>
+        </property>
+        <property name="maximum">
+         <number>10</number>
+        </property>
         <property name="value">
-         <number>24</number>
+         <number>-60</number>
         </property>
         <property name="orientation">
          <enum>Qt::Vertical</enum>
+        </property>
+        <property name="invertedAppearance">
+         <bool>false</bool>
         </property>
         <property name="format">
          <string/>
@@ -283,6 +292,9 @@ font-size: 12px;</string>
         <property name="maximum">
          <number>50</number>
         </property>
+        <property name="pageStep">
+         <number>3</number>
+        </property>
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>
@@ -322,7 +334,7 @@ font-size: 12px;</string>
       </size>
      </property>
      <property name="styleSheet">
-      <string notr="true">background-color: rgb(140, 160, 255);
+      <string notr="true">background-color: rgb(200, 220, 255);
 color: black;
 font-size: 12px;</string>
      </property>
@@ -396,6 +408,9 @@ font-size: 12px;</string>
         <property name="maximum">
          <number>50</number>
         </property>
+        <property name="pageStep">
+         <number>3</number>
+        </property>
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>
@@ -428,9 +443,9 @@ font-size: 12px;</string>
       </size>
      </property>
      <property name="styleSheet">
-      <string notr="true">background-color: rgb(140, 160, 255);
+      <string notr="true">background-color: rgb(200, 220, 255);
 color: black;
-font-size: 9px;</string>
+font-size: 12px;</string>
      </property>
      <property name="frameShape">
       <enum>QFrame::StyledPanel</enum>
@@ -502,6 +517,9 @@ font-size: 9px;</string>
         <property name="maximum">
          <number>50</number>
         </property>
+        <property name="pageStep">
+         <number>3</number>
+        </property>
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>
@@ -534,7 +552,7 @@ font-size: 9px;</string>
       </size>
      </property>
      <property name="styleSheet">
-      <string notr="true">background-color: rgb(140, 160, 255);
+      <string notr="true">background-color: rgb(200, 220, 255);
 color: black;
 font-size: 12px;</string>
      </property>
@@ -608,6 +626,9 @@ font-size: 12px;</string>
         <property name="maximum">
          <number>50</number>
         </property>
+        <property name="pageStep">
+         <number>3</number>
+        </property>
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>
@@ -640,9 +661,9 @@ font-size: 12px;</string>
       </size>
      </property>
      <property name="styleSheet">
-      <string notr="true">background-color: rgb(140, 160, 255);
+      <string notr="true">background-color: rgb(200, 220, 255);
 color: black;
-font-size: 9px;</string>
+font-size: 12px;</string>
      </property>
      <property name="frameShape">
       <enum>QFrame::StyledPanel</enum>
@@ -714,6 +735,9 @@ font-size: 9px;</string>
         <property name="maximum">
          <number>50</number>
         </property>
+        <property name="pageStep">
+         <number>3</number>
+        </property>
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>
@@ -746,7 +770,7 @@ font-size: 9px;</string>
       </size>
      </property>
      <property name="styleSheet">
-      <string notr="true">background-color: rgb(140, 160, 255);
+      <string notr="true">background-color: rgb(200, 220, 255);
 color: black;
 font-size: 12px;</string>
      </property>
@@ -820,6 +844,9 @@ font-size: 12px;</string>
         <property name="maximum">
          <number>50</number>
         </property>
+        <property name="pageStep">
+         <number>3</number>
+        </property>
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>
@@ -859,7 +886,7 @@ font-size: 12px;</string>
       </size>
      </property>
      <property name="styleSheet">
-      <string notr="true">background-color: rgb(80, 255, 80);
+      <string notr="true">background-color: rgb(180, 255, 180);
 color: black;
 font-size: 9px;</string>
      </property>
@@ -927,6 +954,9 @@ font-size: 9px;</string>
         <property name="styleSheet">
          <string notr="true"/>
         </property>
+        <property name="pageStep">
+         <number>3</number>
+        </property>
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>
@@ -959,7 +989,7 @@ font-size: 9px;</string>
       </size>
      </property>
      <property name="styleSheet">
-      <string notr="true">background-color: rgb(80, 255, 80);
+      <string notr="true">background-color: rgb(180, 255, 180);
 color: black;
 font-size: 9px;</string>
      </property>
@@ -1027,6 +1057,9 @@ font-size: 9px;</string>
         <property name="styleSheet">
          <string notr="true"/>
         </property>
+        <property name="pageStep">
+         <number>3</number>
+        </property>
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>
@@ -1066,7 +1099,7 @@ font-size: 9px;</string>
       </size>
      </property>
      <property name="styleSheet">
-      <string notr="true">background-color: rgb(180, 180, 180);
+      <string notr="true">background-color: rgb(210, 210, 210);
 color: black;
 font-size: 9px;</string>
      </property>
@@ -1139,6 +1172,9 @@ font-size: 9px;</string>
         </property>
         <property name="maximum">
          <number>50</number>
+        </property>
+        <property name="pageStep">
+         <number>3</number>
         </property>
         <property name="orientation">
          <enum>Qt::Horizontal</enum>

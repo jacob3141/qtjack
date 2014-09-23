@@ -25,8 +25,9 @@
 #include "mainmixerwidget.h"
 #include "ui_mainmixerwidget.h"
 
-// QJackAudio includes
-#include <QJackClient>
+// Qt includes
+#include <QFontDatabase>
+#include <QDebug>
 
 MainMixerWidget::MainMixerWidget(QWidget *parent) :
     QWidget(parent),
@@ -38,6 +39,25 @@ MainMixerWidget::MainMixerWidget(QWidget *parent) :
     _updateTimer.setInterval(20);
     _updateTimer.setSingleShot(false);
     _updateTimer.start();
+
+    QFontDatabase::addApplicationFont(":/fonts/FreePixel.ttf");
+    QFont font("Free Pixel", 24);
+    font.setStyleStrategy(QFont::NoAntialias);
+    ui->displayLabel->setFont(font);
+    //
+
+    QJackClient *jackClient = QJackClient::instance();
+    _subGroup1Out = jackClient->registerAudioOutPort("subgroup1_out");
+    _subGroup2Out = jackClient->registerAudioOutPort("subgroup2_out");
+    _subGroup3Out = jackClient->registerAudioOutPort("subgroup3_out");
+    _subGroup4Out = jackClient->registerAudioOutPort("subgroup4_out");
+    _subGroup5Out = jackClient->registerAudioOutPort("subgroup5_out");
+    _subGroup6Out = jackClient->registerAudioOutPort("subgroup6_out");
+    _subGroup7Out = jackClient->registerAudioOutPort("subgroup7_out");
+    _subGroup8Out = jackClient->registerAudioOutPort("subgroup8_out");
+
+    _mainLeftOut = jackClient->registerAudioOutPort("main_out_1");
+    _mainRightOut = jackClient->registerAudioOutPort("main_out_2");
 }
 
 MainMixerWidget::~MainMixerWidget()
@@ -51,14 +71,26 @@ void MainMixerWidget::registerChannel(int i, ChannelWidget *channelWidget)
     _registeredChannels.insert(i, channelWidget);
 }
 
+void MainMixerWidget::process()
+{
+    foreach(ChannelWidget *channelWidget, _registeredChannels) {
+        channelWidget->process();
+    }
+}
+
+
 void MainMixerWidget::updateInterface()
 {
     QJackClient *jackClient = QJackClient::instance();
     QString displayText;
-    displayText += QString("<table width=\"100%\"><tr><td><b>JACK Client</b></td><td></td></tr>");
-    displayText += QString("<tr><td>Realtime processing:</td><td>%1</td></tr>").arg(jackClient->isRealtime() ? "Yes" : "No");
-    displayText += QString("<tr><td>Buffer size:</td><td>%1 Samples</td></tr>").arg(jackClient->bufferSize());
-    displayText += QString("<tr><td>CPU load:</td><td>%1</td></tr>").arg(jackClient->cpuLoad() < 5.0 ? "Idle" : QString("%1 %").arg(jackClient->cpuLoad()));
-    displayText += QString("<tr><td>Sample rate:</td><td>%1 Hz</td></tr></table>").arg(jackClient->sampleRate());
+    //displayText += QString("<table width=\"100%\"><tr><td><b>JACK Client</b></td><td></td></tr>");
+    displayText += QString("<tr><td>RT processing:</td><td>%1</td></tr>").arg(jackClient->isRealtime() ? "Yes" : "No");
+    displayText += QString("<tr><td>Buffers.:</td><td>%1 Samples</td></tr>").arg(jackClient->bufferSize());
+    displayText += QString("<tr><td>CPU load:</td><td>%1</td></tr>").arg(jackClient->cpuLoad() < 5.0 ? "Idle" : QString("%1 %").arg((int)jackClient->cpuLoad()));
+    displayText += QString("<tr><td>Samplerate:</td><td>%1 Hz</td></tr></table>").arg(jackClient->sampleRate());
     ui->displayLabel->setText(displayText);
+
+    foreach(ChannelWidget *channelWidget, _registeredChannels) {
+        channelWidget->updateInterface();
+    }
 }

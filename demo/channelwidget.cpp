@@ -21,9 +21,13 @@
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
+// Own includes
 #include "channelwidget.h"
 #include "ui_channelwidget.h"
 
+// QJackAudio includes
+#include <QSampleBuffer>
+#include <QUnits>
 
 ChannelWidget::ChannelWidget(int channelNumber, QWidget *parent) :
     QWidget(parent),
@@ -36,9 +40,35 @@ ChannelWidget::ChannelWidget(int channelNumber, QWidget *parent) :
     _auxSend = QJackClient::instance()->registerAudioOutPort(QString("ch%1_aux_send").arg(channelNumber));
     _auxReturn = QJackClient::instance()->registerAudioInPort(QString("ch%1_aux_ret").arg(channelNumber));
     _channelOut = QJackClient::instance()->registerAudioOutPort(QString("ch%1_out").arg(channelNumber));
+
+    _inputStage = new QAmplifier();
+    _equalizer = new QEqualizer(64, 32);
+
+    connect(ui->gainDial, SIGNAL(valueChanged(int)), _inputStage, SLOT(setGain(int)));
 }
 
 ChannelWidget::~ChannelWidget()
 {
     delete ui;
+}
+
+void ChannelWidget::process()
+{
+    QSampleBuffer sampleBuffer = _channelIn->sampleBuffer();
+
+    double peak = 0.0;
+    for(int i = 0; i < sampleBuffer.size(); i++) {
+        double sample = QUnits::peak(sampleBuffer.readAudioSample(i));
+        peak = sample > peak ? sample : peak;
+    }
+    _peak = QUnits::linearToDb(peak);
+
+    _inputStage->process(sampleBuffer);
+    _equalizer->process(sampleBuffer);
+
+}
+
+void ChannelWidget::updateInterface()
+{
+    ui->progressBar->setValue((int)_peak);
 }

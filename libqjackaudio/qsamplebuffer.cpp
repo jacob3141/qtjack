@@ -46,7 +46,7 @@ QSampleBuffer::BufferType QSampleBuffer::bufferType()
     return _bufferType;
 }
 
-int QSampleBuffer::bufferSize()
+int QSampleBuffer::size()
 {
     return _bufferSize;
 }

@@ -24,17 +24,22 @@
 #ifndef CHANNELWIDGET_H
 #define CHANNELWIDGET_H
 
+// Qt includes
 #include <QWidget>
 
-
+// QJackAudio includes
 #include <QJackClient>
 #include <QEqualizer>
+#include <QAmplifier>
 #include <QJackPort>
 
 namespace Ui {
 class ChannelWidget;
 }
 
+/**
+ * @brief The ChannelWidget class
+ */
 class ChannelWidget : public QWidget
 {
     Q_OBJECT
@@ -43,12 +48,21 @@ public:
     explicit ChannelWidget(int channelNumber, QWidget *parent = 0);
     ~ChannelWidget();
 
+    void process();
+
+    void updateInterface();
+
 private:
     Ui::ChannelWidget *ui;
+    QAmplifier *_inputStage;
+    QEqualizer *_equalizer;
+
     QJackPort *_channelIn;
     QJackPort *_auxSend;
     QJackPort *_auxReturn;
     QJackPort *_channelOut;
+
+    double _peak;
 };
 
 #endif // CHANNELWIDGET_H

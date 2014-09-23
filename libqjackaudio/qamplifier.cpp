@@ -45,7 +45,7 @@ void QAmplifier::process(QSampleBuffer sampleBuffer)
 
     isActive = true;
 
-    int bufferSize = sampleBuffer.bufferSize();
+    int bufferSize = sampleBuffer.size();
     for(int i = 0; i < bufferSize; i++) {
         // Read audio sample
         double result = sampleBuffer.readAudioSample(i) * QUnits::dbToLinear(gain);

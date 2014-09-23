@@ -52,7 +52,7 @@ public:
     BufferType bufferType();
 
     /** @return the buffer size. */
-    int bufferSize();
+    int size();
 
     /** @returns sample at position i in the audio buffer. */
     double readAudioSample(int i);
@@ -67,7 +67,7 @@ public:
     bool copyTo(QSampleBuffer sampleBuffer);
 
 private:
-    QSampleBuffer(BufferType bufferType, int bufferSize, void* buffer);
+    QSampleBuffer(BufferType bufferType, int size, void* buffer);
 
     QString _lastError;
 

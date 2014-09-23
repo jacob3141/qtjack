@@ -24,16 +24,24 @@
 #ifndef MAINMIXERWIDGET_H
 #define MAINMIXERWIDGET_H
 
+// Qt includes
 #include <QWidget>
 #include <QMap>
 #include <QTimer>
 
+// QJackAudio includes
+#include <QJackClient>
+
+// Own includes
 #include "channelwidget.h"
 
 namespace Ui {
 class MainMixerWidget;
 }
 
+/**
+ * @brief The MainMixerWidget class
+ */
 class MainMixerWidget : public QWidget
 {
     Q_OBJECT
@@ -44,6 +52,8 @@ public:
 
     void registerChannel(int i, ChannelWidget *channelWidget);
 
+    void process();
+
 public slots:
     void updateInterface();
 
@@ -53,6 +63,20 @@ private:
     QTimer _updateTimer;
 
     QMap<int, ChannelWidget*> _registeredChannels;
+
+    //
+
+    QJackPort *_subGroup1Out;
+    QJackPort *_subGroup2Out;
+    QJackPort *_subGroup3Out;
+    QJackPort *_subGroup4Out;
+    QJackPort *_subGroup5Out;
+    QJackPort *_subGroup6Out;
+    QJackPort *_subGroup7Out;
+    QJackPort *_subGroup8Out;
+
+    QJackPort *_mainLeftOut;
+    QJackPort *_mainRightOut;
 };
 
 #endif // MAINMIXERWIDGET_H

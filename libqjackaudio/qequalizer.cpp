@@ -176,7 +176,7 @@ void QEqualizer::computeFilterCoefficients()
 void QEqualizer::process(QSampleBuffer sampleBuffer)
 {
     QMutexLocker mutexLocker(&_mutex);
-    int bufferSize = sampleBuffer.bufferSize();
+    int bufferSize = sampleBuffer.size();
     for(int i = 0; i < bufferSize; i++) {
         double result = 0.0;
         _delayLine[0] = sampleBuffer.readAudioSample(i);

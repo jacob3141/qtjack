@@ -51,13 +51,13 @@ MainWindow::MainWindow(QWidget *parent) :
     hBoxLayout->setSpacing(0);
     hBoxLayout->setMargin(0);
 
-    MainMixerWidget *mainMixerWidget = new MainMixerWidget();
+    _mainMixerWidget = new MainMixerWidget();
     for(int i = 0; i < 24; i++) {
         ChannelWidget *channelWidget = new ChannelWidget(i + 1);
-        mainMixerWidget->registerChannel(i + 1, channelWidget);
+        _mainMixerWidget->registerChannel(i + 1, channelWidget);
         hBoxLayout->addWidget(channelWidget);
     }
-    hBoxLayout->addWidget(mainMixerWidget);
+    hBoxLayout->addWidget(_mainMixerWidget);
 
     QWidget *widget = new QWidget();
     widget->setStyleSheet("background-color: rgb(120, 120, 120);");
@@ -70,25 +70,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 void MainWindow::process()
 {
-//    // Get handles to input buffers
-//    QSampleBuffer buffer1 = _in1->sampleBuffer();
-//    QSampleBuffer buffer2 = _in2->sampleBuffer();
-
-//    _noiseGateLeft->process(buffer1);
-//    _noiseGateRight->process(buffer2);
-
-//    // Process input with EQs
-//    _equalizerLeft->process(buffer1);
-//    _equalizerRight->process(buffer2);
-
-//    _compressorLeft->process(buffer1);
-//    _compressorRight->process(buffer2);
-
-//    // Write result to output buffers
-//    buffer1.copyTo(_out1->sampleBuffer());
-//    buffer2.copyTo(_out2->sampleBuffer());
-
-//    _signalGenerator->process(_outSignal->sampleBuffer());
+    _mainMixerWidget->process();
 }
 
 MainWindow::~MainWindow()

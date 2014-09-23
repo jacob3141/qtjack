@@ -56,7 +56,7 @@ void QNoiseGate::process(QSampleBuffer sampleBuffer)
         return;
     }
 
-    int bufferSize = sampleBuffer.bufferSize();
+    int bufferSize = sampleBuffer.size();
     for(int i = 0; i < bufferSize; i++) {
         // Read audio sample
         double sample = sampleBuffer.readAudioSample(i);

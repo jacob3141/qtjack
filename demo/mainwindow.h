@@ -29,12 +29,11 @@
 #include <QTimer>
 
 // QJackClient includes
-#include <QJackPort>
 #include <QAudioProcessor>
-#include <QEqualizer>
-#include <QCompressor>
-#include <QNoiseGate>
-#include <QSignalGenerator>
+
+
+// Own includes
+#include "mainmixerwidget.h"
 
 namespace Ui {
 class MainWindow;
@@ -53,6 +52,7 @@ public:
 private:
     Ui::MainWindow *ui;
 
+    MainMixerWidget *_mainMixerWidget;
 };
 
 #endif // MAINWINDOW_H

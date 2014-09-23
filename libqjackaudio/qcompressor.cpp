@@ -62,7 +62,7 @@ void QCompressor::process(QSampleBuffer sampleBuffer)
     Q_UNUSED(attack);
     Q_UNUSED(release);
 
-    int bufferSize = sampleBuffer.bufferSize();
+    int bufferSize = sampleBuffer.size();
     double inputGainMultiplier = QUnits::dbToLinear(inputGain);
     double makeupGainMultiplier = QUnits::dbToLinear(makeupGain);
     for(int i = 0; i < bufferSize; i++) {
