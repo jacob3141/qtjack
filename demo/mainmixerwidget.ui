@@ -238,7 +238,7 @@ color: rgb(0, 30, 40);</string>
 border: 0px;
 border-radius: 0px;
 
-font-size: 32px;</string>
+font-size: 16px;</string>
            </property>
            <property name="text">
             <string>MX2482 Mixing Console</string>

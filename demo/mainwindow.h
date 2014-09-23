@@ -49,6 +49,9 @@ public:
 
     void process();
 
+protected:
+    void closeEvent(QCloseEvent *closeEvent);
+
 private:
     Ui::MainWindow *ui;
 

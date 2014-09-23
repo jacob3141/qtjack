@@ -77,3 +77,10 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
+
+void MainWindow::closeEvent(QCloseEvent *closeEvent)
+{
+    QJackClient::instance()->stopAudioProcessing();
+    QMainWindow::closeEvent(closeEvent);
+}
+
