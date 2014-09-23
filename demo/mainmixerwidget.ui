@@ -6,9 +6,21 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>562</width>
-    <height>767</height>
+    <width>508</width>
+    <height>1014</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>508</width>
+    <height>0</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>508</width>
+    <height>16777215</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>Form</string>
@@ -61,13 +73,177 @@ border: none;
     </spacer>
    </item>
    <item>
-    <widget class="QLabel" name="label_28">
+    <widget class="QLabel" name="mxLogoLabel">
+     <property name="maximumSize">
+      <size>
+       <width>500</width>
+       <height>500</height>
+      </size>
+     </property>
      <property name="text">
       <string/>
      </property>
      <property name="pixmap">
       <pixmap resource="resources.qrc">:/images/mx2482logo.png</pixmap>
      </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QFrame" name="frame_8">
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout_8">
+      <item>
+       <widget class="QPushButton" name="clearPushButton">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>24</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>24</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Clear</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="saveStatePushButton">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>24</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>24</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Save State</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="loadStatePushButton">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>24</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>24</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Load State</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="aboutPushButton">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>24</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>24</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>About</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QFrame" name="frame_9">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>200</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>200</height>
+      </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QFrame {
+	border: 2px solid rgb(30, 30, 30);
+border-radius: 4px;
+	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(21, 21, 21, 255), stop:1 rgba(31, 31, 31, 255));
+color: white;
+font-size: 12px;
+}</string>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_28">
+      <item>
+       <widget class="QFrame" name="frame_10">
+        <property name="styleSheet">
+         <string notr="true">background-color: qlineargradient(spread:reflect, x1:1, y1:1, x2:0.179735, y2:0.295, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(65, 65, 65, 255));
+border-radius: 5px;
+border-bottom: 3px solid rgb(35, 35, 35);
+border-right: 3px solid rgb(40, 40, 40);
+
+border-top: 3px solid rgb(20, 20, 20);
+
+border-left: 3px solid rgb(20, 20, 20);</string>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_29">
+         <item>
+          <widget class="QLabel" name="displayLabel">
+           <property name="styleSheet">
+            <string notr="true">border: 0px;
+font-size: 16px;
+font-family: Mono;</string>
+           </property>
+           <property name="text">
+            <string>MX2482 Mixing Console</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+     </layout>
     </widget>
    </item>
    <item>
@@ -107,7 +283,7 @@ border: none;
         </property>
         <property name="maximumSize">
          <size>
-          <width>16777215</width>
+          <width>500</width>
           <height>220</height>
          </size>
         </property>
@@ -115,7 +291,7 @@ border: none;
          <string notr="true">QFrame {
 	border: 2px solid rgb(30, 30, 30);
 border-radius: 4px;
-	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(31, 31, 31, 255));
+	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(21, 21, 21, 255), stop:1 rgba(31, 31, 31, 255));
 color: white;
 font-size: 12px;
 }</string>
@@ -127,6 +303,9 @@ font-size: 12px;
          <enum>QFrame::Raised</enum>
         </property>
         <layout class="QHBoxLayout" name="horizontalLayout_7">
+         <property name="spacing">
+          <number>2</number>
+         </property>
          <item>
           <layout class="QVBoxLayout" name="verticalLayout_16">
            <property name="leftMargin">
@@ -136,7 +315,7 @@ font-size: 12px;
             <number>10</number>
            </property>
            <item>
-            <widget class="QProgressBar" name="progressBar">
+            <widget class="QProgressBar" name="subgroup1ProgressBar">
              <property name="styleSheet">
               <string notr="true"> QProgressBar {
      border: 0px solid rgb(50, 50, 50);
@@ -202,7 +381,7 @@ border: 0px;</string>
             <number>10</number>
            </property>
            <item>
-            <widget class="QProgressBar" name="progressBar_2">
+            <widget class="QProgressBar" name="subgroup2ProgressBar">
              <property name="styleSheet">
               <string notr="true"> QProgressBar {
      border: 0px solid rgb(50, 50, 50);
@@ -291,7 +470,7 @@ background-color: white;</string>
             <number>10</number>
            </property>
            <item>
-            <widget class="QProgressBar" name="progressBar_4">
+            <widget class="QProgressBar" name="subgroup3ProgressBar">
              <property name="styleSheet">
               <string notr="true"> QProgressBar {
      border: 0px solid rgb(50, 50, 50);
@@ -357,7 +536,7 @@ border: 0px;</string>
             <number>10</number>
            </property>
            <item>
-            <widget class="QProgressBar" name="progressBar_3">
+            <widget class="QProgressBar" name="subgroup4ProgressBar">
              <property name="styleSheet">
               <string notr="true"> QProgressBar {
      border: 0px solid rgb(50, 50, 50);
@@ -446,7 +625,7 @@ background-color: white;</string>
             <number>10</number>
            </property>
            <item>
-            <widget class="QProgressBar" name="progressBar_6">
+            <widget class="QProgressBar" name="subgroup5ProgressBar">
              <property name="styleSheet">
               <string notr="true"> QProgressBar {
      border: 0px solid rgb(50, 50, 50);
@@ -512,7 +691,7 @@ border: 0px;</string>
             <number>10</number>
            </property>
            <item>
-            <widget class="QProgressBar" name="progressBar_5">
+            <widget class="QProgressBar" name="subgroup6ProgressBar">
              <property name="styleSheet">
               <string notr="true"> QProgressBar {
      border: 0px solid rgb(50, 50, 50);
@@ -601,7 +780,7 @@ background-color: white;</string>
             <number>10</number>
            </property>
            <item>
-            <widget class="QProgressBar" name="progressBar_8">
+            <widget class="QProgressBar" name="subgroup7ProgressBar">
              <property name="styleSheet">
               <string notr="true"> QProgressBar {
      border: 0px solid rgb(50, 50, 50);
@@ -667,7 +846,7 @@ border: 0px;</string>
             <number>10</number>
            </property>
            <item>
-            <widget class="QProgressBar" name="progressBar_7">
+            <widget class="QProgressBar" name="subgroup8ProgressBar">
              <property name="styleSheet">
               <string notr="true"> QProgressBar {
      border: 0px solid rgb(50, 50, 50);
@@ -756,7 +935,7 @@ background-color: white;</string>
             <number>10</number>
            </property>
            <item>
-            <widget class="QProgressBar" name="progressBar_10">
+            <widget class="QProgressBar" name="main1ProgressBar">
              <property name="styleSheet">
               <string notr="true"> QProgressBar {
      border: 0px solid rgb(50, 50, 50);
@@ -822,7 +1001,7 @@ border: 0px;</string>
             <number>10</number>
            </property>
            <item>
-            <widget class="QProgressBar" name="progressBar_9">
+            <widget class="QProgressBar" name="main2ProgressBar">
              <property name="styleSheet">
               <string notr="true"> QProgressBar {
      border: 0px solid rgb(50, 50, 50);
@@ -995,7 +1174,7 @@ font-size: 12px;
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="subgroup12PushButton_2">
+             <widget class="QPushButton" name="subgroup1MutePushButton">
               <property name="minimumSize">
                <size>
                 <width>42</width>
@@ -1026,7 +1205,7 @@ border: 2px solid rgb(60, 120, 60);
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="subgroup12PushButton_3">
+             <widget class="QPushButton" name="subgroup1SoloPushButton">
               <property name="minimumSize">
                <size>
                 <width>42</width>
@@ -1057,7 +1236,7 @@ border: 2px solid rgb(60, 60, 120);
              </widget>
             </item>
             <item>
-             <widget class="QSlider" name="volumeVerticalSlider">
+             <widget class="QSlider" name="subgroup1VolumeVerticalSlider">
               <property name="minimumSize">
                <size>
                 <width>42</width>
@@ -1121,7 +1300,7 @@ QSlider::handle:vertical:hover {
                <bool>true</bool>
               </property>
               <property name="checked">
-               <bool>true</bool>
+               <bool>false</bool>
               </property>
              </widget>
             </item>
@@ -1165,7 +1344,7 @@ QSlider::handle:vertical:hover {
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="subgroup12PushButton_4">
+             <widget class="QPushButton" name="subgroup2MutePushButton">
               <property name="minimumSize">
                <size>
                 <width>42</width>
@@ -1196,7 +1375,7 @@ border: 2px solid rgb(60, 120, 60);
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="subgroup12PushButton_5">
+             <widget class="QPushButton" name="subgroup2SoloPushButton">
               <property name="minimumSize">
                <size>
                 <width>42</width>
@@ -1227,7 +1406,7 @@ border: 2px solid rgb(60, 60, 120);
              </widget>
             </item>
             <item>
-             <widget class="QSlider" name="volumeVerticalSlider_2">
+             <widget class="QSlider" name="subgroup2VolumeVerticalSlider">
               <property name="minimumSize">
                <size>
                 <width>42</width>
@@ -1291,7 +1470,7 @@ QSlider::handle:vertical:hover {
                <bool>true</bool>
               </property>
               <property name="checked">
-               <bool>true</bool>
+               <bool>false</bool>
               </property>
              </widget>
             </item>
@@ -1407,7 +1586,7 @@ font-size: 12px;
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="subgroup12PushButton_6">
+             <widget class="QPushButton" name="subgroup3MutePushButton">
               <property name="minimumSize">
                <size>
                 <width>42</width>
@@ -1438,7 +1617,7 @@ border: 2px solid rgb(60, 120, 60);
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="subgroup12PushButton_7">
+             <widget class="QPushButton" name="subgroup3SoloPushButton">
               <property name="minimumSize">
                <size>
                 <width>42</width>
@@ -1469,7 +1648,7 @@ border: 2px solid rgb(60, 60, 120);
              </widget>
             </item>
             <item>
-             <widget class="QSlider" name="volumeVerticalSlider_3">
+             <widget class="QSlider" name="subgroup3VolumeVerticalSlider">
               <property name="minimumSize">
                <size>
                 <width>42</width>
@@ -1533,7 +1712,7 @@ QSlider::handle:vertical:hover {
                <bool>true</bool>
               </property>
               <property name="checked">
-               <bool>true</bool>
+               <bool>false</bool>
               </property>
              </widget>
             </item>
@@ -1577,7 +1756,7 @@ QSlider::handle:vertical:hover {
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="subgroup12PushButton_8">
+             <widget class="QPushButton" name="subgroup4MutePushButton">
               <property name="minimumSize">
                <size>
                 <width>42</width>
@@ -1608,7 +1787,7 @@ border: 2px solid rgb(60, 120, 60);
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="subgroup12PushButton_9">
+             <widget class="QPushButton" name="subgroup4SoloPushButton">
               <property name="minimumSize">
                <size>
                 <width>42</width>
@@ -1639,7 +1818,7 @@ border: 2px solid rgb(60, 60, 120);
              </widget>
             </item>
             <item>
-             <widget class="QSlider" name="volumeVerticalSlider_4">
+             <widget class="QSlider" name="subgroup4VolumeVerticalSlider">
               <property name="minimumSize">
                <size>
                 <width>42</width>
@@ -1703,7 +1882,7 @@ QSlider::handle:vertical:hover {
                <bool>true</bool>
               </property>
               <property name="checked">
-               <bool>true</bool>
+               <bool>false</bool>
               </property>
              </widget>
             </item>
@@ -1819,7 +1998,7 @@ font-size: 12px;
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="subgroup12PushButton_10">
+             <widget class="QPushButton" name="subgroup5MutePushButton">
               <property name="minimumSize">
                <size>
                 <width>42</width>
@@ -1850,7 +2029,7 @@ border: 2px solid rgb(60, 120, 60);
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="subgroup12PushButton_11">
+             <widget class="QPushButton" name="subgroup5SoloPushButton">
               <property name="minimumSize">
                <size>
                 <width>42</width>
@@ -1881,7 +2060,7 @@ border: 2px solid rgb(60, 60, 120);
              </widget>
             </item>
             <item>
-             <widget class="QSlider" name="volumeVerticalSlider_5">
+             <widget class="QSlider" name="subgroup5VolumeVerticalSlider">
               <property name="minimumSize">
                <size>
                 <width>42</width>
@@ -1945,7 +2124,7 @@ QSlider::handle:vertical:hover {
                <bool>true</bool>
               </property>
               <property name="checked">
-               <bool>true</bool>
+               <bool>false</bool>
               </property>
              </widget>
             </item>
@@ -1989,7 +2168,7 @@ QSlider::handle:vertical:hover {
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="subgroup12PushButton_12">
+             <widget class="QPushButton" name="subgroup6MutePushButton">
               <property name="minimumSize">
                <size>
                 <width>42</width>
@@ -2020,7 +2199,7 @@ border: 2px solid rgb(60, 120, 60);
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="subgroup12PushButton_13">
+             <widget class="QPushButton" name="subgroup6SoloPushButton">
               <property name="minimumSize">
                <size>
                 <width>42</width>
@@ -2051,7 +2230,7 @@ border: 2px solid rgb(60, 60, 120);
              </widget>
             </item>
             <item>
-             <widget class="QSlider" name="volumeVerticalSlider_6">
+             <widget class="QSlider" name="subgroup6VolumeVerticalSlider">
               <property name="minimumSize">
                <size>
                 <width>42</width>
@@ -2115,7 +2294,7 @@ QSlider::handle:vertical:hover {
                <bool>true</bool>
               </property>
               <property name="checked">
-               <bool>true</bool>
+               <bool>false</bool>
               </property>
              </widget>
             </item>
@@ -2231,7 +2410,7 @@ font-size: 12px;
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="subgroup12PushButton_14">
+             <widget class="QPushButton" name="subgroup7MutePushButton">
               <property name="minimumSize">
                <size>
                 <width>42</width>
@@ -2262,7 +2441,7 @@ border: 2px solid rgb(60, 120, 60);
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="subgroup12PushButton_15">
+             <widget class="QPushButton" name="subgroup7SoloPushButton">
               <property name="minimumSize">
                <size>
                 <width>42</width>
@@ -2293,7 +2472,7 @@ border: 2px solid rgb(60, 60, 120);
              </widget>
             </item>
             <item>
-             <widget class="QSlider" name="volumeVerticalSlider_7">
+             <widget class="QSlider" name="subgroup7VolumeVerticalSlider">
               <property name="minimumSize">
                <size>
                 <width>42</width>
@@ -2357,7 +2536,7 @@ QSlider::handle:vertical:hover {
                <bool>true</bool>
               </property>
               <property name="checked">
-               <bool>true</bool>
+               <bool>false</bool>
               </property>
              </widget>
             </item>
@@ -2401,7 +2580,7 @@ QSlider::handle:vertical:hover {
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="subgroup12PushButton_16">
+             <widget class="QPushButton" name="subgroup8MutePushButton">
               <property name="minimumSize">
                <size>
                 <width>42</width>
@@ -2432,7 +2611,7 @@ border: 2px solid rgb(60, 120, 60);
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="subgroup12PushButton_17">
+             <widget class="QPushButton" name="subgroup8SoloPushButton">
               <property name="minimumSize">
                <size>
                 <width>42</width>
@@ -2463,7 +2642,7 @@ border: 2px solid rgb(60, 60, 120);
              </widget>
             </item>
             <item>
-             <widget class="QSlider" name="volumeVerticalSlider_8">
+             <widget class="QSlider" name="subgroup8VolumeVerticalSlider">
               <property name="minimumSize">
                <size>
                 <width>42</width>
@@ -2527,7 +2706,7 @@ QSlider::handle:vertical:hover {
                <bool>true</bool>
               </property>
               <property name="checked">
-               <bool>true</bool>
+               <bool>false</bool>
               </property>
              </widget>
             </item>
@@ -2643,7 +2822,7 @@ font-size: 12px;
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="subgroup12PushButton_18">
+             <widget class="QPushButton" name="main1MutePushButton">
               <property name="minimumSize">
                <size>
                 <width>42</width>
@@ -2674,7 +2853,7 @@ border: 2px solid rgb(60, 120, 60);
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="subgroup12PushButton_19">
+             <widget class="QPushButton" name="main1SoloPushButton">
               <property name="minimumSize">
                <size>
                 <width>42</width>
@@ -2705,7 +2884,7 @@ border: 2px solid rgb(60, 60, 120);
              </widget>
             </item>
             <item>
-             <widget class="QSlider" name="volumeVerticalSlider_9">
+             <widget class="QSlider" name="main1VolumeVerticalSlider">
               <property name="minimumSize">
                <size>
                 <width>42</width>
@@ -2810,7 +2989,7 @@ QSlider::handle:vertical:hover {
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="subgroup12PushButton_20">
+             <widget class="QPushButton" name="main2MutePushButton">
               <property name="minimumSize">
                <size>
                 <width>42</width>
@@ -2841,7 +3020,7 @@ border: 2px solid rgb(60, 120, 60);
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="subgroup12PushButton_21">
+             <widget class="QPushButton" name="main2SoloPushButton">
               <property name="minimumSize">
                <size>
                 <width>42</width>
@@ -2872,7 +3051,7 @@ border: 2px solid rgb(60, 60, 120);
              </widget>
             </item>
             <item>
-             <widget class="QSlider" name="volumeVerticalSlider_10">
+             <widget class="QSlider" name="main2VolumeVerticalSlider">
               <property name="minimumSize">
                <size>
                 <width>42</width>

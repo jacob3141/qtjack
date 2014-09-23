@@ -26,6 +26,7 @@
 
 #include <QWidget>
 #include <QMap>
+#include <QTimer>
 
 #include "channelwidget.h"
 
@@ -43,8 +44,13 @@ public:
 
     void registerChannel(int i, ChannelWidget *channelWidget);
 
+public slots:
+    void updateInterface();
+
 private:
     Ui::MainMixerWidget *ui;
+
+    QTimer _updateTimer;
 
     QMap<int, ChannelWidget*> _registeredChannels;
 };
