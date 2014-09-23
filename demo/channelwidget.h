@@ -48,13 +48,27 @@ public:
     explicit ChannelWidget(int channelNumber, QWidget *parent = 0);
     ~ChannelWidget();
 
-    void process();
+    QSampleBuffer process();
 
     void updateInterface();
+
+    double panorama();
+    bool isInSubGroup12();
+    bool isInSubGroup34();
+    bool isInSubGroup56();
+    bool isInSubGroup78();
+
+    bool isMuted();
+    bool isSoloed();
+
+    bool isOnMain();
 
 private:
     Ui::ChannelWidget *ui;
     QAmplifier *_inputStage;
+    QAmplifier *_faderStage;
+    QAmplifier *_auxPre;
+    QAmplifier *_auxPost;
     QEqualizer *_equalizer;
 
     QJackPort *_channelIn;

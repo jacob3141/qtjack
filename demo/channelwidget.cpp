@@ -42,9 +42,13 @@ ChannelWidget::ChannelWidget(int channelNumber, QWidget *parent) :
     _channelOut = QJackClient::instance()->registerAudioOutPort(QString("ch%1_out").arg(channelNumber));
 
     _inputStage = new QAmplifier();
+    _faderStage = new QAmplifier();
+    _auxPre = new QAmplifier();
+    _auxPost = new QAmplifier();
     _equalizer = new QEqualizer(64, 32);
 
     connect(ui->gainDial, SIGNAL(valueChanged(int)), _inputStage, SLOT(setGain(int)));
+    connect(ui->volumeVerticalSlider, SIGNAL(valueChanged(int)), _faderStage, SLOT(setGain(int)));
 }
 
 ChannelWidget::~ChannelWidget()
@@ -52,7 +56,7 @@ ChannelWidget::~ChannelWidget()
     delete ui;
 }
 
-void ChannelWidget::process()
+QSampleBuffer ChannelWidget::process()
 {
     QSampleBuffer sampleBuffer = _channelIn->sampleBuffer();
 
@@ -64,11 +68,69 @@ void ChannelWidget::process()
     _peak = QUnits::linearToDb(peak);
 
     _inputStage->process(sampleBuffer);
-    _equalizer->process(sampleBuffer);
 
+    if(ui->equalizerOnPushButton->isChecked()) {
+        _equalizer->process(sampleBuffer);
+    }
+
+    if(ui->auxOnPushButton->isChecked()) {
+        // Attenuate signal
+        _auxPre->process(sampleBuffer);
+        // Send signal
+        sampleBuffer.copyTo(_auxSend->sampleBuffer());
+        // Take received signal
+        _auxReturn->sampleBuffer().copyTo(sampleBuffer);
+        // Attenuate signal
+        _auxPost->process(sampleBuffer);
+    }
+
+    _faderStage->process(sampleBuffer);
+    sampleBuffer.copyTo(_channelOut->sampleBuffer());
+
+    return sampleBuffer;
 }
 
 void ChannelWidget::updateInterface()
 {
     ui->progressBar->setValue((int)_peak);
+}
+
+double ChannelWidget::panorama()
+{
+    return (double)ui->panDial->value() / 100.0;
+}
+
+bool ChannelWidget::isInSubGroup12()
+{
+    return ui->subgroup12PushButton->isChecked();
+}
+
+bool ChannelWidget::isInSubGroup34()
+{
+    return ui->subgroup34PushButton->isChecked();
+}
+
+bool ChannelWidget::isInSubGroup56()
+{
+    return ui->subgroup56PushButton->isChecked();
+}
+
+bool ChannelWidget::isInSubGroup78()
+{
+    return ui->subgroup78PushButton->isChecked();
+}
+
+bool ChannelWidget::isMuted()
+{
+    return ui->mutePushButton->isChecked();
+}
+
+bool ChannelWidget::isSoloed()
+{
+    return ui->soloPushButton->isChecked();
+}
+
+bool ChannelWidget::isOnMain()
+{
+    return ui->mainPushButton->isChecked();
 }

@@ -63,9 +63,16 @@ public:
     /** @returns a human-readable string containing the last error occurred. */
     QString lastError();
 
+    void clear();
+
     /** Copies all samples from this buffer to the given sampleBuffer. */
     bool copyTo(QSampleBuffer sampleBuffer);
 
+    /** Adds all sample from this buffer to the goven sampleBuffer. */
+    bool addTo(QSampleBuffer sampleBuffer);
+
+    /** Adds all sample from this buffer to the goven sampleBuffer. */
+    bool addTo(QSampleBuffer sampleBuffer, double attenuation);
 private:
     QSampleBuffer(BufferType bufferType, int size, void* buffer);
 

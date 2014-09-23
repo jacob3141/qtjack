@@ -64,6 +64,15 @@ private:
 
     QMap<int, ChannelWidget*> _registeredChannels;
 
+    double _peak1;
+    double _peak2;
+    double _peak3;
+    double _peak4;
+    double _peak5;
+    double _peak6;
+    double _peak7;
+    double _peak8;
+
     //
 
     QJackPort *_subGroup1Out;

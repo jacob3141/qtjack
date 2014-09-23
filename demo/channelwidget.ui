@@ -38,8 +38,8 @@ font-size: 12px;
 color: black;
 }
 QPushButton:checked {
-	background-color: qlineargradient(spread:pad, x1:0.701, y1:1, x2:0.692, y2:0.046, stop:0 rgba(208, 47, 0, 255), stop:1 rgba(255, 255, 255, 255));
-border: 2px solid rgb(120, 60, 60);
+	background-color: qlineargradient(spread:reflect, x1:1, y1:1, x2:1, y2:0.295455, stop:0 rgba(216, 216, 216, 255), stop:1 rgba(255, 255, 255, 255));
+border: 1px solid rgb(60, 60, 60);
 }
 
 QFrame {
@@ -48,7 +48,7 @@ border: none;
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <property name="spacing">
-    <number>2</number>
+    <number>1</number>
    </property>
    <property name="leftMargin">
     <number>2</number>
@@ -218,7 +218,7 @@ margin: 0.5px;
       </size>
      </property>
      <property name="styleSheet">
-      <string notr="true">background-color: rgb(230, 230, 230);
+      <string notr="true">background-color: rgb(240, 240, 240);
 color: black;
 font-size: 12px;</string>
      </property>
@@ -316,6 +316,43 @@ font-size: 12px;</string>
     <widget class="Line" name="line">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="equalizerOnPushButton">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>22</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>22</height>
+      </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">
+QPushButton {
+background-color: rgb(200, 220, 255);
+border-radius: 3px;
+border: 1px solid rgb(160, 160, 160);
+font-size: 12px;
+color: black;
+}
+
+QPushButton:checked {
+	background-color: qlineargradient(spread:reflect, x1:1, y1:1, x2:1, y2:0.295455, stop:0 rgba(200, 220, 255, 255), stop:1 rgba(255, 255, 255, 255));
+border: 1px solid rgb(60, 60, 60);
+}</string>
+     </property>
+     <property name="text">
+      <string>on</string>
+     </property>
+     <property name="checkable">
+      <bool>true</bool>
      </property>
     </widget>
    </item>
@@ -872,6 +909,44 @@ font-size: 12px;</string>
     </widget>
    </item>
    <item>
+    <widget class="QPushButton" name="auxOnPushButton">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>22</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>22</height>
+      </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">
+QPushButton {
+background-color: rgb(180, 255, 180);
+border-radius: 3px;
+border: 1px solid rgb(160, 160, 160);
+font-size: 12px;
+color: black;
+}
+
+QPushButton:checked {
+	background-color: qlineargradient(spread:reflect, x1:1, y1:1, x2:1, y2:0.295455, stop:0 rgba(180, 255, 180, 255), stop:1 rgba(255, 255, 255, 255));
+border: 1px solid rgb(60, 60, 60);
+}
+</string>
+     </property>
+     <property name="text">
+      <string>on</string>
+     </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QFrame" name="auxSendFrame">
      <property name="minimumSize">
       <size>
@@ -954,8 +1029,17 @@ font-size: 9px;</string>
         <property name="styleSheet">
          <string notr="true"/>
         </property>
+        <property name="minimum">
+         <number>-144</number>
+        </property>
+        <property name="maximum">
+         <number>0</number>
+        </property>
         <property name="pageStep">
          <number>3</number>
+        </property>
+        <property name="value">
+         <number>-144</number>
         </property>
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
@@ -1057,8 +1141,17 @@ font-size: 9px;</string>
         <property name="styleSheet">
          <string notr="true"/>
         </property>
+        <property name="minimum">
+         <number>-144</number>
+        </property>
+        <property name="maximum">
+         <number>0</number>
+        </property>
         <property name="pageStep">
          <number>3</number>
+        </property>
+        <property name="value">
+         <number>-144</number>
         </property>
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
@@ -1168,13 +1261,16 @@ font-size: 9px;</string>
          <string notr="true"/>
         </property>
         <property name="minimum">
-         <number>-50</number>
+         <number>0</number>
         </property>
         <property name="maximum">
-         <number>50</number>
+         <number>100</number>
         </property>
         <property name="pageStep">
          <number>3</number>
+        </property>
+        <property name="value">
+         <number>50</number>
         </property>
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
@@ -1201,23 +1297,23 @@ font-size: 9px;</string>
     </widget>
    </item>
    <item>
-    <widget class="QPushButton" name="subgroup12PushButton_2">
+    <widget class="QPushButton" name="mutePushButton">
      <property name="minimumSize">
       <size>
        <width>42</width>
-       <height>24</height>
+       <height>22</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
        <width>42</width>
-       <height>24</height>
+       <height>22</height>
       </size>
      </property>
      <property name="styleSheet">
       <string notr="true">QPushButton:checked {
-	background-color: qlineargradient(spread:pad, x1:0.701, y1:1, x2:0.692, y2:0.046, stop:0 rgba(47, 208, 0, 255), stop:1 rgba(255, 255, 255, 255));
-border: 2px solid rgb(60, 120, 60);
+	background-color: qlineargradient(spread:reflect, x1:1, y1:1, x2:1, y2:0.295455, stop:0 rgba(216, 216, 116, 255), stop:1 rgba(255, 255, 155, 255));
+border: 1px solid rgb(60, 60, 60);
 }</string>
      </property>
      <property name="text">
@@ -1232,23 +1328,23 @@ border: 2px solid rgb(60, 120, 60);
     </widget>
    </item>
    <item>
-    <widget class="QPushButton" name="subgroup12PushButton_3">
+    <widget class="QPushButton" name="soloPushButton">
      <property name="minimumSize">
       <size>
        <width>42</width>
-       <height>24</height>
+       <height>22</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
        <width>42</width>
-       <height>24</height>
+       <height>22</height>
       </size>
      </property>
      <property name="styleSheet">
       <string notr="true">QPushButton:checked {
-	background-color: qlineargradient(spread:pad, x1:0.701, y1:1, x2:0.692, y2:0.046, stop:0 rgba(0, 47, 208, 255), stop:1 rgba(255, 255, 255, 255));
-border: 2px solid rgb(60, 60, 120);
+	background-color: qlineargradient(spread:reflect, x1:1, y1:1, x2:1, y2:0.295455, stop:0 rgba(216, 156, 156, 255), stop:1 rgba(255, 195, 195, 255));
+border: 1px solid rgb(60, 60, 60);
 }</string>
      </property>
      <property name="text">
@@ -1274,13 +1370,13 @@ border: 2px solid rgb(60, 60, 120);
      <property name="minimumSize">
       <size>
        <width>42</width>
-       <height>24</height>
+       <height>22</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
        <width>42</width>
-       <height>24</height>
+       <height>22</height>
       </size>
      </property>
      <property name="styleSheet">
@@ -1302,13 +1398,13 @@ border: 2px solid rgb(60, 60, 120);
      <property name="minimumSize">
       <size>
        <width>42</width>
-       <height>24</height>
+       <height>22</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
        <width>42</width>
-       <height>24</height>
+       <height>22</height>
       </size>
      </property>
      <property name="styleSheet">
@@ -1327,13 +1423,13 @@ border: 2px solid rgb(60, 60, 120);
      <property name="minimumSize">
       <size>
        <width>42</width>
-       <height>24</height>
+       <height>22</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
        <width>42</width>
-       <height>24</height>
+       <height>22</height>
       </size>
      </property>
      <property name="text">
@@ -1349,13 +1445,13 @@ border: 2px solid rgb(60, 60, 120);
      <property name="minimumSize">
       <size>
        <width>42</width>
-       <height>24</height>
+       <height>22</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
        <width>42</width>
-       <height>24</height>
+       <height>22</height>
       </size>
      </property>
      <property name="text">
@@ -1415,13 +1511,13 @@ QSlider::handle:vertical:hover {
      <property name="minimumSize">
       <size>
        <width>42</width>
-       <height>24</height>
+       <height>22</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
        <width>42</width>
-       <height>24</height>
+       <height>22</height>
       </size>
      </property>
      <property name="text">
@@ -1447,7 +1543,6 @@ QSlider::handle:vertical:hover {
   <zorder>midFreqFrame</zorder>
   <zorder>loFreqFrame</zorder>
   <zorder>line</zorder>
-  <zorder>line_2</zorder>
   <zorder>line_3</zorder>
   <zorder>panFrame</zorder>
   <zorder>subgroup12PushButton</zorder>
@@ -1455,11 +1550,14 @@ QSlider::handle:vertical:hover {
   <zorder>subgroup56PushButton</zorder>
   <zorder>subgroup78PushButton</zorder>
   <zorder>mainPushButton</zorder>
-  <zorder>subgroup12PushButton_2</zorder>
-  <zorder>subgroup12PushButton_3</zorder>
+  <zorder>mutePushButton</zorder>
+  <zorder>soloPushButton</zorder>
   <zorder>line_4</zorder>
   <zorder>line_5</zorder>
   <zorder>frame</zorder>
+  <zorder>auxOnPushButton</zorder>
+  <zorder>line_2</zorder>
+  <zorder>equalizerOnPushButton</zorder>
  </widget>
  <resources/>
  <connections/>

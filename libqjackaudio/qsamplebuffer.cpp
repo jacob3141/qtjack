@@ -69,8 +69,17 @@ void QSampleBuffer::writeAudioSample(int i, double value)
     }
 }
 
-QString QSampleBuffer::lastError() {
+QString QSampleBuffer::lastError()
+{
     return _lastError;
+}
+
+
+void QSampleBuffer::clear()
+{
+    for(int i = 0; i < _bufferSize; i++) {
+        ((jack_default_audio_sample_t*)_buffer)[i] = 0.0;
+    }
 }
 
 bool QSampleBuffer::copyTo(QSampleBuffer sampleBuffer)
@@ -81,7 +90,35 @@ bool QSampleBuffer::copyTo(QSampleBuffer sampleBuffer)
     }
 
     for(int i = 0; i < _bufferSize; i++) {
-        sampleBuffer.writeAudioSample(i, readAudioSample(i));
+        ((jack_default_audio_sample_t*)sampleBuffer._buffer)[i] = ((jack_default_audio_sample_t*)_buffer)[i];
+    }
+
+    return true;
+}
+
+bool QSampleBuffer::addTo(QSampleBuffer sampleBuffer)
+{
+    if(_bufferSize != sampleBuffer._bufferSize) {
+        _lastError = QString("Trying to add a sample buffer with %1 samples to a sample buffer with %2.").arg(_bufferSize).arg(sampleBuffer._bufferSize);
+        return false;
+    }
+
+    for(int i = 0; i < _bufferSize; i++) {
+        ((jack_default_audio_sample_t*)sampleBuffer._buffer)[i] += ((jack_default_audio_sample_t*)_buffer)[i];
+    }
+
+    return true;
+}
+
+bool QSampleBuffer::addTo(QSampleBuffer sampleBuffer, double attenuation)
+{
+    if(_bufferSize != sampleBuffer._bufferSize) {
+        _lastError = QString("Trying to add a sample buffer with %1 samples to a sample buffer with %2.").arg(_bufferSize).arg(sampleBuffer._bufferSize);
+        return false;
+    }
+
+    for(int i = 0; i < _bufferSize; i++) {
+        ((jack_default_audio_sample_t*)sampleBuffer._buffer)[i] += (((jack_default_audio_sample_t*)_buffer)[i] * attenuation);
     }
 
     return true;

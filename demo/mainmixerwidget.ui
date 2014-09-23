@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>508</width>
-    <height>1014</height>
+    <height>1009</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -38,8 +38,8 @@ font-size: 12px;
 color: black;
 }
 QPushButton:checked {
-	background-color: qlineargradient(spread:pad, x1:0.701, y1:1, x2:0.692, y2:0.046, stop:0 rgba(208, 47, 0, 255), stop:1 rgba(255, 255, 255, 255));
-border: 2px solid rgb(120, 60, 60);
+	background-color: qlineargradient(spread:reflect, x1:1, y1:1, x2:1, y2:0.295455, stop:0 rgba(216, 216, 216, 255), stop:1 rgba(255, 255, 255, 255));
+border: 1px solid rgb(60, 60, 60);
 }
 
 QFrame {
@@ -1164,13 +1164,13 @@ border: 0px;</string>
        <property name="minimumSize">
         <size>
          <width>95</width>
-         <height>235</height>
+         <height>259</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
          <width>95</width>
-         <height>235</height>
+         <height>259</height>
         </size>
        </property>
        <property name="frameShape">
@@ -1279,8 +1279,8 @@ font-size: 12px;
               </property>
               <property name="styleSheet">
                <string notr="true">QPushButton:checked {
-	background-color: qlineargradient(spread:pad, x1:0.701, y1:1, x2:0.692, y2:0.046, stop:0 rgba(47, 208, 0, 255), stop:1 rgba(255, 255, 255, 255));
-border: 2px solid rgb(60, 120, 60);
+	background-color: qlineargradient(spread:reflect, x1:1, y1:1, x2:1, y2:0.295455, stop:0 rgba(216, 216, 116, 255), stop:1 rgba(255, 255, 155, 255));
+border: 1px solid rgb(60, 60, 60);
 }</string>
               </property>
               <property name="text">
@@ -1310,8 +1310,8 @@ border: 2px solid rgb(60, 120, 60);
               </property>
               <property name="styleSheet">
                <string notr="true">QPushButton:checked {
-	background-color: qlineargradient(spread:pad, x1:0.701, y1:1, x2:0.692, y2:0.046, stop:0 rgba(0, 47, 208, 255), stop:1 rgba(255, 255, 255, 255));
-border: 2px solid rgb(60, 60, 120);
+	background-color: qlineargradient(spread:reflect, x1:1, y1:1, x2:1, y2:0.295455, stop:0 rgba(216, 156, 156, 255), stop:1 rgba(255, 195, 195, 255));
+border: 1px solid rgb(60, 60, 60);
 }</string>
               </property>
               <property name="text">
@@ -1380,13 +1380,13 @@ QSlider::handle:vertical:hover {
               <property name="minimumSize">
                <size>
                 <width>42</width>
-                <height>24</height>
+                <height>42</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
                 <width>42</width>
-                <height>24</height>
+                <height>42</height>
                </size>
               </property>
               <property name="text">
@@ -1455,8 +1455,8 @@ QSlider::handle:vertical:hover {
               </property>
               <property name="styleSheet">
                <string notr="true">QPushButton:checked {
-	background-color: qlineargradient(spread:pad, x1:0.701, y1:1, x2:0.692, y2:0.046, stop:0 rgba(47, 208, 0, 255), stop:1 rgba(255, 255, 255, 255));
-border: 2px solid rgb(60, 120, 60);
+	background-color: qlineargradient(spread:reflect, x1:1, y1:1, x2:1, y2:0.295455, stop:0 rgba(216, 216, 116, 255), stop:1 rgba(255, 255, 155, 255));
+border: 1px solid rgb(60, 60, 60);
 }</string>
               </property>
               <property name="text">
@@ -1486,8 +1486,8 @@ border: 2px solid rgb(60, 120, 60);
               </property>
               <property name="styleSheet">
                <string notr="true">QPushButton:checked {
-	background-color: qlineargradient(spread:pad, x1:0.701, y1:1, x2:0.692, y2:0.046, stop:0 rgba(0, 47, 208, 255), stop:1 rgba(255, 255, 255, 255));
-border: 2px solid rgb(60, 60, 120);
+	background-color: qlineargradient(spread:reflect, x1:1, y1:1, x2:1, y2:0.295455, stop:0 rgba(216, 156, 156, 255), stop:1 rgba(255, 195, 195, 255));
+border: 1px solid rgb(60, 60, 60);
 }</string>
               </property>
               <property name="text">
@@ -1550,13 +1550,13 @@ QSlider::handle:vertical:hover {
               <property name="minimumSize">
                <size>
                 <width>42</width>
-                <height>24</height>
+                <height>42</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
                 <width>42</width>
-                <height>24</height>
+                <height>42</height>
                </size>
               </property>
               <property name="text">
@@ -1582,13 +1582,13 @@ QSlider::handle:vertical:hover {
        <property name="minimumSize">
         <size>
          <width>95</width>
-         <height>235</height>
+         <height>259</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
          <width>95</width>
-         <height>235</height>
+         <height>259</height>
         </size>
        </property>
        <property name="frameShape">
@@ -1697,8 +1697,8 @@ font-size: 12px;
               </property>
               <property name="styleSheet">
                <string notr="true">QPushButton:checked {
-	background-color: qlineargradient(spread:pad, x1:0.701, y1:1, x2:0.692, y2:0.046, stop:0 rgba(47, 208, 0, 255), stop:1 rgba(255, 255, 255, 255));
-border: 2px solid rgb(60, 120, 60);
+	background-color: qlineargradient(spread:reflect, x1:1, y1:1, x2:1, y2:0.295455, stop:0 rgba(216, 216, 116, 255), stop:1 rgba(255, 255, 155, 255));
+border: 1px solid rgb(60, 60, 60);
 }</string>
               </property>
               <property name="text">
@@ -1728,8 +1728,8 @@ border: 2px solid rgb(60, 120, 60);
               </property>
               <property name="styleSheet">
                <string notr="true">QPushButton:checked {
-	background-color: qlineargradient(spread:pad, x1:0.701, y1:1, x2:0.692, y2:0.046, stop:0 rgba(0, 47, 208, 255), stop:1 rgba(255, 255, 255, 255));
-border: 2px solid rgb(60, 60, 120);
+	background-color: qlineargradient(spread:reflect, x1:1, y1:1, x2:1, y2:0.295455, stop:0 rgba(216, 156, 156, 255), stop:1 rgba(255, 195, 195, 255));
+border: 1px solid rgb(60, 60, 60);
 }</string>
               </property>
               <property name="text">
@@ -1792,13 +1792,13 @@ QSlider::handle:vertical:hover {
               <property name="minimumSize">
                <size>
                 <width>42</width>
-                <height>24</height>
+                <height>42</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
                 <width>42</width>
-                <height>24</height>
+                <height>42</height>
                </size>
               </property>
               <property name="text">
@@ -1867,8 +1867,8 @@ QSlider::handle:vertical:hover {
               </property>
               <property name="styleSheet">
                <string notr="true">QPushButton:checked {
-	background-color: qlineargradient(spread:pad, x1:0.701, y1:1, x2:0.692, y2:0.046, stop:0 rgba(47, 208, 0, 255), stop:1 rgba(255, 255, 255, 255));
-border: 2px solid rgb(60, 120, 60);
+	background-color: qlineargradient(spread:reflect, x1:1, y1:1, x2:1, y2:0.295455, stop:0 rgba(216, 216, 116, 255), stop:1 rgba(255, 255, 155, 255));
+border: 1px solid rgb(60, 60, 60);
 }</string>
               </property>
               <property name="text">
@@ -1898,8 +1898,8 @@ border: 2px solid rgb(60, 120, 60);
               </property>
               <property name="styleSheet">
                <string notr="true">QPushButton:checked {
-	background-color: qlineargradient(spread:pad, x1:0.701, y1:1, x2:0.692, y2:0.046, stop:0 rgba(0, 47, 208, 255), stop:1 rgba(255, 255, 255, 255));
-border: 2px solid rgb(60, 60, 120);
+	background-color: qlineargradient(spread:reflect, x1:1, y1:1, x2:1, y2:0.295455, stop:0 rgba(216, 156, 156, 255), stop:1 rgba(255, 195, 195, 255));
+border: 1px solid rgb(60, 60, 60);
 }</string>
               </property>
               <property name="text">
@@ -1962,13 +1962,13 @@ QSlider::handle:vertical:hover {
               <property name="minimumSize">
                <size>
                 <width>42</width>
-                <height>24</height>
+                <height>42</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
                 <width>42</width>
-                <height>24</height>
+                <height>42</height>
                </size>
               </property>
               <property name="text">
@@ -1994,13 +1994,13 @@ QSlider::handle:vertical:hover {
        <property name="minimumSize">
         <size>
          <width>95</width>
-         <height>235</height>
+         <height>259</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
          <width>95</width>
-         <height>235</height>
+         <height>259</height>
         </size>
        </property>
        <property name="frameShape">
@@ -2109,8 +2109,8 @@ font-size: 12px;
               </property>
               <property name="styleSheet">
                <string notr="true">QPushButton:checked {
-	background-color: qlineargradient(spread:pad, x1:0.701, y1:1, x2:0.692, y2:0.046, stop:0 rgba(47, 208, 0, 255), stop:1 rgba(255, 255, 255, 255));
-border: 2px solid rgb(60, 120, 60);
+	background-color: qlineargradient(spread:reflect, x1:1, y1:1, x2:1, y2:0.295455, stop:0 rgba(216, 216, 116, 255), stop:1 rgba(255, 255, 155, 255));
+border: 1px solid rgb(60, 60, 60);
 }</string>
               </property>
               <property name="text">
@@ -2140,8 +2140,8 @@ border: 2px solid rgb(60, 120, 60);
               </property>
               <property name="styleSheet">
                <string notr="true">QPushButton:checked {
-	background-color: qlineargradient(spread:pad, x1:0.701, y1:1, x2:0.692, y2:0.046, stop:0 rgba(0, 47, 208, 255), stop:1 rgba(255, 255, 255, 255));
-border: 2px solid rgb(60, 60, 120);
+	background-color: qlineargradient(spread:reflect, x1:1, y1:1, x2:1, y2:0.295455, stop:0 rgba(216, 156, 156, 255), stop:1 rgba(255, 195, 195, 255));
+border: 1px solid rgb(60, 60, 60);
 }</string>
               </property>
               <property name="text">
@@ -2204,13 +2204,13 @@ QSlider::handle:vertical:hover {
               <property name="minimumSize">
                <size>
                 <width>42</width>
-                <height>24</height>
+                <height>42</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
                 <width>42</width>
-                <height>24</height>
+                <height>42</height>
                </size>
               </property>
               <property name="text">
@@ -2279,8 +2279,8 @@ QSlider::handle:vertical:hover {
               </property>
               <property name="styleSheet">
                <string notr="true">QPushButton:checked {
-	background-color: qlineargradient(spread:pad, x1:0.701, y1:1, x2:0.692, y2:0.046, stop:0 rgba(47, 208, 0, 255), stop:1 rgba(255, 255, 255, 255));
-border: 2px solid rgb(60, 120, 60);
+	background-color: qlineargradient(spread:reflect, x1:1, y1:1, x2:1, y2:0.295455, stop:0 rgba(216, 216, 116, 255), stop:1 rgba(255, 255, 155, 255));
+border: 1px solid rgb(60, 60, 60);
 }</string>
               </property>
               <property name="text">
@@ -2310,8 +2310,8 @@ border: 2px solid rgb(60, 120, 60);
               </property>
               <property name="styleSheet">
                <string notr="true">QPushButton:checked {
-	background-color: qlineargradient(spread:pad, x1:0.701, y1:1, x2:0.692, y2:0.046, stop:0 rgba(0, 47, 208, 255), stop:1 rgba(255, 255, 255, 255));
-border: 2px solid rgb(60, 60, 120);
+	background-color: qlineargradient(spread:reflect, x1:1, y1:1, x2:1, y2:0.295455, stop:0 rgba(216, 156, 156, 255), stop:1 rgba(255, 195, 195, 255));
+border: 1px solid rgb(60, 60, 60);
 }</string>
               </property>
               <property name="text">
@@ -2374,13 +2374,13 @@ QSlider::handle:vertical:hover {
               <property name="minimumSize">
                <size>
                 <width>42</width>
-                <height>24</height>
+                <height>42</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
                 <width>42</width>
-                <height>24</height>
+                <height>42</height>
                </size>
               </property>
               <property name="text">
@@ -2406,13 +2406,13 @@ QSlider::handle:vertical:hover {
        <property name="minimumSize">
         <size>
          <width>95</width>
-         <height>235</height>
+         <height>259</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
          <width>95</width>
-         <height>235</height>
+         <height>259</height>
         </size>
        </property>
        <property name="frameShape">
@@ -2521,8 +2521,8 @@ font-size: 12px;
               </property>
               <property name="styleSheet">
                <string notr="true">QPushButton:checked {
-	background-color: qlineargradient(spread:pad, x1:0.701, y1:1, x2:0.692, y2:0.046, stop:0 rgba(47, 208, 0, 255), stop:1 rgba(255, 255, 255, 255));
-border: 2px solid rgb(60, 120, 60);
+	background-color: qlineargradient(spread:reflect, x1:1, y1:1, x2:1, y2:0.295455, stop:0 rgba(216, 216, 116, 255), stop:1 rgba(255, 255, 155, 255));
+border: 1px solid rgb(60, 60, 60);
 }</string>
               </property>
               <property name="text">
@@ -2552,8 +2552,8 @@ border: 2px solid rgb(60, 120, 60);
               </property>
               <property name="styleSheet">
                <string notr="true">QPushButton:checked {
-	background-color: qlineargradient(spread:pad, x1:0.701, y1:1, x2:0.692, y2:0.046, stop:0 rgba(0, 47, 208, 255), stop:1 rgba(255, 255, 255, 255));
-border: 2px solid rgb(60, 60, 120);
+	background-color: qlineargradient(spread:reflect, x1:1, y1:1, x2:1, y2:0.295455, stop:0 rgba(216, 156, 156, 255), stop:1 rgba(255, 195, 195, 255));
+border: 1px solid rgb(60, 60, 60);
 }</string>
               </property>
               <property name="text">
@@ -2616,13 +2616,13 @@ QSlider::handle:vertical:hover {
               <property name="minimumSize">
                <size>
                 <width>42</width>
-                <height>24</height>
+                <height>42</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
                 <width>42</width>
-                <height>24</height>
+                <height>42</height>
                </size>
               </property>
               <property name="text">
@@ -2691,8 +2691,8 @@ QSlider::handle:vertical:hover {
               </property>
               <property name="styleSheet">
                <string notr="true">QPushButton:checked {
-	background-color: qlineargradient(spread:pad, x1:0.701, y1:1, x2:0.692, y2:0.046, stop:0 rgba(47, 208, 0, 255), stop:1 rgba(255, 255, 255, 255));
-border: 2px solid rgb(60, 120, 60);
+	background-color: qlineargradient(spread:reflect, x1:1, y1:1, x2:1, y2:0.295455, stop:0 rgba(216, 216, 116, 255), stop:1 rgba(255, 255, 155, 255));
+border: 1px solid rgb(60, 60, 60);
 }</string>
               </property>
               <property name="text">
@@ -2722,8 +2722,8 @@ border: 2px solid rgb(60, 120, 60);
               </property>
               <property name="styleSheet">
                <string notr="true">QPushButton:checked {
-	background-color: qlineargradient(spread:pad, x1:0.701, y1:1, x2:0.692, y2:0.046, stop:0 rgba(0, 47, 208, 255), stop:1 rgba(255, 255, 255, 255));
-border: 2px solid rgb(60, 60, 120);
+	background-color: qlineargradient(spread:reflect, x1:1, y1:1, x2:1, y2:0.295455, stop:0 rgba(216, 156, 156, 255), stop:1 rgba(255, 195, 195, 255));
+border: 1px solid rgb(60, 60, 60);
 }</string>
               </property>
               <property name="text">
@@ -2786,13 +2786,13 @@ QSlider::handle:vertical:hover {
               <property name="minimumSize">
                <size>
                 <width>42</width>
-                <height>24</height>
+                <height>42</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
                 <width>42</width>
-                <height>24</height>
+                <height>42</height>
                </size>
               </property>
               <property name="text">
@@ -2818,13 +2818,13 @@ QSlider::handle:vertical:hover {
        <property name="minimumSize">
         <size>
          <width>95</width>
-         <height>235</height>
+         <height>259</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
          <width>95</width>
-         <height>235</height>
+         <height>259</height>
         </size>
        </property>
        <property name="frameShape">
@@ -2933,8 +2933,8 @@ font-size: 12px;
               </property>
               <property name="styleSheet">
                <string notr="true">QPushButton:checked {
-	background-color: qlineargradient(spread:pad, x1:0.701, y1:1, x2:0.692, y2:0.046, stop:0 rgba(47, 208, 0, 255), stop:1 rgba(255, 255, 255, 255));
-border: 2px solid rgb(60, 120, 60);
+	background-color: qlineargradient(spread:reflect, x1:1, y1:1, x2:1, y2:0.295455, stop:0 rgba(216, 216, 116, 255), stop:1 rgba(255, 255, 155, 255));
+border: 1px solid rgb(60, 60, 60);
 }</string>
               </property>
               <property name="text">
@@ -2964,8 +2964,8 @@ border: 2px solid rgb(60, 120, 60);
               </property>
               <property name="styleSheet">
                <string notr="true">QPushButton:checked {
-	background-color: qlineargradient(spread:pad, x1:0.701, y1:1, x2:0.692, y2:0.046, stop:0 rgba(0, 47, 208, 255), stop:1 rgba(255, 255, 255, 255));
-border: 2px solid rgb(60, 60, 120);
+	background-color: qlineargradient(spread:reflect, x1:1, y1:1, x2:1, y2:0.295455, stop:0 rgba(216, 156, 156, 255), stop:1 rgba(255, 195, 195, 255));
+border: 1px solid rgb(60, 60, 60);
 }</string>
               </property>
               <property name="text">
@@ -3028,13 +3028,13 @@ QSlider::handle:vertical:hover {
               <property name="minimumSize">
                <size>
                 <width>42</width>
-                <height>24</height>
+                <height>42</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
                 <width>42</width>
-                <height>24</height>
+                <height>42</height>
                </size>
               </property>
               <property name="styleSheet">
@@ -3100,8 +3100,8 @@ QSlider::handle:vertical:hover {
               </property>
               <property name="styleSheet">
                <string notr="true">QPushButton:checked {
-	background-color: qlineargradient(spread:pad, x1:0.701, y1:1, x2:0.692, y2:0.046, stop:0 rgba(47, 208, 0, 255), stop:1 rgba(255, 255, 255, 255));
-border: 2px solid rgb(60, 120, 60);
+	background-color: qlineargradient(spread:reflect, x1:1, y1:1, x2:1, y2:0.295455, stop:0 rgba(216, 216, 116, 255), stop:1 rgba(255, 255, 155, 255));
+border: 1px solid rgb(60, 60, 60);
 }</string>
               </property>
               <property name="text">
@@ -3131,8 +3131,8 @@ border: 2px solid rgb(60, 120, 60);
               </property>
               <property name="styleSheet">
                <string notr="true">QPushButton:checked {
-	background-color: qlineargradient(spread:pad, x1:0.701, y1:1, x2:0.692, y2:0.046, stop:0 rgba(0, 47, 208, 255), stop:1 rgba(255, 255, 255, 255));
-border: 2px solid rgb(60, 60, 120);
+	background-color: qlineargradient(spread:reflect, x1:1, y1:1, x2:1, y2:0.295455, stop:0 rgba(216, 156, 156, 255), stop:1 rgba(255, 195, 195, 255));
+border: 1px solid rgb(60, 60, 60);
 }</string>
               </property>
               <property name="text">
@@ -3195,13 +3195,13 @@ QSlider::handle:vertical:hover {
               <property name="minimumSize">
                <size>
                 <width>42</width>
-                <height>24</height>
+                <height>42</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
                 <width>42</width>
-                <height>24</height>
+                <height>42</height>
                </size>
               </property>
               <property name="styleSheet">
