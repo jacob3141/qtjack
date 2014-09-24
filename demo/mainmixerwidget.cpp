@@ -119,6 +119,8 @@ void MainMixerWidget::process()
                 sampleBuffer.addTo(subgroup8SampleBuffer,       panorama);
             }
         }
+
+        sampleBuffer.releaseMemoryBuffer();
     }
 
     double peak1 = 0.0;

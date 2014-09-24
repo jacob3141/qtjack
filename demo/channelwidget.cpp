@@ -58,7 +58,9 @@ ChannelWidget::~ChannelWidget()
 
 QSampleBuffer ChannelWidget::process()
 {
-    QSampleBuffer sampleBuffer = _channelIn->sampleBuffer();
+    QSampleBuffer inputSampleBuffer = _channelIn->sampleBuffer();
+    QSampleBuffer sampleBuffer = QSampleBuffer::createMemoryAudioBuffer(inputSampleBuffer.size());
+    inputSampleBuffer.copyTo(sampleBuffer);
 
     double peak = 0.0;
     for(int i = 0; i < sampleBuffer.size(); i++) {

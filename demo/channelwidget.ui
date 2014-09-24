@@ -1501,6 +1501,18 @@ QSlider::handle:vertical:hover {
 	background-color: qlineargradient(spread:reflect, x1:1, y1:0.493818, x2:1, y2:0, stop:0 rgba(109, 135, 255, 255), stop:1 rgba(175, 205, 255, 255));
 }</string>
      </property>
+     <property name="minimum">
+      <number>-144</number>
+     </property>
+     <property name="maximum">
+      <number>10</number>
+     </property>
+     <property name="singleStep">
+      <number>1</number>
+     </property>
+     <property name="value">
+      <number>-144</number>
+     </property>
      <property name="orientation">
       <enum>Qt::Vertical</enum>
      </property>

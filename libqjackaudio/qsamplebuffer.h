@@ -41,12 +41,16 @@ class QSampleBuffer
 {
     friend class QJackPort;
 public:
+    static QSampleBuffer createMemoryAudioBuffer(int size);
+
     QSampleBuffer(const QSampleBuffer& other);
 
     enum BufferType {
         AudioBuffer,
         MidiBuffer
     };
+
+    bool isMemoryBuffer();
 
     /** @returns the buffer type. @see BufferType */
     BufferType bufferType();
@@ -73,6 +77,9 @@ public:
 
     /** Adds all sample from this buffer to the goven sampleBuffer. */
     bool addTo(QSampleBuffer sampleBuffer, double attenuation);
+
+    void releaseMemoryBuffer();
+
 private:
     QSampleBuffer(BufferType bufferType, int size, void* buffer);
 
@@ -81,6 +88,8 @@ private:
     BufferType _bufferType;
     int _bufferSize;
     void *_buffer;
+
+    bool _isMemoryBuffer;
 };
 
 #endif // QSAMPLEBUFFER_H

@@ -27,11 +27,23 @@
 // JACK includes
 #include <jack/jack.h>
 
+QSampleBuffer QSampleBuffer::createMemoryAudioBuffer(int size)
+{
+    if(size < 1) {
+        size = 1;
+    }
+
+    QSampleBuffer sampleBuffer(AudioBuffer, size, (void*)new jack_default_audio_sample_t[size]);
+    sampleBuffer._isMemoryBuffer = true;
+    return sampleBuffer;
+}
+
 QSampleBuffer::QSampleBuffer(const QSampleBuffer& other)
 {
     _bufferType = other._bufferType;
     _bufferSize = other._bufferSize;
     _buffer = other._buffer;
+    _isMemoryBuffer = other._isMemoryBuffer;
 }
 
 QSampleBuffer::QSampleBuffer(QSampleBuffer::BufferType bufferType, int bufferSize, void *buffer)
@@ -39,6 +51,12 @@ QSampleBuffer::QSampleBuffer(QSampleBuffer::BufferType bufferType, int bufferSiz
     _bufferType = bufferType;
     _bufferSize = bufferSize;
     _buffer = buffer;
+    _isMemoryBuffer = false;
+}
+
+bool QSampleBuffer::isMemoryBuffer()
+{
+    return _isMemoryBuffer;
 }
 
 QSampleBuffer::BufferType QSampleBuffer::bufferType()
@@ -122,4 +140,13 @@ bool QSampleBuffer::addTo(QSampleBuffer sampleBuffer, double attenuation)
     }
 
     return true;
+}
+
+void QSampleBuffer::releaseMemoryBuffer()
+{
+    if(_isMemoryBuffer) {
+        if(_bufferType == AudioBuffer) {
+            delete[] (jack_default_audio_sample_t*)_buffer;
+        }
+    }
 }
