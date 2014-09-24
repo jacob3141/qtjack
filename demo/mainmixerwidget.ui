@@ -341,8 +341,8 @@ font-size: 12px;
  }
 
 QProgressBar::chunk:vertical{ 
-	background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(3, 226, 11, 255), stop:1 rgba(159, 255, 159, 255));
-height: 5px; 
+background-color: qlineargradient(spread:reflect, x1:1, y1:1, x2:0.204, y2:0.403, stop:0 rgba(106, 199, 255, 255), stop:1 rgba(224, 242, 255, 255));
+height: 1px; 
 margin: 0.5px; 
 } </string>
              </property>
@@ -413,8 +413,8 @@ border: 0px;</string>
  }
 
 QProgressBar::chunk:vertical{ 
-	background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(3, 226, 11, 255), stop:1 rgba(159, 255, 159, 255));
-height: 5px; 
+background-color: qlineargradient(spread:reflect, x1:1, y1:1, x2:0.204, y2:0.403, stop:0 rgba(106, 199, 255, 255), stop:1 rgba(224, 242, 255, 255));
+height: 1px; 
 margin: 0.5px; 
 } </string>
              </property>
@@ -508,8 +508,8 @@ background-color: white;</string>
  }
 
 QProgressBar::chunk:vertical{ 
-	background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(3, 226, 11, 255), stop:1 rgba(159, 255, 159, 255));
-height: 5px; 
+background-color: qlineargradient(spread:reflect, x1:1, y1:1, x2:0.204, y2:0.403, stop:0 rgba(106, 199, 255, 255), stop:1 rgba(224, 242, 255, 255));
+height: 1px; 
 margin: 0.5px; 
 } </string>
              </property>
@@ -580,8 +580,8 @@ border: 0px;</string>
  }
 
 QProgressBar::chunk:vertical{ 
-	background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(3, 226, 11, 255), stop:1 rgba(159, 255, 159, 255));
-height: 5px; 
+background-color: qlineargradient(spread:reflect, x1:1, y1:1, x2:0.204, y2:0.403, stop:0 rgba(106, 199, 255, 255), stop:1 rgba(224, 242, 255, 255));
+height: 1px; 
 margin: 0.5px; 
 } </string>
              </property>
@@ -675,8 +675,8 @@ background-color: white;</string>
  }
 
 QProgressBar::chunk:vertical{ 
-	background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(3, 226, 11, 255), stop:1 rgba(159, 255, 159, 255));
-height: 5px; 
+background-color: qlineargradient(spread:reflect, x1:1, y1:1, x2:0.204, y2:0.403, stop:0 rgba(106, 199, 255, 255), stop:1 rgba(224, 242, 255, 255));
+height: 1px; 
 margin: 0.5px; 
 } </string>
              </property>
@@ -747,8 +747,8 @@ border: 0px;</string>
  }
 
 QProgressBar::chunk:vertical{ 
-	background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(3, 226, 11, 255), stop:1 rgba(159, 255, 159, 255));
-height: 5px; 
+background-color: qlineargradient(spread:reflect, x1:1, y1:1, x2:0.204, y2:0.403, stop:0 rgba(106, 199, 255, 255), stop:1 rgba(224, 242, 255, 255));
+height: 1px; 
 margin: 0.5px; 
 } </string>
              </property>
@@ -842,8 +842,8 @@ background-color: white;</string>
  }
 
 QProgressBar::chunk:vertical{ 
-	background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(3, 226, 11, 255), stop:1 rgba(159, 255, 159, 255));
-height: 5px; 
+background-color: qlineargradient(spread:reflect, x1:1, y1:1, x2:0.204, y2:0.403, stop:0 rgba(106, 199, 255, 255), stop:1 rgba(224, 242, 255, 255));
+height: 1px; 
 margin: 0.5px; 
 } </string>
              </property>
@@ -914,8 +914,8 @@ border: 0px;</string>
  }
 
 QProgressBar::chunk:vertical{ 
-	background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(3, 226, 11, 255), stop:1 rgba(159, 255, 159, 255));
-height: 5px; 
+background-color: qlineargradient(spread:reflect, x1:1, y1:1, x2:0.204, y2:0.403, stop:0 rgba(106, 199, 255, 255), stop:1 rgba(224, 242, 255, 255));
+height: 1px; 
 margin: 0.5px; 
 } </string>
              </property>
@@ -1009,8 +1009,8 @@ background-color: white;</string>
  }
 
 QProgressBar::chunk:vertical{ 
-	background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(3, 226, 11, 255), stop:1 rgba(159, 255, 159, 255));
-height: 5px; 
+background-color: qlineargradient(spread:reflect, x1:1, y1:1, x2:0.204, y2:0.403, stop:0 rgba(106, 199, 255, 255), stop:1 rgba(224, 242, 255, 255));
+height: 1px; 
 margin: 0.5px; 
 } </string>
              </property>
@@ -1081,8 +1081,8 @@ border: 0px;</string>
  }
 
 QProgressBar::chunk:vertical{ 
-	background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(3, 226, 11, 255), stop:1 rgba(159, 255, 159, 255));
-height: 5px; 
+background-color: qlineargradient(spread:reflect, x1:1, y1:1, x2:0.204, y2:0.403, stop:0 rgba(106, 199, 255, 255), stop:1 rgba(224, 242, 255, 255));
+height: 1px; 
 margin: 0.5px; 
 } </string>
              </property>

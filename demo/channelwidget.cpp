@@ -42,9 +42,13 @@ ChannelWidget::ChannelWidget(int channelNumber, QWidget *parent) :
     _channelOut = QJackClient::instance()->registerAudioOutPort(QString("ch%1_out").arg(channelNumber));
 
     _inputStage = new QAmplifier();
+    _inputStage->setGain(ui->gainDial->value());
     _faderStage = new QAmplifier();
+    _faderStage->setGain(ui->volumeVerticalSlider->value());
     _auxPre = new QAmplifier();
+    _auxPre->setGain(ui->auxSendDial->value());
     _auxPost = new QAmplifier();
+    _auxPost->setGain(ui->auxReturnDial->value());
     _equalizer = new QEqualizer(64, 32);
 
     connect(ui->gainDial, SIGNAL(valueChanged(int)), _inputStage, SLOT(setGain(int)));

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>46</width>
-    <height>1058</height>
+    <height>971</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -57,152 +57,11 @@ border: none;
     <number>2</number>
    </property>
    <property name="rightMargin">
-    <number>2</number>
+    <number>0</number>
    </property>
    <property name="bottomMargin">
-    <number>2</number>
+    <number>0</number>
    </property>
-   <item>
-    <widget class="QFrame" name="frame_2">
-     <property name="minimumSize">
-      <size>
-       <width>42</width>
-       <height>34</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>42</width>
-       <height>34</height>
-      </size>
-     </property>
-     <property name="frameShape">
-      <enum>QFrame::StyledPanel</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
-     </property>
-     <layout class="QVBoxLayout" name="verticalLayout_3">
-      <property name="spacing">
-       <number>0</number>
-      </property>
-      <property name="leftMargin">
-       <number>4</number>
-      </property>
-      <property name="topMargin">
-       <number>4</number>
-      </property>
-      <property name="rightMargin">
-       <number>4</number>
-      </property>
-      <property name="bottomMargin">
-       <number>4</number>
-      </property>
-      <item>
-       <widget class="QLabel" name="channelNumberLabel">
-        <property name="minimumSize">
-         <size>
-          <width>32</width>
-          <height>24</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>32</width>
-          <height>24</height>
-         </size>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">background:rgb(40, 40,40);
-
-color: white;
-font-size: 15px;
-margin: 0px;
-border-radius: 4px;
-border: 1px solid black;</string>
-        </property>
-        <property name="text">
-         <string>42</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item>
-    <widget class="QFrame" name="frame">
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>50</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>50</height>
-      </size>
-     </property>
-     <property name="frameShape">
-      <enum>QFrame::StyledPanel</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
-     </property>
-     <layout class="QVBoxLayout" name="verticalLayout_12">
-      <property name="leftMargin">
-       <number>6</number>
-      </property>
-      <property name="topMargin">
-       <number>0</number>
-      </property>
-      <property name="rightMargin">
-       <number>6</number>
-      </property>
-      <property name="bottomMargin">
-       <number>0</number>
-      </property>
-      <item>
-       <widget class="QProgressBar" name="progressBar">
-        <property name="styleSheet">
-         <string notr="true"> QProgressBar {
-     border: 0px solid rgb(50, 50, 50);
-	 background-color: black;
-	padding: 0px 2px;
- }
-
-QProgressBar::chunk:vertical{ 
-	background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(3, 226, 11, 255), stop:1 rgba(159, 255, 159, 255));
-height: 5px; 
-margin: 0.5px; 
-} </string>
-        </property>
-        <property name="minimum">
-         <number>-60</number>
-        </property>
-        <property name="maximum">
-         <number>10</number>
-        </property>
-        <property name="value">
-         <number>-60</number>
-        </property>
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
-        </property>
-        <property name="invertedAppearance">
-         <bool>false</bool>
-        </property>
-        <property name="format">
-         <string/>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
    <item>
     <widget class="QFrame" name="gainFrame">
      <property name="minimumSize">
@@ -1463,21 +1322,26 @@ border: 1px solid rgb(60, 60, 60);
     </widget>
    </item>
    <item>
-    <widget class="QSlider" name="volumeVerticalSlider">
-     <property name="minimumSize">
-      <size>
-       <width>42</width>
-       <height>120</height>
-      </size>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <property name="spacing">
+      <number>0</number>
      </property>
-     <property name="maximumSize">
-      <size>
-       <width>42</width>
-       <height>120</height>
-      </size>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">QSlider {
+     <item>
+      <widget class="QSlider" name="volumeVerticalSlider">
+       <property name="minimumSize">
+        <size>
+         <width>21</width>
+         <height>120</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>21</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QSlider {
 	padding-top: 5px;
 }
 
@@ -1500,23 +1364,72 @@ border: 1px solid rgb(60, 60, 60);
 QSlider::handle:vertical:hover {
 	background-color: qlineargradient(spread:reflect, x1:1, y1:0.493818, x2:1, y2:0, stop:0 rgba(109, 135, 255, 255), stop:1 rgba(175, 205, 255, 255));
 }</string>
-     </property>
-     <property name="minimum">
-      <number>-144</number>
-     </property>
-     <property name="maximum">
-      <number>10</number>
-     </property>
-     <property name="singleStep">
-      <number>1</number>
-     </property>
-     <property name="value">
-      <number>-144</number>
-     </property>
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-    </widget>
+       </property>
+       <property name="minimum">
+        <number>-144</number>
+       </property>
+       <property name="maximum">
+        <number>10</number>
+       </property>
+       <property name="singleStep">
+        <number>1</number>
+       </property>
+       <property name="value">
+        <number>-144</number>
+       </property>
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QProgressBar" name="progressBar">
+       <property name="minimumSize">
+        <size>
+         <width>18</width>
+         <height>120</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>18</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"> QProgressBar {
+     border: 0px solid rgb(50, 50, 50);
+	 background-color: black;
+	padding: 0px 2px;
+ }
+
+QProgressBar::chunk:vertical{ 
+background-color: qlineargradient(spread:reflect, x1:1, y1:1, x2:0.204, y2:0.403, stop:0 rgba(106, 199, 255, 255), stop:1 rgba(224, 242, 255, 255));
+height: 1px; 
+margin: 0.5px; 
+} </string>
+       </property>
+       <property name="minimum">
+        <number>-60</number>
+       </property>
+       <property name="maximum">
+        <number>10</number>
+       </property>
+       <property name="value">
+        <number>-60</number>
+       </property>
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <property name="invertedAppearance">
+        <bool>false</bool>
+       </property>
+       <property name="format">
+        <string/>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
    <item>
     <widget class="QPushButton" name="mainPushButton">
@@ -1543,8 +1456,77 @@ QSlider::handle:vertical:hover {
      </property>
     </widget>
    </item>
+   <item>
+    <widget class="QFrame" name="frame_2">
+     <property name="minimumSize">
+      <size>
+       <width>42</width>
+       <height>34</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>42</width>
+       <height>34</height>
+      </size>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_3">
+      <property name="spacing">
+       <number>0</number>
+      </property>
+      <property name="leftMargin">
+       <number>4</number>
+      </property>
+      <property name="topMargin">
+       <number>4</number>
+      </property>
+      <property name="rightMargin">
+       <number>4</number>
+      </property>
+      <property name="bottomMargin">
+       <number>4</number>
+      </property>
+      <item>
+       <widget class="QLabel" name="channelNumberLabel">
+        <property name="minimumSize">
+         <size>
+          <width>32</width>
+          <height>24</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>32</width>
+          <height>24</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background:rgb(40, 40,40);
+
+color: white;
+font-size: 15px;
+margin: 0px;
+border-radius: 4px;
+border: 1px solid black;</string>
+        </property>
+        <property name="text">
+         <string>42</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
   </layout>
-  <zorder>volumeVerticalSlider</zorder>
   <zorder>gainFrame</zorder>
   <zorder>frame_2</zorder>
   <zorder>loFrame</zorder>
@@ -1566,7 +1548,6 @@ QSlider::handle:vertical:hover {
   <zorder>soloPushButton</zorder>
   <zorder>line_4</zorder>
   <zorder>line_5</zorder>
-  <zorder>frame</zorder>
   <zorder>auxOnPushButton</zorder>
   <zorder>line_2</zorder>
   <zorder>equalizerOnPushButton</zorder>
