@@ -142,6 +142,14 @@ bool QSampleBuffer::addTo(QSampleBuffer sampleBuffer, double attenuation)
     return true;
 }
 
+void QSampleBuffer::multiply(double attenuation)
+{
+    for(int i = 0; i < _bufferSize; i++) {
+        ((jack_default_audio_sample_t*)_buffer)[i] *= attenuation;
+    }
+}
+
+
 void QSampleBuffer::releaseMemoryBuffer()
 {
     if(_isMemoryBuffer) {

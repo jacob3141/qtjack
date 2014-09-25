@@ -31,7 +31,7 @@ QAmplifier::QAmplifier(QObject *parent)
 
 void QAmplifier::process(QSampleBuffer sampleBuffer)
 {
-    bool isClipping = false;
+    //bool isClipping = false;
     bool isActive = false;
 
     _mutex.lock();
@@ -44,27 +44,28 @@ void QAmplifier::process(QSampleBuffer sampleBuffer)
     }
 
     isActive = true;
+    sampleBuffer.multiply(QUnits::dbToLinear(gain));
 
-    int bufferSize = sampleBuffer.size();
-    for(int i = 0; i < bufferSize; i++) {
-        // Read audio sample
-        double result = sampleBuffer.readAudioSample(i) * QUnits::dbToLinear(gain);
+//    int bufferSize = sampleBuffer.size();
+//    for(int i = 0; i < bufferSize; i++) {
+//        // Read audio sample
+//        double result = sampleBuffer.readAudioSample(i) * QUnits::dbToLinear(gain);
 
-        if(result > 1.0) {
-            result = 1.0;
-            isClipping = true;
-        }
+//        if(result > 1.0) {
+//            result = 1.0;
+//            isClipping = true;
+//        }
 
-        if(result < -1.0) {
-            result = -1.0;
-            isClipping = true;
-        }
-        sampleBuffer.writeAudioSample(i, result);
-    }
+//        if(result < -1.0) {
+//            result = -1.0;
+//            isClipping = true;
+//        }
+//        sampleBuffer.writeAudioSample(i, result);
+//    }
 
-    if(isClipping) {
-        emit clipping();
-    }
+//    if(isClipping) {
+//        emit clipping();
+//    }
 
     if(isActive) {
         emit active();

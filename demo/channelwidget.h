@@ -48,7 +48,7 @@ public:
     explicit ChannelWidget(int channelNumber, QWidget *parent = 0);
     ~ChannelWidget();
 
-    QSampleBuffer process();
+    void process(QSampleBuffer targetSampleBuffer);
 
     void updateInterface();
 

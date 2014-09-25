@@ -58,6 +58,41 @@ MainMixerWidget::MainMixerWidget(QWidget *parent) :
 
     _mainLeftOut = jackClient->registerAudioOutPort("main_out_1");
     _mainRightOut = jackClient->registerAudioOutPort("main_out_2");
+
+    _subgroup1FaderStage = new QAmplifier();
+    _subgroup2FaderStage = new QAmplifier();
+    _subgroup3FaderStage = new QAmplifier();
+    _subgroup4FaderStage = new QAmplifier();
+    _subgroup5FaderStage = new QAmplifier();
+    _subgroup6FaderStage = new QAmplifier();
+    _subgroup7FaderStage = new QAmplifier();
+    _subgroup8FaderStage = new QAmplifier();
+    _main1FaderStage = new QAmplifier();
+    _main2FaderStage = new QAmplifier();
+
+    _subgroup1FaderStage->setGain(ui->subgroup1VolumeVerticalSlider->value());
+    _subgroup2FaderStage->setGain(ui->subgroup2VolumeVerticalSlider->value());
+    _subgroup3FaderStage->setGain(ui->subgroup3VolumeVerticalSlider->value());
+    _subgroup4FaderStage->setGain(ui->subgroup4VolumeVerticalSlider->value());
+    _subgroup5FaderStage->setGain(ui->subgroup5VolumeVerticalSlider->value());
+    _subgroup6FaderStage->setGain(ui->subgroup6VolumeVerticalSlider->value());
+    _subgroup7FaderStage->setGain(ui->subgroup7VolumeVerticalSlider->value());
+    _subgroup8FaderStage->setGain(ui->subgroup8VolumeVerticalSlider->value());
+
+    _main1FaderStage->setGain(ui->main1VolumeVerticalSlider->value());
+    _main2FaderStage->setGain(ui->main2VolumeVerticalSlider->value());
+
+    connect(ui->subgroup1VolumeVerticalSlider, SIGNAL(valueChanged(int)), _subgroup1FaderStage, SLOT(setGain(int)));
+    connect(ui->subgroup2VolumeVerticalSlider, SIGNAL(valueChanged(int)), _subgroup2FaderStage, SLOT(setGain(int)));
+    connect(ui->subgroup3VolumeVerticalSlider, SIGNAL(valueChanged(int)), _subgroup3FaderStage, SLOT(setGain(int)));
+    connect(ui->subgroup4VolumeVerticalSlider, SIGNAL(valueChanged(int)), _subgroup4FaderStage, SLOT(setGain(int)));
+    connect(ui->subgroup5VolumeVerticalSlider, SIGNAL(valueChanged(int)), _subgroup5FaderStage, SLOT(setGain(int)));
+    connect(ui->subgroup6VolumeVerticalSlider, SIGNAL(valueChanged(int)), _subgroup6FaderStage, SLOT(setGain(int)));
+    connect(ui->subgroup7VolumeVerticalSlider, SIGNAL(valueChanged(int)), _subgroup7FaderStage, SLOT(setGain(int)));
+    connect(ui->subgroup8VolumeVerticalSlider, SIGNAL(valueChanged(int)), _subgroup8FaderStage, SLOT(setGain(int)));
+
+    connect(ui->main1VolumeVerticalSlider, SIGNAL(valueChanged(int)), _main1FaderStage, SLOT(setGain(int)));
+    connect(ui->main2VolumeVerticalSlider, SIGNAL(valueChanged(int)), _main2FaderStage, SLOT(setGain(int)));
 }
 
 MainMixerWidget::~MainMixerWidget()
@@ -73,6 +108,7 @@ void MainMixerWidget::registerChannel(int i, ChannelWidget *channelWidget)
 
 void MainMixerWidget::process()
 {
+    // Obtaining sample buffers
     QSampleBuffer subgroup1SampleBuffer = _subGroup1Out->sampleBuffer();
     QSampleBuffer subgroup2SampleBuffer = _subGroup2Out->sampleBuffer();
     QSampleBuffer subgroup3SampleBuffer = _subGroup3Out->sampleBuffer();
@@ -85,6 +121,7 @@ void MainMixerWidget::process()
     QSampleBuffer main1SampleBuffer = _mainLeftOut->sampleBuffer();
     QSampleBuffer main2SampleBuffer = _mainRightOut->sampleBuffer();
 
+    // Clearing buffers (since we are going to sum up signals
     subgroup1SampleBuffer.clear();
     subgroup2SampleBuffer.clear();
     subgroup3SampleBuffer.clear();
@@ -94,10 +131,38 @@ void MainMixerWidget::process()
     subgroup7SampleBuffer.clear();
     subgroup8SampleBuffer.clear();
 
+    // Find out whether any of the channels is soloed
+    bool soloActive = false;
     foreach(ChannelWidget *channelWidget, _registeredChannels) {
-        QSampleBuffer sampleBuffer = channelWidget->process();
+        if(channelWidget->isSoloed()) {
+            soloActive = true;
+        }
+    }
 
-        if(!channelWidget->isMuted()) {
+    // Find out whether any of the subgroups are soloed
+    bool subgroupSoloActive = false;
+    if(ui->subgroup1SoloPushButton->isChecked()
+    || ui->subgroup2SoloPushButton->isChecked()
+    || ui->subgroup3SoloPushButton->isChecked()
+    || ui->subgroup4SoloPushButton->isChecked()
+    || ui->subgroup5SoloPushButton->isChecked()
+    || ui->subgroup6SoloPushButton->isChecked()
+    || ui->subgroup7SoloPushButton->isChecked()
+    || ui->subgroup8SoloPushButton->isChecked()) {
+        subgroupSoloActive = true;
+    }
+
+    // Routing channels to subgroups and main
+    foreach(ChannelWidget *channelWidget, _registeredChannels) {
+        // Create a temporary memory buffer, so we do not alter the sample in the input buffer,
+        // which may effect other applications connected to the same input.
+        QSampleBuffer sampleBuffer = QSampleBuffer::createMemoryAudioBuffer(QJackClient::instance()->bufferSize());
+
+        // Do the processing for the channel
+        channelWidget->process(sampleBuffer);
+
+        // If the channel is not muted, apply to subgroups and main.
+        if(!channelWidget->isMuted() && (!soloActive || channelWidget->isSoloed())) {
             double panorama = channelWidget->panorama();
             if(channelWidget->isInSubGroup12()) {
                 sampleBuffer.addTo(subgroup1SampleBuffer, 1.0 - panorama);
@@ -118,10 +183,54 @@ void MainMixerWidget::process()
                 sampleBuffer.addTo(subgroup7SampleBuffer, 1.0 - panorama);
                 sampleBuffer.addTo(subgroup8SampleBuffer,       panorama);
             }
+
+            if(channelWidget->isOnMain()) {
+                sampleBuffer.addTo(main1SampleBuffer, 1.0 - panorama);
+                sampleBuffer.addTo(main2SampleBuffer,       panorama);
+            }
         }
 
         sampleBuffer.releaseMemoryBuffer();
     }
+
+    // Route subgroups through faders
+    _subgroup1FaderStage->process(subgroup1SampleBuffer);
+    _subgroup2FaderStage->process(subgroup2SampleBuffer);
+    _subgroup3FaderStage->process(subgroup3SampleBuffer);
+    _subgroup4FaderStage->process(subgroup4SampleBuffer);
+    _subgroup5FaderStage->process(subgroup5SampleBuffer);
+    _subgroup6FaderStage->process(subgroup6SampleBuffer);
+    _subgroup7FaderStage->process(subgroup7SampleBuffer);
+    _subgroup8FaderStage->process(subgroup8SampleBuffer);
+
+    // Routing subgroups to main
+
+    if(!ui->subgroup1MutePushButton->isChecked() && (!subgroupSoloActive || ui->subgroup1SoloPushButton->isChecked())) {
+        subgroup1SampleBuffer.addTo(main1SampleBuffer);
+    }
+    if(!ui->subgroup2MutePushButton->isChecked() && (!subgroupSoloActive || ui->subgroup2SoloPushButton->isChecked())) {
+        subgroup2SampleBuffer.addTo(main2SampleBuffer);
+    }
+    if(!ui->subgroup3MutePushButton->isChecked() && (!subgroupSoloActive || ui->subgroup3SoloPushButton->isChecked())) {
+        subgroup3SampleBuffer.addTo(main1SampleBuffer);
+    }
+    if(!ui->subgroup4MutePushButton->isChecked() && (!subgroupSoloActive || ui->subgroup4SoloPushButton->isChecked())) {
+        subgroup4SampleBuffer.addTo(main2SampleBuffer);
+    }
+    if(!ui->subgroup5MutePushButton->isChecked() && (!subgroupSoloActive || ui->subgroup5SoloPushButton->isChecked())) {
+        subgroup5SampleBuffer.addTo(main1SampleBuffer);
+    }
+    if(!ui->subgroup6MutePushButton->isChecked() && (!subgroupSoloActive || ui->subgroup6SoloPushButton->isChecked())) {
+        subgroup6SampleBuffer.addTo(main2SampleBuffer);
+    }
+    if(!ui->subgroup7MutePushButton->isChecked() && (!subgroupSoloActive || ui->subgroup7SoloPushButton->isChecked())) {
+        subgroup7SampleBuffer.addTo(main1SampleBuffer);
+    }
+    if(!ui->subgroup8MutePushButton->isChecked() && (!subgroupSoloActive || ui->subgroup8SoloPushButton->isChecked())) {
+        subgroup8SampleBuffer.addTo(main2SampleBuffer);
+    }
+
+    // Peak detection
 
     double peak1 = 0.0;
     double peak2 = 0.0;
@@ -131,6 +240,10 @@ void MainMixerWidget::process()
     double peak6 = 0.0;
     double peak7 = 0.0;
     double peak8 = 0.0;
+
+    double mainPeak1 = 0.0;
+    double mainPeak2 = 0.0;
+
     for(int i = 0; i < subgroup1SampleBuffer.size(); i++) {
         double sample1 = QUnits::peak(subgroup1SampleBuffer.readAudioSample(i));
         peak1 = sample1 > peak1 ? sample1 : peak1;
@@ -149,6 +262,10 @@ void MainMixerWidget::process()
         double sample8 = QUnits::peak(subgroup8SampleBuffer.readAudioSample(i));
         peak8 = sample8 > peak8 ? sample8 : peak8;
 
+        double sampleMain1 = QUnits::peak(main1SampleBuffer.readAudioSample(i));
+        mainPeak1 = sampleMain1 > mainPeak1 ? sampleMain1 : mainPeak1;
+        double sampleMain2 = QUnits::peak(main2SampleBuffer.readAudioSample(i));
+        mainPeak2 = sampleMain2 > mainPeak2 ? sampleMain2 : mainPeak2;
     }
     _peak1 = QUnits::linearToDb(peak1);
     _peak2 = QUnits::linearToDb(peak2);
@@ -158,8 +275,23 @@ void MainMixerWidget::process()
     _peak6 = QUnits::linearToDb(peak6);
     _peak7 = QUnits::linearToDb(peak7);
     _peak8 = QUnits::linearToDb(peak8);
-}
 
+    _mainPeak1 = QUnits::linearToDb(mainPeak1);
+    _mainPeak2 = QUnits::linearToDb(mainPeak2);
+
+    // Check if main is muted, and clear signal if necessary
+    if(ui->main1MutePushButton->isChecked()) {
+        main1SampleBuffer.clear();
+    } else {
+        _main1FaderStage->process(main1SampleBuffer);
+    }
+
+    if(ui->main2MutePushButton->isChecked()) {
+        main2SampleBuffer.clear();
+    } else {
+        _main2FaderStage->process(main2SampleBuffer);
+    }
+}
 
 void MainMixerWidget::updateInterface()
 {

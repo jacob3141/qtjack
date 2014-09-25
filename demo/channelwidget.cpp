@@ -60,40 +60,37 @@ ChannelWidget::~ChannelWidget()
     delete ui;
 }
 
-QSampleBuffer ChannelWidget::process()
+void ChannelWidget::process(QSampleBuffer targetSampleBuffer)
 {
     QSampleBuffer inputSampleBuffer = _channelIn->sampleBuffer();
-    QSampleBuffer sampleBuffer = QSampleBuffer::createMemoryAudioBuffer(inputSampleBuffer.size());
-    inputSampleBuffer.copyTo(sampleBuffer);
+    inputSampleBuffer.copyTo(targetSampleBuffer);
 
     double peak = 0.0;
-    for(int i = 0; i < sampleBuffer.size(); i++) {
-        double sample = QUnits::peak(sampleBuffer.readAudioSample(i));
+    for(int i = 0; i < targetSampleBuffer.size(); i++) {
+        double sample = QUnits::peak(targetSampleBuffer.readAudioSample(i));
         peak = sample > peak ? sample : peak;
     }
     _peak = QUnits::linearToDb(peak);
 
-    _inputStage->process(sampleBuffer);
+    _inputStage->process(targetSampleBuffer);
 
     if(ui->equalizerOnPushButton->isChecked()) {
-        _equalizer->process(sampleBuffer);
+        _equalizer->process(targetSampleBuffer);
     }
 
     if(ui->auxOnPushButton->isChecked()) {
         // Attenuate signal
-        _auxPre->process(sampleBuffer);
+        _auxPre->process(targetSampleBuffer);
         // Send signal
-        sampleBuffer.copyTo(_auxSend->sampleBuffer());
+        targetSampleBuffer.copyTo(_auxSend->sampleBuffer());
         // Take received signal
-        _auxReturn->sampleBuffer().copyTo(sampleBuffer);
+        _auxReturn->sampleBuffer().copyTo(targetSampleBuffer);
         // Attenuate signal
-        _auxPost->process(sampleBuffer);
+        _auxPost->process(targetSampleBuffer);
     }
 
-    _faderStage->process(sampleBuffer);
-    sampleBuffer.copyTo(_channelOut->sampleBuffer());
-
-    return sampleBuffer;
+    _faderStage->process(targetSampleBuffer);
+    targetSampleBuffer.copyTo(_channelOut->sampleBuffer());
 }
 
 void ChannelWidget::updateInterface()

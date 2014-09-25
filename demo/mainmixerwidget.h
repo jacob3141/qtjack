@@ -73,7 +73,20 @@ private:
     double _peak7;
     double _peak8;
 
+    double _mainPeak1;
+    double _mainPeak2;
+
     //
+    QAmplifier *_subgroup1FaderStage;
+    QAmplifier *_subgroup2FaderStage;
+    QAmplifier *_subgroup3FaderStage;
+    QAmplifier *_subgroup4FaderStage;
+    QAmplifier *_subgroup5FaderStage;
+    QAmplifier *_subgroup6FaderStage;
+    QAmplifier *_subgroup7FaderStage;
+    QAmplifier *_subgroup8FaderStage;
+    QAmplifier *_main1FaderStage;
+    QAmplifier *_main2FaderStage;
 
     QJackPort *_subGroup1Out;
     QJackPort *_subGroup2Out;

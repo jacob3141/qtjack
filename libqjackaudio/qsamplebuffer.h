@@ -78,6 +78,8 @@ public:
     /** Adds all sample from this buffer to the goven sampleBuffer. */
     bool addTo(QSampleBuffer sampleBuffer, double attenuation);
 
+    void multiply(double attenuation);
+
     void releaseMemoryBuffer();
 
 private:
