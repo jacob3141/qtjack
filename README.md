@@ -5,6 +5,7 @@ The purpose of QJackAudio is to make it easy to interface with a JACK audio serv
 
 See a demo app here:
 https://github.com/cybercatalyst/mx2482
+![Demo Screenshot](https://github.com/cybercatalyst/mx2482/blob/master/mx2482.png "Demo screenshot")
 
 I really like to develop based on practical aspects. If you find QJackAudio hard to understand or to use, please let me know. This is a clear indicator that it is lacking documentation or needs refactoring and will be treated as a bug.
 
