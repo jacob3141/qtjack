@@ -3,8 +3,10 @@ Say hello to QJackAudio
 
 The purpose of QJackAudio is to make it easy to interface with a JACK audio server from within a Qt application. JACK (JACK Audio Connection Kit) is the de-facto standard for professional audio processing on GNU/Linux, a low-latency audio server that runs on-top of numerous sound systems. Each JACK application is able to interface with any other JACK application by offering virtual in- and output through a standardized interface, just like you would be able to connect audio devices with cables. For maximum compatibility, JACK offers a C-style API found in libjack. qjackaudio tries to be a more convenient solution by wrapping all the C-stuff and offering often used, digital filters, like equalization, delay, reverb and the like.
 
+Below you can see a screenshot of MX2482, a 24 channel to 8 subgroups mixer console written with QJackAudio.
 ![Demo Screenshot](https://github.com/cybercatalyst/qjackaudio/blob/master/mx2482.png "Demo screenshot")
 
+I really like to develop based on practical aspects. If you find QJackAudio hard to understand or to use, please let me know. This is a clear indicator that it is lacking documentation or needs refactoring and will be treated as a bug.
 How to build
 ============
 
