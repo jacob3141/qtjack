@@ -41,19 +41,33 @@ class QSampleBuffer
 {
     friend class QJackPort;
 public:
+    /** Create an audio buffer by allocating memory manually. */
     static QSampleBuffer createMemoryAudioBuffer(int size);
 
+    /** Frees memory if this is a sample buffer create in memory. */
+    void releaseMemoryBuffer();
+
+    /** Copy constructor. */
     QSampleBuffer(const QSampleBuffer& other);
 
+    /**
+     * Type of sample buffer.
+     */
     enum BufferType {
         AudioBuffer,
         MidiBuffer
     };
 
+    /** @returns true, if this buffer's memory has been allocated manually. */
     bool isMemoryBuffer();
 
     /** @returns the buffer type. @see BufferType */
     BufferType bufferType();
+
+    /** @returns a human-readable string containing the last error occurred. */
+    QString lastError();
+
+    // Single sample operations
 
     /** @return the buffer size. */
     int size();
@@ -64,9 +78,9 @@ public:
     /** Writes sample at position i in the audio buffer. */
     void writeAudioSample(int i, double value);
 
-    /** @returns a human-readable string containing the last error occurred. */
-    QString lastError();
+    // Operations targeting all samples in the buffer
 
+    /** Sets all samples to zero. */
     void clear();
 
     /** Copies all samples from this buffer to the given sampleBuffer. */
@@ -78,21 +92,29 @@ public:
     /** Adds all sample from this buffer to the goven sampleBuffer. */
     bool addTo(QSampleBuffer sampleBuffer, double attenuation);
 
+    /** Multiplies all samples by the given attenuation value. */
     void multiply(double attenuation);
 
+    /** @returns the absolute value of the highest sample value in this buffer. */
     double peak();
 
-    void releaseMemoryBuffer();
-
 private:
+    /** Private constructor. */
     QSampleBuffer(BufferType bufferType, int size, void* buffer);
 
+    /** The last error that occurred during an operation. */
     QString _lastError;
 
+    /** Sample buffer type. */
     BufferType _bufferType;
-    int _bufferSize;
+
+    /** Size of sample buffer. */
+    int _size;
+
+    /** Pointer to memory buffer. */
     void *_buffer;
 
+    /** Flag that indicates that this buffer's memory has been allocated manually. */
     bool _isMemoryBuffer;
 };
 

@@ -31,7 +31,6 @@
 // QJackClient includes
 #include <QAudioProcessor>
 
-
 // Own includes
 #include "mainmixerwidget.h"
 
@@ -39,6 +38,10 @@ namespace Ui {
 class MainWindow;
 }
 
+/**
+ * Main window for this application.
+ * @author Jacob Dawid ( jacob.dawid@omg-it.works )
+ */
 class MainWindow : public QMainWindow, public QAudioProcessor
 {
     Q_OBJECT
@@ -47,14 +50,17 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+    /** @overload */
     void process();
 
 protected:
+    /** @overload */
     void closeEvent(QCloseEvent *closeEvent);
 
 private:
     Ui::MainWindow *ui;
 
+    /** The main mixer widget. */
     MainMixerWidget *_mainMixerWidget;
 };
 

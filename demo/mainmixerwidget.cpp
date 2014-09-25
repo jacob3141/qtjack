@@ -27,7 +27,6 @@
 
 // Qt includes
 #include <QFontDatabase>
-#include <QDebug>
 
 MainMixerWidget::MainMixerWidget(QWidget *parent) :
     QWidget(parent),
@@ -44,7 +43,6 @@ MainMixerWidget::MainMixerWidget(QWidget *parent) :
     QFont font("Free Pixel", 24);
     font.setStyleStrategy(QFont::NoAntialias);
     ui->displayLabel->setFont(font);
-    //
 
     QJackClient *jackClient = QJackClient::instance();
     _subGroup1Out = jackClient->registerAudioOutPort("subgroup1_out");
@@ -234,14 +232,14 @@ void MainMixerWidget::process()
     }
 
     // Peak detection    
-    _peak1 = QUnits::linearToDb(subgroup1SampleBuffer.peak());
-    _peak2 = QUnits::linearToDb(subgroup2SampleBuffer.peak());
-    _peak3 = QUnits::linearToDb(subgroup3SampleBuffer.peak());
-    _peak4 = QUnits::linearToDb(subgroup4SampleBuffer.peak());
-    _peak5 = QUnits::linearToDb(subgroup5SampleBuffer.peak());
-    _peak6 = QUnits::linearToDb(subgroup6SampleBuffer.peak());
-    _peak7 = QUnits::linearToDb(subgroup7SampleBuffer.peak());
-    _peak8 = QUnits::linearToDb(subgroup8SampleBuffer.peak());
+    _subgroupPeak1 = QUnits::linearToDb(subgroup1SampleBuffer.peak());
+    _subgroupPeak2 = QUnits::linearToDb(subgroup2SampleBuffer.peak());
+    _subgroupPeak3 = QUnits::linearToDb(subgroup3SampleBuffer.peak());
+    _subgroupPeak4 = QUnits::linearToDb(subgroup4SampleBuffer.peak());
+    _subgroupPeak5 = QUnits::linearToDb(subgroup5SampleBuffer.peak());
+    _subgroupPeak6 = QUnits::linearToDb(subgroup6SampleBuffer.peak());
+    _subgroupPeak7 = QUnits::linearToDb(subgroup7SampleBuffer.peak());
+    _subgroupPeak8 = QUnits::linearToDb(subgroup8SampleBuffer.peak());
 
     // Check if main is muted, and clear signal if necessary
     if(ui->main1MutePushButton->isChecked()) {
@@ -264,10 +262,10 @@ void MainMixerWidget::updateInterface()
 {
     QJackClient *jackClient = QJackClient::instance();
     QString displayText;
-    //displayText += QString("<table width=\"100%\"><tr><td><b>JACK Client</b></td><td></td></tr>");
+    displayText += QString("<table width=\"100%\"><tr><td><b>JACK Client</b></td><td></td></tr>");
     displayText += QString("<tr><td>RT processing:</td><td>%1</td></tr>").arg(jackClient->isRealtime() ? "Yes" : "No");
     displayText += QString("<tr><td>Buffers.:</td><td>%1 Samples</td></tr>").arg(jackClient->bufferSize());
-    displayText += QString("<tr><td>CPU load:</td><td>%1</td></tr>").arg(jackClient->cpuLoad() < 5.0 ? "Idle" : QString("%1 %").arg((int)jackClient->cpuLoad()));
+    displayText += QString("<tr><td>CPU load:</td><td>%1</td></tr>").arg(jackClient->cpuLoad() < 1.0 ? "Idle" : QString("%1 %").arg((int)jackClient->cpuLoad()));
     displayText += QString("<tr><td>Samplerate:</td><td>%1 Hz</td></tr></table>").arg(jackClient->sampleRate());
     ui->displayLabel->setText(displayText);
 
@@ -275,14 +273,14 @@ void MainMixerWidget::updateInterface()
         channelWidget->updateInterface();
     }
 
-    ui->subgroup1ProgressBar->setValue((int)_peak1);
-    ui->subgroup2ProgressBar->setValue((int)_peak2);
-    ui->subgroup3ProgressBar->setValue((int)_peak3);
-    ui->subgroup4ProgressBar->setValue((int)_peak4);
-    ui->subgroup5ProgressBar->setValue((int)_peak5);
-    ui->subgroup6ProgressBar->setValue((int)_peak6);
-    ui->subgroup7ProgressBar->setValue((int)_peak7);
-    ui->subgroup8ProgressBar->setValue((int)_peak8);
+    ui->subgroup1ProgressBar->setValue((int)_subgroupPeak1);
+    ui->subgroup2ProgressBar->setValue((int)_subgroupPeak2);
+    ui->subgroup3ProgressBar->setValue((int)_subgroupPeak3);
+    ui->subgroup4ProgressBar->setValue((int)_subgroupPeak4);
+    ui->subgroup5ProgressBar->setValue((int)_subgroupPeak5);
+    ui->subgroup6ProgressBar->setValue((int)_subgroupPeak6);
+    ui->subgroup7ProgressBar->setValue((int)_subgroupPeak7);
+    ui->subgroup8ProgressBar->setValue((int)_subgroupPeak8);
 
     ui->main1ProgressBar->setValue((int)_mainPeak1);
     ui->main2ProgressBar->setValue((int)_mainPeak2);

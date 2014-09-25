@@ -38,44 +38,73 @@ class ChannelWidget;
 }
 
 /**
- * @brief The ChannelWidget class
+ * Widget that represents a single audio channel mixer line.
+ * @author Jacob Dawid ( jacob.dawid@omg-it.works )
  */
 class ChannelWidget : public QWidget
 {
     Q_OBJECT
 
 public:
+    /** Constructor */
     explicit ChannelWidget(int channelNumber, QWidget *parent = 0);
+    /** Destructor */
     ~ChannelWidget();
 
+    /** Process this channel mixer line, storing the result in targetSampleBuffer. */
     void process(QSampleBuffer targetSampleBuffer);
 
+    /** Update all visual interface elements. */
     void updateInterface();
 
+    /** @returns the panorama setting. 0.0 means left-most, 1.0 indicates right-most position. */
     double panorama();
+
+    /** @returns whether this channel is contained in subgroup 1 and 2. */
     bool isInSubGroup12();
+
+    /** @returns whether this channel is contained in subgroup 3 and 4. */
     bool isInSubGroup34();
+
+    /** @returns whether this channel is contained in subgroup 5 and 6. */
     bool isInSubGroup56();
+
+    /** @returns whether this channel is contained in subgroup 7 and 8. */
     bool isInSubGroup78();
 
+    /** @returns whether this channel has been muted. */
     bool isMuted();
+
+    /** @returns whether this channel has been soloed. */
     bool isSoloed();
 
+    /** @returns true, when this channel is routed on main. */
     bool isOnMain();
 
 private:
     Ui::ChannelWidget *ui;
+
+    /** Input stage amplifier ("Gain"). */
     QAmplifier *_inputStage;
+    /** Fader stage amplifier ("Volume"). */
     QAmplifier *_faderStage;
+    /** Attenuation stage before sending signal to aux. */
     QAmplifier *_auxPre;
+    /** Attenuation stage after receiving signal from aux. */
     QAmplifier *_auxPost;
+    /** Equalizer for this channel. */
     QEqualizer *_equalizer;
 
+    /** QJackAudio input port for this channel. */
     QJackPort *_channelIn;
+    /** QJackAudio aux send output port for this channel. */
     QJackPort *_auxSend;
+    /** QJackAudio aux receive input port for this channel. */
     QJackPort *_auxReturn;
+    /** QJackAudio direct out output port for this channel. */
     QJackPort *_channelOut;
 
+    /** Last peak value. */
     double _peak;
 };
 
