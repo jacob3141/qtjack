@@ -1364,6 +1364,12 @@ QSlider::handle:vertical:hover {
 	background-color: qlineargradient(spread:reflect, x1:1, y1:0.493818, x2:1, y2:0, stop:0 rgba(109, 135, 255, 255), stop:1 rgba(175, 205, 255, 255));
 }</string>
               </property>
+              <property name="minimum">
+               <number>-144</number>
+              </property>
+              <property name="maximum">
+               <number>10</number>
+              </property>
               <property name="orientation">
                <enum>Qt::Vertical</enum>
               </property>
@@ -1376,7 +1382,7 @@ QSlider::handle:vertical:hover {
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="mainPushButton">
+             <widget class="QPushButton" name="subgroup1MainPushButton">
               <property name="minimumSize">
                <size>
                 <width>42</width>
@@ -1396,7 +1402,7 @@ QSlider::handle:vertical:hover {
                <bool>true</bool>
               </property>
               <property name="checked">
-               <bool>false</bool>
+               <bool>true</bool>
               </property>
              </widget>
             </item>
@@ -1540,13 +1546,19 @@ QSlider::handle:vertical:hover {
 	background-color: qlineargradient(spread:reflect, x1:1, y1:0.493818, x2:1, y2:0, stop:0 rgba(109, 135, 255, 255), stop:1 rgba(175, 205, 255, 255));
 }</string>
               </property>
+              <property name="minimum">
+               <number>-144</number>
+              </property>
+              <property name="maximum">
+               <number>10</number>
+              </property>
               <property name="orientation">
                <enum>Qt::Vertical</enum>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="mainPushButton_2">
+             <widget class="QPushButton" name="subgroup2MainPushButton">
               <property name="minimumSize">
                <size>
                 <width>42</width>
@@ -1566,7 +1578,7 @@ QSlider::handle:vertical:hover {
                <bool>true</bool>
               </property>
               <property name="checked">
-               <bool>false</bool>
+               <bool>true</bool>
               </property>
              </widget>
             </item>
@@ -1782,13 +1794,19 @@ QSlider::handle:vertical:hover {
 	background-color: qlineargradient(spread:reflect, x1:1, y1:0.493818, x2:1, y2:0, stop:0 rgba(109, 135, 255, 255), stop:1 rgba(175, 205, 255, 255));
 }</string>
               </property>
+              <property name="minimum">
+               <number>-144</number>
+              </property>
+              <property name="maximum">
+               <number>10</number>
+              </property>
               <property name="orientation">
                <enum>Qt::Vertical</enum>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="mainPushButton_3">
+             <widget class="QPushButton" name="subgroup3MainPushButton">
               <property name="minimumSize">
                <size>
                 <width>42</width>
@@ -1808,7 +1826,7 @@ QSlider::handle:vertical:hover {
                <bool>true</bool>
               </property>
               <property name="checked">
-               <bool>false</bool>
+               <bool>true</bool>
               </property>
              </widget>
             </item>
@@ -1952,13 +1970,19 @@ QSlider::handle:vertical:hover {
 	background-color: qlineargradient(spread:reflect, x1:1, y1:0.493818, x2:1, y2:0, stop:0 rgba(109, 135, 255, 255), stop:1 rgba(175, 205, 255, 255));
 }</string>
               </property>
+              <property name="minimum">
+               <number>-144</number>
+              </property>
+              <property name="maximum">
+               <number>10</number>
+              </property>
               <property name="orientation">
                <enum>Qt::Vertical</enum>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="mainPushButton_4">
+             <widget class="QPushButton" name="subgroup4MainPushButton">
               <property name="minimumSize">
                <size>
                 <width>42</width>
@@ -1978,7 +2002,7 @@ QSlider::handle:vertical:hover {
                <bool>true</bool>
               </property>
               <property name="checked">
-               <bool>false</bool>
+               <bool>true</bool>
               </property>
              </widget>
             </item>
@@ -2194,13 +2218,19 @@ QSlider::handle:vertical:hover {
 	background-color: qlineargradient(spread:reflect, x1:1, y1:0.493818, x2:1, y2:0, stop:0 rgba(109, 135, 255, 255), stop:1 rgba(175, 205, 255, 255));
 }</string>
               </property>
+              <property name="minimum">
+               <number>-144</number>
+              </property>
+              <property name="maximum">
+               <number>10</number>
+              </property>
               <property name="orientation">
                <enum>Qt::Vertical</enum>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="mainPushButton_5">
+             <widget class="QPushButton" name="subgroup5MainPushButton">
               <property name="minimumSize">
                <size>
                 <width>42</width>
@@ -2220,7 +2250,7 @@ QSlider::handle:vertical:hover {
                <bool>true</bool>
               </property>
               <property name="checked">
-               <bool>false</bool>
+               <bool>true</bool>
               </property>
              </widget>
             </item>
@@ -2364,13 +2394,19 @@ QSlider::handle:vertical:hover {
 	background-color: qlineargradient(spread:reflect, x1:1, y1:0.493818, x2:1, y2:0, stop:0 rgba(109, 135, 255, 255), stop:1 rgba(175, 205, 255, 255));
 }</string>
               </property>
+              <property name="minimum">
+               <number>-144</number>
+              </property>
+              <property name="maximum">
+               <number>10</number>
+              </property>
               <property name="orientation">
                <enum>Qt::Vertical</enum>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="mainPushButton_6">
+             <widget class="QPushButton" name="subgroup6MainPushButton">
               <property name="minimumSize">
                <size>
                 <width>42</width>
@@ -2390,7 +2426,7 @@ QSlider::handle:vertical:hover {
                <bool>true</bool>
               </property>
               <property name="checked">
-               <bool>false</bool>
+               <bool>true</bool>
               </property>
              </widget>
             </item>
@@ -2606,13 +2642,19 @@ QSlider::handle:vertical:hover {
 	background-color: qlineargradient(spread:reflect, x1:1, y1:0.493818, x2:1, y2:0, stop:0 rgba(109, 135, 255, 255), stop:1 rgba(175, 205, 255, 255));
 }</string>
               </property>
+              <property name="minimum">
+               <number>-144</number>
+              </property>
+              <property name="maximum">
+               <number>10</number>
+              </property>
               <property name="orientation">
                <enum>Qt::Vertical</enum>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="mainPushButton_7">
+             <widget class="QPushButton" name="subgroup7MainPushButton">
               <property name="minimumSize">
                <size>
                 <width>42</width>
@@ -2632,7 +2674,7 @@ QSlider::handle:vertical:hover {
                <bool>true</bool>
               </property>
               <property name="checked">
-               <bool>false</bool>
+               <bool>true</bool>
               </property>
              </widget>
             </item>
@@ -2776,13 +2818,19 @@ QSlider::handle:vertical:hover {
 	background-color: qlineargradient(spread:reflect, x1:1, y1:0.493818, x2:1, y2:0, stop:0 rgba(109, 135, 255, 255), stop:1 rgba(175, 205, 255, 255));
 }</string>
               </property>
+              <property name="minimum">
+               <number>-144</number>
+              </property>
+              <property name="maximum">
+               <number>10</number>
+              </property>
               <property name="orientation">
                <enum>Qt::Vertical</enum>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="mainPushButton_8">
+             <widget class="QPushButton" name="subgroup8MainPushButton">
               <property name="minimumSize">
                <size>
                 <width>42</width>
@@ -2802,7 +2850,7 @@ QSlider::handle:vertical:hover {
                <bool>true</bool>
               </property>
               <property name="checked">
-               <bool>false</bool>
+               <bool>true</bool>
               </property>
              </widget>
             </item>
@@ -3018,6 +3066,12 @@ QSlider::handle:vertical:hover {
 	background-color: qlineargradient(spread:reflect, x1:1, y1:0.493818, x2:1, y2:0, stop:0 rgba(109, 135, 255, 255), stop:1 rgba(175, 205, 255, 255));
 }</string>
               </property>
+              <property name="minimum">
+               <number>-144</number>
+              </property>
+              <property name="maximum">
+               <number>10</number>
+              </property>
               <property name="orientation">
                <enum>Qt::Vertical</enum>
               </property>
@@ -3184,6 +3238,12 @@ border: 1px solid rgb(60, 60, 60);
 QSlider::handle:vertical:hover {
 	background-color: qlineargradient(spread:reflect, x1:1, y1:0.493818, x2:1, y2:0, stop:0 rgba(109, 135, 255, 255), stop:1 rgba(175, 205, 255, 255));
 }</string>
+              </property>
+              <property name="minimum">
+               <number>-144</number>
+              </property>
+              <property name="maximum">
+               <number>10</number>
               </property>
               <property name="orientation">
                <enum>Qt::Vertical</enum>

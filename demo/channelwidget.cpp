@@ -65,13 +65,6 @@ void ChannelWidget::process(QSampleBuffer targetSampleBuffer)
     QSampleBuffer inputSampleBuffer = _channelIn->sampleBuffer();
     inputSampleBuffer.copyTo(targetSampleBuffer);
 
-    double peak = 0.0;
-    for(int i = 0; i < targetSampleBuffer.size(); i++) {
-        double sample = QUnits::peak(targetSampleBuffer.readAudioSample(i));
-        peak = sample > peak ? sample : peak;
-    }
-    _peak = QUnits::linearToDb(peak);
-
     _inputStage->process(targetSampleBuffer);
 
     if(ui->equalizerOnPushButton->isChecked()) {
@@ -89,7 +82,9 @@ void ChannelWidget::process(QSampleBuffer targetSampleBuffer)
         _auxPost->process(targetSampleBuffer);
     }
 
-    _faderStage->process(targetSampleBuffer);
+    _faderStage->process(targetSampleBuffer);    
+    _peak = QUnits::linearToDb(targetSampleBuffer.peak());
+
     targetSampleBuffer.copyTo(_channelOut->sampleBuffer());
 }
 

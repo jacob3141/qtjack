@@ -80,6 +80,8 @@ public:
 
     void multiply(double attenuation);
 
+    double peak();
+
     void releaseMemoryBuffer();
 
 private:

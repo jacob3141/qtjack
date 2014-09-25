@@ -23,6 +23,7 @@
 
 // Own includes
 #include <QSampleBuffer>
+#include <QUnits>
 
 // JACK includes
 #include <jack/jack.h>
@@ -149,6 +150,15 @@ void QSampleBuffer::multiply(double attenuation)
     }
 }
 
+double QSampleBuffer::peak()
+{
+    double peak = 0.0;
+    for(int i = 0; i < _bufferSize; i++) {
+        double sample = QUnits::peak(((jack_default_audio_sample_t*)_buffer)[i]);
+        peak = sample > peak ? sample : peak;
+    }
+    return peak;
+}
 
 void QSampleBuffer::releaseMemoryBuffer()
 {

@@ -131,6 +131,9 @@ void MainMixerWidget::process()
     subgroup7SampleBuffer.clear();
     subgroup8SampleBuffer.clear();
 
+    main1SampleBuffer.clear();
+    main2SampleBuffer.clear();
+
     // Find out whether any of the channels is soloed
     bool soloActive = false;
     foreach(ChannelWidget *channelWidget, _registeredChannels) {
@@ -205,79 +208,40 @@ void MainMixerWidget::process()
 
     // Routing subgroups to main
 
-    if(!ui->subgroup1MutePushButton->isChecked() && (!subgroupSoloActive || ui->subgroup1SoloPushButton->isChecked())) {
+    if(!ui->subgroup1MutePushButton->isChecked() && ui->subgroup1MainPushButton->isChecked() && (!subgroupSoloActive || ui->subgroup1SoloPushButton->isChecked())) {
         subgroup1SampleBuffer.addTo(main1SampleBuffer);
     }
-    if(!ui->subgroup2MutePushButton->isChecked() && (!subgroupSoloActive || ui->subgroup2SoloPushButton->isChecked())) {
+    if(!ui->subgroup2MutePushButton->isChecked() && ui->subgroup2MainPushButton->isChecked() && (!subgroupSoloActive || ui->subgroup2SoloPushButton->isChecked())) {
         subgroup2SampleBuffer.addTo(main2SampleBuffer);
     }
-    if(!ui->subgroup3MutePushButton->isChecked() && (!subgroupSoloActive || ui->subgroup3SoloPushButton->isChecked())) {
+    if(!ui->subgroup3MutePushButton->isChecked() && ui->subgroup3MainPushButton->isChecked() && (!subgroupSoloActive || ui->subgroup3SoloPushButton->isChecked())) {
         subgroup3SampleBuffer.addTo(main1SampleBuffer);
     }
-    if(!ui->subgroup4MutePushButton->isChecked() && (!subgroupSoloActive || ui->subgroup4SoloPushButton->isChecked())) {
+    if(!ui->subgroup4MutePushButton->isChecked() && ui->subgroup4MainPushButton->isChecked() && (!subgroupSoloActive || ui->subgroup4SoloPushButton->isChecked())) {
         subgroup4SampleBuffer.addTo(main2SampleBuffer);
     }
-    if(!ui->subgroup5MutePushButton->isChecked() && (!subgroupSoloActive || ui->subgroup5SoloPushButton->isChecked())) {
+    if(!ui->subgroup5MutePushButton->isChecked() && ui->subgroup5MainPushButton->isChecked() && (!subgroupSoloActive || ui->subgroup5SoloPushButton->isChecked())) {
         subgroup5SampleBuffer.addTo(main1SampleBuffer);
     }
-    if(!ui->subgroup6MutePushButton->isChecked() && (!subgroupSoloActive || ui->subgroup6SoloPushButton->isChecked())) {
+    if(!ui->subgroup6MutePushButton->isChecked() && ui->subgroup6MainPushButton->isChecked() && (!subgroupSoloActive || ui->subgroup6SoloPushButton->isChecked())) {
         subgroup6SampleBuffer.addTo(main2SampleBuffer);
     }
-    if(!ui->subgroup7MutePushButton->isChecked() && (!subgroupSoloActive || ui->subgroup7SoloPushButton->isChecked())) {
+    if(!ui->subgroup7MutePushButton->isChecked() && ui->subgroup7MainPushButton->isChecked() && (!subgroupSoloActive || ui->subgroup7SoloPushButton->isChecked())) {
         subgroup7SampleBuffer.addTo(main1SampleBuffer);
     }
-    if(!ui->subgroup8MutePushButton->isChecked() && (!subgroupSoloActive || ui->subgroup8SoloPushButton->isChecked())) {
+    if(!ui->subgroup8MutePushButton->isChecked() && ui->subgroup8MainPushButton->isChecked() && (!subgroupSoloActive || ui->subgroup8SoloPushButton->isChecked())) {
         subgroup8SampleBuffer.addTo(main2SampleBuffer);
     }
 
-    // Peak detection
-
-    double peak1 = 0.0;
-    double peak2 = 0.0;
-    double peak3 = 0.0;
-    double peak4 = 0.0;
-    double peak5 = 0.0;
-    double peak6 = 0.0;
-    double peak7 = 0.0;
-    double peak8 = 0.0;
-
-    double mainPeak1 = 0.0;
-    double mainPeak2 = 0.0;
-
-    for(int i = 0; i < subgroup1SampleBuffer.size(); i++) {
-        double sample1 = QUnits::peak(subgroup1SampleBuffer.readAudioSample(i));
-        peak1 = sample1 > peak1 ? sample1 : peak1;
-        double sample2 = QUnits::peak(subgroup2SampleBuffer.readAudioSample(i));
-        peak2 = sample2 > peak2 ? sample2 : peak2;
-        double sample3 = QUnits::peak(subgroup3SampleBuffer.readAudioSample(i));
-        peak3 = sample3 > peak3 ? sample3 : peak3;
-        double sample4 = QUnits::peak(subgroup4SampleBuffer.readAudioSample(i));
-        peak4 = sample4 > peak4 ? sample4 : peak4;
-        double sample5 = QUnits::peak(subgroup5SampleBuffer.readAudioSample(i));
-        peak5 = sample5 > peak5 ? sample5 : peak5;
-        double sample6 = QUnits::peak(subgroup6SampleBuffer.readAudioSample(i));
-        peak6 = sample6 > peak6 ? sample6 : peak6;
-        double sample7 = QUnits::peak(subgroup7SampleBuffer.readAudioSample(i));
-        peak7 = sample7 > peak7 ? sample7 : peak7;
-        double sample8 = QUnits::peak(subgroup8SampleBuffer.readAudioSample(i));
-        peak8 = sample8 > peak8 ? sample8 : peak8;
-
-        double sampleMain1 = QUnits::peak(main1SampleBuffer.readAudioSample(i));
-        mainPeak1 = sampleMain1 > mainPeak1 ? sampleMain1 : mainPeak1;
-        double sampleMain2 = QUnits::peak(main2SampleBuffer.readAudioSample(i));
-        mainPeak2 = sampleMain2 > mainPeak2 ? sampleMain2 : mainPeak2;
-    }
-    _peak1 = QUnits::linearToDb(peak1);
-    _peak2 = QUnits::linearToDb(peak2);
-    _peak3 = QUnits::linearToDb(peak3);
-    _peak4 = QUnits::linearToDb(peak4);
-    _peak5 = QUnits::linearToDb(peak5);
-    _peak6 = QUnits::linearToDb(peak6);
-    _peak7 = QUnits::linearToDb(peak7);
-    _peak8 = QUnits::linearToDb(peak8);
-
-    _mainPeak1 = QUnits::linearToDb(mainPeak1);
-    _mainPeak2 = QUnits::linearToDb(mainPeak2);
+    // Peak detection    
+    _peak1 = QUnits::linearToDb(subgroup1SampleBuffer.peak());
+    _peak2 = QUnits::linearToDb(subgroup2SampleBuffer.peak());
+    _peak3 = QUnits::linearToDb(subgroup3SampleBuffer.peak());
+    _peak4 = QUnits::linearToDb(subgroup4SampleBuffer.peak());
+    _peak5 = QUnits::linearToDb(subgroup5SampleBuffer.peak());
+    _peak6 = QUnits::linearToDb(subgroup6SampleBuffer.peak());
+    _peak7 = QUnits::linearToDb(subgroup7SampleBuffer.peak());
+    _peak8 = QUnits::linearToDb(subgroup8SampleBuffer.peak());
 
     // Check if main is muted, and clear signal if necessary
     if(ui->main1MutePushButton->isChecked()) {
@@ -291,6 +255,9 @@ void MainMixerWidget::process()
     } else {
         _main2FaderStage->process(main2SampleBuffer);
     }
+
+    _mainPeak1 = QUnits::linearToDb(main1SampleBuffer.peak());
+    _mainPeak2 = QUnits::linearToDb(main2SampleBuffer.peak());
 }
 
 void MainMixerWidget::updateInterface()
@@ -316,4 +283,7 @@ void MainMixerWidget::updateInterface()
     ui->subgroup6ProgressBar->setValue((int)_peak6);
     ui->subgroup7ProgressBar->setValue((int)_peak7);
     ui->subgroup8ProgressBar->setValue((int)_peak8);
+
+    ui->main1ProgressBar->setValue((int)_mainPeak1);
+    ui->main2ProgressBar->setValue((int)_mainPeak2);
 }
