@@ -3,8 +3,8 @@ Say Hello To QJackAudio
 
 The purpose of QJackAudio is to make it easy to interface with a JACK audio server from within a Qt application. JACK (JACK Audio Connection Kit) is the de-facto standard for professional audio processing on GNU/Linux, a low-latency audio server that runs on-top of numerous sound systems. Each JACK application is able to interface with any other JACK application by offering virtual in- and output through a standardized interface, just like you would be able to connect audio devices with cables. For maximum compatibility, JACK offers a C-style API found in libjack. qjackaudio tries to be a more convenient solution by wrapping all the C-stuff and offering often used, digital filters, like equalization, delay, reverb and the like.
 
-Below you can see a screenshot of MX2482, a 24 channel to 8 subgroups mixer console written with QJackAudio.
-![Demo Screenshot](https://github.com/cybercatalyst/qjackaudio/blob/master/mx2482.png "Demo screenshot")
+See a demo app here:
+https://github.com/cybercatalyst/mx2482
 
 I really like to develop based on practical aspects. If you find QJackAudio hard to understand or to use, please let me know. This is a clear indicator that it is lacking documentation or needs refactoring and will be treated as a bug.
 
@@ -30,6 +30,35 @@ QJackAudio relies on libjack-jack2-dev and libfftw3-dev. Install these using the
 
 Like any other Qt application, QJackAudio relies on qmake and the toolchain qmake is orchestrating. There are ways to build a Qt application without qmake, but this is beyond the scope of this document. Navigate to the folder the .pro is located in and type *qmake* followed by *make*. If you want to integrate qjackaudio into your application, I strongly recommend adding it as a submodule to git, and as a subproject to your project. If you do it this way, you can fix bugs while simultaneously using the library and even commit a fix. On the other hand, you can simply update the library by doing a *git pull*.
 
+In the root of your project create a Qt subdirs project by creating a file *project.pro* with the following contents:
+```
+TEMPLATE = subdirs
+SUBDIRS = myapp libqjackaudio
+
+myapp.subdir = myapp
+myapp.depends = libqjackaudio
+
+libqjackaudio.subdir = libqjackaudio
+libqjackaudio.depends =
+```
+
+*myapp* is the name of your app. You app has to be located under myapp/ and have a project file called myapp.pro. Inside myapp.pro, make sure build against QJackAudio by filing in the following lines:
+```
+INCLUDEPATH += ../libqjackaudio
+
+LIBS += -L../libqjackaudio/lib \
+                -lqjackaudio \
+                -ljack \
+                -lfftw3
+```
+
+Next, we need to add QJackAudio as a submodule to git. Do that by executing the following command:
+```
+git submodule add https://github.com/cybercatalyst/qjackaudio.git libqjackaudio
+```
+
+Now you are all set up. Open the *project.pro* file with QtCreator and start developing. Make sure you clone your repository with the *--recursive*-option, so git will also clone all submodules, too, when cloning your repository.
+ 
 How to use
 ==========
 
