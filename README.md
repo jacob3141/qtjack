@@ -18,6 +18,9 @@ A: A common misunderstanding about Qt is that it is a GUI library, since it has 
 Q: Wrapping of low-level code should start much lower in the hierarchy.
 A: On GNU/Linux, there is a mess of audio drivers and software handling audio. JACK itself consists of an audio server and is interfaced like any other audio server. If you want to handle all sorts of audio architectures you are welcome to write a wrapper that does just that. But, JACK already wraps itself around the most common audio architectures. The idea is to leave each part of the stack doing what it does best. In the past years, JACK has evolved to a very common audio server for the GNU/Linux world regarding professional audio. Almost every other professional audio app can interface JACK, so you're safe to just do that.
 
+Q: Why can't I use JACK within my Qt app directly?
+A: You can. Go ahead! You will end up spending countless hours replicating my work. The JACK client library offers a C-Style API and does not play nicely with C++/Qt unless you wrap it properly - which QJackAudio does.
+
 How To Build
 ============
 
