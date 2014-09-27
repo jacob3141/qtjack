@@ -21,68 +21,71 @@
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#ifndef QEQUALIZER_H
-#define QEQUALIZER_H
+#ifndef QEQUALIZERCONTROL_H
+#define QEQUALIZERCONTROL_H
 
-// Own includes
-#include <QJackClient>
-#include <QDigitalFilter>
-#include <QEqualizerControl>
+// Qt includes
+#include <QObject>
+
+// Forward declarations
+class QEqualizer;
 
 /**
- * @class QEqualizer
+ * @class QEqualizerControl
  * @author Jacob Dawid ( jacob.dawid@omg-it.works )
- * @brief Modifies the frequency spectrum of the sampled audio signal.
+ * @brief Represents a control with the equalizer.
+ * An equalizer may have an arbitrary number of controls that will affect
+ * its frequency response.
  */
-class QEqualizer : public QDigitalFilter
+class QEqualizerControl : public QObject
 {
     Q_OBJECT
+    friend class QEqualizer;
 public:
-    /**
-     * Constructs a new digital equalizer. convResolution may not be greater than
-     * half the filter resolution.
-     * @param resolution Total resolution of the equalizer.
-     * @param convResolution Resulting filter size of the filter that will be applid
-     * to the signal.
-     * @param parent
+    enum ControlType {
+        LowShelf,
+        Band,
+        HighShelf
+    };
+
+    /** @returns the gain in dB for a given frequency. */
+    double gainForFrequency(double frequency);
+
+    /** @returns the control type of this equalizer control. */
+    ControlType controlType();
+
+    /** @returns the control frequency.
+     * Depending on the control type the control frequency can have different
+     * meaning. For a bandpass, this is the center frequency (or resonance
+     * frequency, from an electrical point of view), for a sheld filter, this
+     * is the frequency where the curved part begins.
      */
-    QEqualizer(int resolution = 2048, int convResolution = 256, QObject *parent = 0);
+    double controlFrequency();
 
-    /** Destructor. */
-    ~QEqualizer();
+    /** @returns the amount in dB. */
+    double amount();
 
-    /**
-      * Updates the filter from the given set of equalizer control values.
-      * @param values Equalizer control values.
-      */
-    void computeFilterCoefficients();
-
-    /** @overload QDigitalFilter */
-    void process(QSampleBuffer sampleBuffer);
-
-
-    QEqualizerControl* createEqualizerControl(QEqualizerControl::ControlType controlType);
+    /** @returns the filter quality.
+     * This determines how the curve around the center frequency bends. */
+    double q();
 
 private:
-    QList<QEqualizerControl*> _equalizerControls;
+    QEqualizerControl(QEqualizer *equalizer, ControlType = Band, QObject* parent = 0);
 
-    /** The current filter coefficients for the FIR filter.
-      * These will be convoluted with the signals and need to be calculated
-      * beforehand.
-      */
-    int _filterCoefficientsSize;
-    double *_filterCoefficients;
+    /** Control type. */
+    ControlType _controlType;
 
-    /**
-      * Delay line for the convolution. This memory makes it possible
-      * to access previous values and thus continous convolution.
-      */
-    int _delayLineSize;
-    double *_delayLine;
+    /** Control frequency. */
+    double _controlFrequency;
 
-    /** State of the equalizer controls. */
-    int _controlsSize;
-    double *_controls;
+    /** Amount of gain for the control frequency. */
+    double _amount;
+
+    /** Quality factor. */
+    double _q;
+
+    /** The equalizer this control belongs to. */
+    QEqualizer *_equalizer;
 };
 
-#endif // QEQUALIZER_H
+#endif // QEQUALIZERCONTROL_H

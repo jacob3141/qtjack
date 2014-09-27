@@ -191,8 +191,10 @@ void QEqualizer::process(QSampleBuffer sampleBuffer)
     }
 }
 
-int QEqualizer::controlsSize()
-{
-    return _controlsSize;
-}
 
+QEqualizerControl* QEqualizer::createEqualizerControl(QEqualizerControl::ControlType controlType)
+{
+    QEqualizerControl *equalizerControl = new QEqualizerControl(this, controlType);
+    _equalizerControls.append(equalizerControl);
+    return equalizerControl;
+}
