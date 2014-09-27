@@ -45,7 +45,7 @@ double QEqualizerControl::gainForFrequencyLowShelf(double frequency)
         return _amount;
     } else {
         double topFrequency = _controlFrequency + _controlFrequency * pow(0.5, _q);
-        double p = (frequency - _controlFrequency) / (topFrequency - _controlFrequency) / M_PI;
+        double p = (frequency - _controlFrequency) * M_PI / (topFrequency - _controlFrequency);
         double scaledAmount = _amount * (cos(p) / 2.0 + 0.5 );
         return scaledAmount;
     }
@@ -54,7 +54,7 @@ double QEqualizerControl::gainForFrequencyLowShelf(double frequency)
 double QEqualizerControl::gainForFrequencyBand(double frequency)
 {
     double edgeFrequencyTop = _controlFrequency + _bandwidth / 2;
-    double edgeFrequencyBottom = _controlFrequency + _bandwidth / 2;
+    double edgeFrequencyBottom = _controlFrequency - _bandwidth / 2;
 
     if(frequency > edgeFrequencyBottom
     || frequency < edgeFrequencyTop) {
@@ -62,13 +62,13 @@ double QEqualizerControl::gainForFrequencyBand(double frequency)
     } else {
         if(frequency >= edgeFrequencyTop) {
             double topFrequency = edgeFrequencyTop + edgeFrequencyTop * pow(0.5, _q);
-            double p = (frequency - edgeFrequencyTop) / (topFrequency - edgeFrequencyTop) / M_PI;
+            double p = (frequency - edgeFrequencyTop) * M_PI / (topFrequency - edgeFrequencyTop);
             double scaledAmount = _amount * (cos(p) / 2.0 + 0.5);
             return scaledAmount;
         } else {
         // (frequency <= edgeFrequencyBottom) {
             double bottomFrequency = edgeFrequencyBottom - edgeFrequencyBottom * pow(0.5, _q);
-            double p = (frequency - edgeFrequencyBottom) / (bottomFrequency - edgeFrequencyBottom) / M_PI;
+            double p = (frequency - edgeFrequencyBottom) * M_PI / (bottomFrequency - edgeFrequencyBottom);
             double scaledAmount = _amount * (cos(p) / 2.0 + 0.5);
             return scaledAmount;
         }
@@ -81,7 +81,7 @@ double QEqualizerControl::gainForFrequencyHighShelf(double frequency)
         return _amount;
     } else {
         double bottomFrequency = _controlFrequency - _controlFrequency * pow(0.5, _q);
-        double p = (frequency - _controlFrequency) / (bottomFrequency - _controlFrequency) / M_PI;
+        double p = (frequency - _controlFrequency) * M_PI / (bottomFrequency - _controlFrequency);
         double scaledAmount = _amount * (cos(p) / 2.0 + 0.5 );
         return scaledAmount;
     }

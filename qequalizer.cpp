@@ -24,6 +24,7 @@
 // Own includes
 #include <QEqualizer>
 #include <QFFTW>
+#include <QUnits>
 
 // Qt includes
 #include <cmath>
@@ -82,7 +83,7 @@ void QEqualizer::update()
     double frequencyRange = QJackClient::instance()->sampleRate() / 2.0;
     foreach(QEqualizerControl *equalizerControl, _equalizerControls) {
         for(int i = 0; i < _controlsSize; i++) {
-            _controls[i] += equalizerControl->gainForFrequency(frequencyRange * i / _controlsSize);
+            _controls[i] = QUnits::sumDb(_controls[i], equalizerControl->gainForFrequency(frequencyRange * i / _controlsSize));
         }
     }
 

@@ -37,6 +37,8 @@ public:
 
     static double msToSamples(double ms);
     static double samplesToMs(double samples);
+
+    static double sumDb(double valueDb1, double valueDb2);
 };
 
 #endif // QUNITS_H

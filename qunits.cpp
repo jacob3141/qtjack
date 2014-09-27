@@ -52,3 +52,8 @@ double QUnits::samplesToMs(double samples)
 {
     return samples * 1000.0 / (double)QJackClient::instance()->sampleRate();
 }
+
+double QUnits::sumDb(double valueDb1, double valueDb2)
+{
+    return linearToDb(dbToLinear(valueDb1) + dbToLinear(valueDb2));
+}
