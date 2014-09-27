@@ -51,17 +51,17 @@ public:
     /** Destructor. */
     ~QEqualizer();
 
+    /** @overload QDigitalFilter */
+    void process(QSampleBuffer sampleBuffer);
+
+    QEqualizerControl* createEqualizerControl(QEqualizerControl::ControlType controlType = QEqualizerControl::Band);
+
+public slots:
     /**
       * Updates the filter from the given set of equalizer control values.
       * @param values Equalizer control values.
       */
-    void computeFilterCoefficients();
-
-    /** @overload QDigitalFilter */
-    void process(QSampleBuffer sampleBuffer);
-
-
-    QEqualizerControl* createEqualizerControl(QEqualizerControl::ControlType controlType);
+    void update();
 
 private:
     QList<QEqualizerControl*> _equalizerControls;

@@ -42,9 +42,19 @@ class QEqualizerControl : public QObject
     Q_OBJECT
     friend class QEqualizer;
 public:
+    /**
+     * The control type determines how the equalizer control parameters
+     * will be interpreted.
+     */
     enum ControlType {
+        /** Classic low-shelf, amount will be applied below control frequency
+         * and diverges to zero above. */
         LowShelf,
+
         Band,
+
+        /** Classic high-shelf, amount will be applied above control frequency
+         * and diverges to zero below. */
         HighShelf
     };
 
@@ -69,8 +79,65 @@ public:
      * This determines how the curve around the center frequency bends. */
     double q();
 
+    /** @returns the bandwidth.
+     * @attention This is not what is commonly understood as filters bandwidth,
+     * which is usually defined as the the distance between those two points,
+     * at which the input signal is lowered by 3dB.
+     * This variable refers to the space at which the peak "flattens" over a
+     * certain interval to the left and right from the control frequency,
+     * before it diverges to zero on both sides
+     */
+    double bandwidth();
+
+public slots:
+    /** Sets the control type for this equalizer control. */
+    void setControlType(ControlType controlType);
+
+    /** Sets the amount for this equalizer control. */
+    void setAmount(double amount);
+    void setAmount(int amount) { setAmount((double)amount); }
+
+    /** Sets the quality factor for this equalizer control. */
+    void setQ(double q);
+    void setQ(int q) { setQ((double)q); }
+
+    /** Sets the control frequency for this equalizer control. */
+    void setControlFrequency(double controlFrequency);
+    void setControlFrequency(int controlFrequency) { setControlFrequency((double)controlFrequency); }
+
+    /** Sets the bandwidth. @see bandwidth() for more information. */
+    void setBandwidth(double bandwidth);
+    void setBandwidth(int bandwidth) { setBandwidth((double)bandwidth); }
+
+signals:
+    /** Emitted when the control type changes. */
+    void controlTypeChanged(ControlType controlType);
+
+    /** Emitted when amount changes. */
+    void amountChanged(double amount);
+    void amountChanged(int amount);
+
+    /** Emitted when q changes. */
+    void qChanged(double q);
+    void qChanged(int q);
+
+    /** Emitted when the control frequency changes. */
+    void controlFrequencyChanged(double controlFrequency);
+    void controlFrequencyChanged(int controlFrequency);
+
+    /** Emitted when the bandwidth changes. */
+    void bandwidthChanged(double bandwidth);
+    void bandwidthChanged(int bandwidth);
+
+    /** Emitted whenever any property of the control changes. */
+    void controlChanged();
+
 private:
     QEqualizerControl(QEqualizer *equalizer, ControlType = Band, QObject* parent = 0);
+
+    double gainForFrequencyLowShelf(double frequency);
+    double gainForFrequencyBand(double frequency);
+    double gainForFrequencyHighShelf(double frequency);
 
     /** Control type. */
     ControlType _controlType;
@@ -80,6 +147,9 @@ private:
 
     /** Amount of gain for the control frequency. */
     double _amount;
+
+    /** Bandwidth of bandpass filter. Only applies to bandpass filters. */
+    double _bandwidth;
 
     /** Quality factor. */
     double _q;

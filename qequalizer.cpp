@@ -64,16 +64,27 @@ QEqualizer::QEqualizer(int resolution, int convResolution, QObject *parent)
         _controls[i] = 0.0;
     }
 
-    computeFilterCoefficients();
+    update();
 }
 
 QEqualizer::~QEqualizer() {
 }
 
-void QEqualizer::computeFilterCoefficients()
+void QEqualizer::update()
 {
     fftw_complex idealFilter[_controlsSize * 2];
     fftw_complex ifftIdealFilter[_controlsSize * 2];
+
+    for(int i = 0; i < _controlsSize; i++) {
+        _controls[i] = 0.0;
+    }
+
+    double frequencyRange = QJackClient::instance()->sampleRate() / 2.0;
+    foreach(QEqualizerControl *equalizerControl, _equalizerControls) {
+        for(int i = 0; i < _controlsSize; i++) {
+            _controls[i] += equalizerControl->gainForFrequency(frequencyRange * i / _controlsSize);
+        }
+    }
 
     // Control values in frequency domain:
     // amplitude
@@ -191,10 +202,11 @@ void QEqualizer::process(QSampleBuffer sampleBuffer)
     }
 }
 
-
 QEqualizerControl* QEqualizer::createEqualizerControl(QEqualizerControl::ControlType controlType)
 {
     QEqualizerControl *equalizerControl = new QEqualizerControl(this, controlType);
+    connect(equalizerControl, SIGNAL(controlChanged()), this, SLOT(update()));
+
     _equalizerControls.append(equalizerControl);
     return equalizerControl;
 }
