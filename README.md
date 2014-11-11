@@ -27,7 +27,7 @@ How To Build
 
 QJackAudio relies on libjack-jack2-dev and libfftw3-dev. Install these using the following command:
 
-`sudo apt-get install libjack-jack2-dev libfftw3-dev`
+`sudo apt-get install libjack-jackd2-dev libfftw3-dev`
 
 Like any other Qt application, QJackAudio relies on qmake and the toolchain qmake is orchestrating. There are ways to build a Qt application without qmake, but this is beyond the scope of this document. Navigate to the folder the .pro is located in and type *qmake* followed by *make*. If you want to integrate qjackaudio into your application, I strongly recommend adding it as a submodule to git, and as a subproject to your project. If you do it this way, you can fix bugs while simultaneously using the library and even commit a fix. On the other hand, you can simply update the library by doing a *git pull*.
 
