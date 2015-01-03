@@ -112,6 +112,11 @@ QStringList QJackClient::clientList() {
             clientList.append(clientName);
         }
     }
+
+    if(ports) {
+        jack_free(ports);
+    }
+
     return clientList;
 }
 
@@ -124,6 +129,11 @@ QList<QJackPort> QJackClient::portsForClient(QString clientName) {
             portList.append(port);
         }
     }
+
+    if(ports) {
+        jack_free(ports);
+    }
+
     return portList;
 }
 
