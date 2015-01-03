@@ -24,6 +24,11 @@
 // Own includes:
 #include <QJackClient>
 
+#include <cstdlib>
+
+// Qt includes
+#include <QStringList>
+
 QJackClient QJackClient::_instance;
 
 QJackClient::QJackClient() :
@@ -58,37 +63,68 @@ bool QJackClient::connectToServer(QString name) {
     return true;
 }
 
-QJackPort *QJackClient::registerPort(QString name, QJackPort::PortType portType, JackPortFlags jackPortFlags)  {
-    QString portTypeString;
-    switch(portType) {
-    case QJackPort::AudioPort: portTypeString = JACK_DEFAULT_AUDIO_TYPE; break;
-    case QJackPort::MidiPort: portTypeString = JACK_DEFAULT_MIDI_TYPE; break;
-    }
-
-    QJackPort *jackPort = new QJackPort(portType, name);
-    jackPort->_port = jack_port_register(
-        _jackClient,
-        name.toStdString().c_str(),
-        portTypeString.toStdString().c_str(),
-        jackPortFlags, 0);
-    emit portRegistered(name);
+QJackPort QJackClient::registerPort(QString name, QString portType, JackPortFlags jackPortFlags)  {
+    QJackPort jackPort(jack_port_register(
+                           _jackClient,
+                           name.toStdString().c_str(),
+                           portType.toStdString().c_str(),
+                           jackPortFlags, 0));
+    emit portRegistered(jackPort);
     return jackPort;
 }
 
-QJackPort *QJackClient::registerAudioOutPort(QString name) {
-    return registerPort(name, QJackPort::AudioPort, JackPortIsOutput);
+QJackPort QJackClient::registerAudioOutPort(QString name) {
+    return registerPort(name, JACK_DEFAULT_AUDIO_TYPE, JackPortIsOutput);
 }
 
-QJackPort *QJackClient::registerAudioInPort(QString name) {
-    return registerPort(name, QJackPort::AudioPort, JackPortIsInput);
+QJackPort QJackClient::registerAudioInPort(QString name) {
+    return registerPort(name, JACK_DEFAULT_AUDIO_TYPE, JackPortIsInput);
 }
 
-QJackPort *QJackClient::registerMidiOutPort(QString name) {
-    return registerPort(name, QJackPort::MidiPort, JackPortIsOutput);
+QJackPort QJackClient::registerMidiOutPort(QString name) {
+    return registerPort(name, JACK_DEFAULT_MIDI_TYPE, JackPortIsOutput);
 }
 
-QJackPort *QJackClient::registerMidiInPort(QString name) {
-    return registerPort(name, QJackPort::MidiPort, JackPortIsInput);
+QJackPort QJackClient::registerMidiInPort(QString name) {
+    return registerPort(name, JACK_DEFAULT_MIDI_TYPE, JackPortIsInput);
+}
+
+bool QJackClient::connectPorts(QJackPort portA, QJackPort portB) {
+    int result = jack_connect(_jackClient,
+                              portA.fullName().toStdString().c_str(),
+                              portB.fullName().toStdString().c_str());
+    return result == 0;
+}
+
+bool QJackClient::disconnectPorts(QJackPort portA, QJackPort portB) {
+    int result = jack_disconnect(_jackClient,
+                                 portA.fullName().toStdString().c_str(),
+                                 portB.fullName().toStdString().c_str());
+    return result == 0;
+}
+
+QStringList QJackClient::clientList() {
+    QStringList clientList;
+    const char **ports = jack_get_ports(_jackClient, 0, 0, 0);
+    for(int i = 0; ports && ports[i]; ++i) {
+        QString clientName = QJackPort(jack_port_by_name(_jackClient, ports[i])).clientName();
+        if(!clientList.contains(clientName)) {
+            clientList.append(clientName);
+        }
+    }
+    return clientList;
+}
+
+QList<QJackPort> QJackClient::portsForClient(QString clientName) {
+    QList<QJackPort> portList;
+    const char **ports = jack_get_ports(_jackClient, 0, 0, 0);
+    for(int i = 0; ports && ports[i]; ++i) {
+        QJackPort port(jack_port_by_name(_jackClient, ports[i]));
+        if(port.clientName() == clientName) {
+            portList.append(port);
+        }
+    }
+    return portList;
 }
 
 void QJackClient::startAudioProcessing() {

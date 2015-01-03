@@ -67,19 +67,38 @@ public:
     bool connectToServer(QString name);
 
     /** Registers a port. Only possible, if connected to a JACK server. */
-    QJackPort *registerPort(QString name, QJackPort::PortType portType, JackPortFlags jackPortFlags);
+    QJackPort registerPort(QString name, QString portType, JackPortFlags jackPortFlags);
 
     /** Registers an audio output port. Only possible, if connected to a JACK server. */
-    QJackPort *registerAudioOutPort(QString name);
+    QJackPort registerAudioOutPort(QString name);
 
     /** Registers an audio input port. Only possible, if connected to a JACK server. */
-    QJackPort *registerAudioInPort(QString name);
+    QJackPort registerAudioInPort(QString name);
 
     /** Registers a midi output port. Only possible, if connected to a JACK server. */
-    QJackPort *registerMidiOutPort(QString name);
+    QJackPort registerMidiOutPort(QString name);
 
     /** Registers a midi input port. Only possible, if connected to a JACK server. */
-    QJackPort *registerMidiInPort(QString name);
+    QJackPort registerMidiInPort(QString name);
+
+    /** Connects two ports. */
+    bool connectPorts(QJackPort portA, QJackPort portB);
+
+    /** Disconnects two ports. */
+    bool disconnectPorts(QJackPort portA, QJackPort portB);
+
+    /**
+     * @returns a list of connected clients, that means their name to be specific.
+     * This will only list client that offer ports.
+     */
+    QStringList clientList();
+
+    /**
+     * @param clientName The name of the client the ports should be listed of.
+     * @returns a list of ports of this client.
+     * @see clientList() to obtain a list of available clients.
+     */
+    QList<QJackPort> portsForClient(QString clientName);
 
     /** Assigns a processor that will handle audio processing.
       * @param processor The processor that will handle audio processing.
@@ -118,7 +137,7 @@ signals:
     void bufferSizeChanged(int bufferSize);
 
     /** Emitted whenever a port has been registered successfully by this client. */
-    void portRegistered(QString name);
+    void portRegistered(QJackPort port);
 
     /** Emitted when successfully connected to JACK server. */
     void connected();

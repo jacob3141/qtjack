@@ -41,22 +41,35 @@ class QJackPort
 {
     friend class QJackClient;
 public:
-    enum PortType {
-        AudioPort,
-        MidiPort
-    };
-
     bool isValid() { return _port != 0; }
-    PortType portType() { return _portType; }
-    QString name() { return _name; }
+    QString fullName();
+    QString clientName();
+    QString portName();
     QSampleBuffer sampleBuffer();
 
-private:
-    QJackPort(PortType portType, QString name);
+    /** @returns true when this port is an audio port. */
+    bool isAudioPort();
 
-    PortType _portType;
+    /** @returns true when this port is a midi port. */
+    bool isMidiPort();
+
+    /** @returns true, when this port can receive data. */
+    bool isInput();
+
+    /** @returns true, when data can be read from this port. */
+    bool isOutput();
+
+    /** @returns true, when this port corresponds to a physical I/O connector. */
+    bool isPhysical();
+
+    bool canMonitor();
+    bool isTerminal();
+
+private:
+    QJackPort(jack_port_t *port);
+    QJackPort();
+
     jack_port_t *_port;
-    QString _name;
 };
 
 #endif // QJACKPORT_H

@@ -34,22 +34,20 @@ QSampleBuffer QSampleBuffer::createMemoryAudioBuffer(int size)
         size = 1;
     }
 
-    QSampleBuffer sampleBuffer(AudioBuffer, size, (void*)new jack_default_audio_sample_t[size]);
+    QSampleBuffer sampleBuffer(size, (void*)new jack_default_audio_sample_t[size]);
     sampleBuffer._isMemoryBuffer = true;
     return sampleBuffer;
 }
 
 QSampleBuffer::QSampleBuffer(const QSampleBuffer& other)
 {
-    _bufferType = other._bufferType;
     _size = other._size;
     _buffer = other._buffer;
     _isMemoryBuffer = other._isMemoryBuffer;
 }
 
-QSampleBuffer::QSampleBuffer(QSampleBuffer::BufferType bufferType, int bufferSize, void *buffer)
+QSampleBuffer::QSampleBuffer(int bufferSize, void *buffer)
 {
-    _bufferType = bufferType;
     _size = bufferSize;
     _buffer = buffer;
     _isMemoryBuffer = false;
@@ -60,11 +58,6 @@ bool QSampleBuffer::isMemoryBuffer()
     return _isMemoryBuffer;
 }
 
-QSampleBuffer::BufferType QSampleBuffer::bufferType()
-{
-    return _bufferType;
-}
-
 int QSampleBuffer::size()
 {
     return _size;
@@ -72,19 +65,13 @@ int QSampleBuffer::size()
 
 double QSampleBuffer::readAudioSample(int i)
 {
-    if(_bufferType == AudioBuffer) {
-        return (double)((i >= 0 && i < _size) ? ((jack_default_audio_sample_t*)(_buffer))[i] : 0.0);
-    } else {
-        return 0.0;
-    }
+    return (double)((i >= 0 && i < _size) ? ((jack_default_audio_sample_t*)(_buffer))[i] : 0.0);
 }
 
 void QSampleBuffer::writeAudioSample(int i, double value)
 {
-    if(_bufferType == AudioBuffer) {
-        if(i >= 0 && i < _size) {
-            ((jack_default_audio_sample_t*)_buffer)[i] = (jack_default_audio_sample_t)value;
-        }
+    if(i >= 0 && i < _size) {
+        ((jack_default_audio_sample_t*)_buffer)[i] = (jack_default_audio_sample_t)value;
     }
 }
 
@@ -92,7 +79,6 @@ QString QSampleBuffer::lastError()
 {
     return _lastError;
 }
-
 
 void QSampleBuffer::clear()
 {
@@ -163,8 +149,6 @@ double QSampleBuffer::peak()
 void QSampleBuffer::releaseMemoryBuffer()
 {
     if(_isMemoryBuffer) {
-        if(_bufferType == AudioBuffer) {
-            delete[] (jack_default_audio_sample_t*)_buffer;
-        }
+        delete[] (jack_default_audio_sample_t*)_buffer;
     }
 }

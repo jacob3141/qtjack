@@ -50,19 +50,8 @@ public:
     /** Copy constructor. */
     QSampleBuffer(const QSampleBuffer& other);
 
-    /**
-     * Type of sample buffer.
-     */
-    enum BufferType {
-        AudioBuffer,
-        MidiBuffer
-    };
-
     /** @returns true, if this buffer's memory has been allocated manually. */
     bool isMemoryBuffer();
-
-    /** @returns the buffer type. @see BufferType */
-    BufferType bufferType();
 
     /** @returns a human-readable string containing the last error occurred. */
     QString lastError();
@@ -100,13 +89,10 @@ public:
 
 private:
     /** Private constructor. */
-    QSampleBuffer(BufferType bufferType, int size, void* buffer);
+    QSampleBuffer(int size, void* buffer);
 
     /** The last error that occurred during an operation. */
     QString _lastError;
-
-    /** Sample buffer type. */
-    BufferType _bufferType;
 
     /** Size of sample buffer. */
     int _size;
