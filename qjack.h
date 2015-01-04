@@ -21,38 +21,44 @@
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-// Own includes
-#include <QUnits>
+#pragma once
 
-// Standard includes
-#include <cmath>
+// Qt includes
+#include <QObject>
 
-double QUnits::dbToLinear(double db)
-{
-   return pow(10.0, db / 20.0);
-}
+class QJack : public QObject {
+    Q_OBJECT
+public:    
+    /** Returns the instance for this singleton. */
+    static QJack *instance();
 
-double QUnits::linearToDb(float linear)
-{
-   return 20.0 * log10(linear);
-}
+    /**
+      * Callback for JACK's C API. Called when an error occurs.
+      * @param message JACK's error message.
+      */
+    static void errorCallback(const char* message);
 
-double QUnits::peak(double value)
-{
-    return value > 0.0 ? value : -value;
-}
+    /**
+      * Callback for JACK's C API. Called when there is an
+      * information message available.
+      * @param message JACK's information message.
+      */
+    static void informationCallback(const char* message);
 
-double QUnits::msToSamples(int sampleRate, double ms)
-{
-    return (double)sampleRate * ms / 1000.0 ;
-}
 
-double QUnits::samplesToMs(int sampleRate, double samples)
-{
-    return samples * 1000.0 / (double)sampleRate;
-}
+signals:
+    /** This signal will be emitted when an error occurs. */
+    void error(QString errorMessage);
 
-double QUnits::sumDb(double valueDb1, double valueDb2)
-{
-    return linearToDb(dbToLinear(valueDb1) + dbToLinear(valueDb2));
-}
+    /** This signal will be emitted when an information is available. */
+    void information(QString informationMessage);
+
+private:
+    QJack();
+
+    void emitError(QString errorMessage);
+    void emitInformation(QString informationMessage);
+
+    /** Singleton instance for this class. */
+    static QJack _instance;
+};

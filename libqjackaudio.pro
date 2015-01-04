@@ -21,7 +21,8 @@ SOURCES += \
     qequalizercontrol.cpp \
     qjackdriver.cpp \
     qjackparameter.cpp \
-    qjackserver.cpp
+    qjackserver.cpp \
+    qjack.cpp
 
 HEADERS += \
     QAudioProcessor \
@@ -55,4 +56,6 @@ HEADERS += \
     qjackparameter.h \
     QJackParameter \
     QJackServer \
-    qjackserver.h
+    qjackserver.h \
+    qjack.h \
+    QJack

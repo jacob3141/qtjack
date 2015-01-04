@@ -80,7 +80,7 @@ void QEqualizer::update()
         _controls[i] = 0.0;
     }
 
-    double frequencyRange = QJackClient::instance()->sampleRate() / 2.0;
+    double frequencyRange = 2048 / 2.0;
     foreach(QEqualizerControl *equalizerControl, _equalizerControls) {
         for(int i = 0; i < _controlsSize; i++) {
             _controls[i] = QUnits::sumDb(_controls[i], equalizerControl->gainForFrequency(frequencyRange * i / _controlsSize));

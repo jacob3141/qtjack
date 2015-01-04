@@ -34,8 +34,8 @@ public:
 
     static double peak(double value);
 
-    static double msToSamples(double ms);
-    static double samplesToMs(double samples);
+    static double msToSamples(int sampleRate, double ms);
+    static double samplesToMs(int sampleRate,double samples);
 
     static double sumDb(double valueDb1, double valueDb2);
 };

@@ -56,7 +56,7 @@ void QSignalGenerator::process(QSampleBuffer sampleBuffer)
 
     isActive = true;
 
-    double timePerSample = QUnits::samplesToMs(1.0);
+    double timePerSample = QUnits::samplesToMs(0, 1.0);
     double period = 1000.0 / frequency;
 
     int bufferSize = sampleBuffer.size();

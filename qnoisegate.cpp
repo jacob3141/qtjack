@@ -48,8 +48,8 @@ void QNoiseGate::process(QSampleBuffer sampleBuffer)
     double threshold = _threshold;
     bool bypass = _bypass;
 
-    int samplesSensitvity = QUnits::msToSamples(_sensitivity);
-    int samplesResistance = QUnits::msToSamples(_resistance);
+    int samplesSensitvity = QUnits::msToSamples(0, _sensitivity);
+    int samplesResistance = QUnits::msToSamples(0, _resistance);
     _mutex.unlock();
 
     if(bypass) {

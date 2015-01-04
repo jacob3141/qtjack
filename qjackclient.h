@@ -53,10 +53,8 @@
 class QJackClient : public QObject {
     Q_OBJECT
 public:
+    QJackClient();
     virtual ~QJackClient();
-
-    /** Returns the instance for this singleton. */
-    static QJackClient *instance();
 
     /**
       * This method attempts to connect to the audio server.
@@ -111,10 +109,10 @@ public:
     void setAudioProcessor(QAudioProcessor *processor);
 
     /** Activates audio processing for this client. */
-    void startAudioProcessing();
+    bool activate();
 
     /** Deactivates audio processing for this client. */
-    void stopAudioProcessing();
+    bool deactivate();
 
     void startTransport();
     void stopTransport();
@@ -135,18 +133,6 @@ public:
     QString version();
 
 signals:
-    /** This signal will be emitted when an error occurs. */
-    void error(const QString& errorMessage);
-
-    /** Emitted on change of the sample rate. */
-    void sampleRateChanged(int sampleRate);
-
-    /** Emitted on change of the buffer size. */
-    void bufferSizeChanged(int bufferSize);
-
-    /** Emitted whenever a port has been registered successfully by this client. */
-    void portRegistered(QJackPort port);
-
     /** Emitted when successfully connected to JACK server. */
     void connectedToServer();
 
@@ -154,31 +140,33 @@ signals:
     void disconnectedFromServer();
 
     /** Emitted when audio processing has been started successfully. */
-    void startedAudioProcessing();
+    void activated();
 
     /** Emitted when audio processing has been stopped successfully. */
-    void stoppedAudioProcessing();
+    void deactivated();
+
+    /** Emitted whenever a port has been registered successfully by this client. */
+    void portRegistered(QJackPort port);
+
+    /** Emitted on change of the sample rate. */
+    void sampleRateChanged(int sampleRate);
+
+    /** Emitted on change of the buffer size. */
+    void bufferSizeChanged(int bufferSize);
 
     /** Emitted when an xrun occurred. */
-    void xrun();
+    void xrunOccured();
 
 private:
-    void setSampleRate(int sampleRate);
-    void setBufferSize(int bufferSize);
-    void xrunOccurred();
-
-    /** Constructor. Initializes a new JackAdapter instance. */
-    QJackClient();
-
-    /** This signal will be emitted whenever an error occurs. */
-    void emitError(const QString& errorMessage);
-
     /**
       * Private method to forward the request to process samples
       * from static methods.
       * @param samples Number of samples.
       */
-    void processPrivate(int samples);
+    void process(int samples);
+    void sampleRate(int samples);
+    void bufferSize(int samples);
+    void xrun();
 
     /**
       * Callback for JACK's C API. Called when new samples
@@ -187,7 +175,7 @@ private:
       * @param argument Not in use.
       * @return Result of operation.
       */
-    static int process(jack_nframes_t sampleCount, void *argument);
+    static int processCallback(jack_nframes_t sampleCount, void *argument);
 
     /**
       * Callback for JACK's C API. Called when sample rate changes.
@@ -207,31 +195,9 @@ private:
 
     static int xrunCallback(void *argument);
 
-    /**
-      * Callback for JACK's C API. Called when an error occurs.
-      * @param message JACK's error message.
-      */
-    static void errorCallback(const char* message);
-
-    /**
-      * Callback for JACK's C API. Called when there is an
-      * information message available.
-      * @param message JACK's information message.
-      */
-    static void informationCallback(const char* message);
-
     /** JACK's C API client. */
     jack_client_t *_jackClient;
 
     /** Pointer to the current processor object. */
     QAudioProcessor *_audioProcessor;
-
-    /** The current sample rate. */
-    int _sampleRate;
-
-    /** The current sample buffer size. */
-    int _bufferSize;
-
-    /** Singleton instance for this class. */
-    static QJackClient _instance;
 };

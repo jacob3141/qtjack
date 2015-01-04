@@ -40,11 +40,11 @@ class QJackPort
 {
     friend class QJackClient;
 public:
-    bool isValid() { return _port != 0; }
+    bool isValid() { return _jackPort != 0; }
     QString fullName();
     QString clientName();
     QString portName();
-    QSampleBuffer sampleBuffer();
+    QSampleBuffer sampleBuffer(int samples);
 
     /** @returns true when this port is an audio port. */
     bool isAudioPort();
@@ -68,5 +68,5 @@ private:
     QJackPort(jack_port_t *port);
     QJackPort();
 
-    jack_port_t *_port;
+    jack_port_t *_jackPort;
 };

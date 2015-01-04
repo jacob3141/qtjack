@@ -22,37 +22,34 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 // Own includes
-#include <QUnits>
+#include "qjack.h"
 
-// Standard includes
-#include <cmath>
+// JACK includes
+#include <jack/jack.h>
 
-double QUnits::dbToLinear(double db)
-{
-   return pow(10.0, db / 20.0);
+QJack QJack::_instance;
+
+QJack::QJack() {
+    jack_set_error_function(QJack::errorCallback);
+    jack_set_info_function(QJack::informationCallback);
 }
 
-double QUnits::linearToDb(float linear)
-{
-   return 20.0 * log10(linear);
+void QJack::emitError(QString errorMessage) {
+    emit error(errorMessage);
 }
 
-double QUnits::peak(double value)
-{
-    return value > 0.0 ? value : -value;
+void QJack::emitInformation(QString informationMessage) {
+    emit information(informationMessage);
 }
 
-double QUnits::msToSamples(int sampleRate, double ms)
-{
-    return (double)sampleRate * ms / 1000.0 ;
+QJack *QJack::instance() {
+    return &_instance;
 }
 
-double QUnits::samplesToMs(int sampleRate, double samples)
-{
-    return samples * 1000.0 / (double)sampleRate;
+void QJack::errorCallback(const char *message) {
+    instance()->emitError(QString(message));
 }
 
-double QUnits::sumDb(double valueDb1, double valueDb2)
-{
-    return linearToDb(dbToLinear(valueDb1) + dbToLinear(valueDb2));
+void QJack::informationCallback(const char *message) {
+    instance()->emitInformation(QString(message));
 }

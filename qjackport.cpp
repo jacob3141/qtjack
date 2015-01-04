@@ -30,17 +30,17 @@
 
 QJackPort::QJackPort(jack_port_t *port)
 {
-    _port = port;
+    _jackPort = port;
 }
 
 QJackPort::QJackPort()
 {
-    _port = 0;
+    _jackPort = 0;
 }
 
 QString QJackPort::fullName()
 {
-    return jack_port_name(_port);
+    return jack_port_name(_jackPort);
 }
 
 QString QJackPort::clientName()
@@ -50,41 +50,40 @@ QString QJackPort::clientName()
 
 QString QJackPort::portName()
 {
-    return jack_port_short_name(_port);
+    return jack_port_short_name(_jackPort);
 }
 
-QSampleBuffer QJackPort::sampleBuffer()
+QSampleBuffer QJackPort::sampleBuffer(int samples)
 {
-    int bufferSize = QJackClient::instance()->bufferSize();
-    return QSampleBuffer(bufferSize, jack_port_get_buffer(_port, bufferSize));
+    return QSampleBuffer(samples, jack_port_get_buffer(_jackPort, samples));
 }
 
 bool QJackPort::isAudioPort() {
-    QString portType(jack_port_type(_port));
+    QString portType(jack_port_type(_jackPort));
     return portType == "audio";
 }
 
 bool QJackPort::isMidiPort() {
-    QString portType(jack_port_type(_port));
+    QString portType(jack_port_type(_jackPort));
     return portType == "midi";
 }
 
 bool QJackPort::isInput() {
-    return jack_port_flags(_port) & JackPortIsInput;
+    return jack_port_flags(_jackPort) & JackPortIsInput;
 }
 
 bool QJackPort::isOutput() {
-    return jack_port_flags(_port) & JackPortIsOutput;
+    return jack_port_flags(_jackPort) & JackPortIsOutput;
 }
 
 bool QJackPort::isPhysical() {
-    return jack_port_flags(_port) & JackPortIsPhysical;
+    return jack_port_flags(_jackPort) & JackPortIsPhysical;
 }
 
 bool QJackPort::canMonitor() {
-    return jack_port_flags(_port) & JackPortCanMonitor;
+    return jack_port_flags(_jackPort) & JackPortCanMonitor;
 }
 
 bool QJackPort::isTerminal() {
-    return jack_port_flags(_port) & JackPortIsTerminal;
+    return jack_port_flags(_jackPort) & JackPortIsTerminal;
 }
