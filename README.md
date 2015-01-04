@@ -50,6 +50,7 @@ INCLUDEPATH += ../libqjackaudio
 LIBS += -L../libqjackaudio/lib \
                 -lqjackaudio \
                 -ljack \
+                -ljackserver \
                 -lfftw3
 ```
 
@@ -59,8 +60,34 @@ git submodule add https://github.com/cybercatalyst/qjackaudio.git libqjackaudio
 ```
 
 Now you are all set up. Open the *project.pro* file with QtCreator and start developing. Make sure you clone your repository with the *--recursive*-option, so git will also clone all submodules, too, when cloning your repository.
- 
-How to use
+
+How to use QJackAudio to build a JACK server
+==========
+
+```cpp
+#include <QJackServer>
+
+// ..
+
+
+_jackServer = new QJackServer();
+
+QJackDriverMap drivers = _jackServer->availableDrivers();
+QJackDriver alsaDriver = drivers["alsa"];
+
+QJackParameterMap parameters = alsaDriver.parameters();
+parameters["rate"].setValue(44100);
+parameters["device"].setValue("hw:PCH,0");
+
+_jackServer->start(alsaDriver);
+
+// ..
+
+_jackServer->stop();
+
+```
+
+How to use QJackAudio to build a JACK client
 ==========
 
 Sample code:

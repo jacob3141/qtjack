@@ -21,32 +21,50 @@
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#pragma once
-
-// Qt includes
-#include <QList>
-
 // Own includes
-#include <QJackDriver>
+#include "qjackserver.h"
 
-// JACK includes:
-typedef struct jackctl_server jackctl_server_t;
+#include <jack/control.h>
 
-class QJackServerControl
-{
-public:
-    QJackServerControl();
-    ~QJackServerControl();
+QJackServer::QJackServer() {
+    _jackServer = jackctl_server_create(0, 0);
+}
 
-    bool open(QJackDriver driver);
-    bool close();
+QJackServer::~QJackServer() {
+    jackctl_server_destroy(_jackServer);
+}
 
-    bool start();
-    bool stop();
+bool QJackServer::start(QJackDriver driver) {
+    return _jackServer
+        && driver.isValid()
+        && jackctl_server_open(_jackServer, driver._jackDriver)
+        && jackctl_server_start(_jackServer);
+}
 
-    QList<QJackDriver> availableDrivers();
-    QList<QJackParameter> parameters();
+bool QJackServer::stop() {
+    return _jackServer
+        && jackctl_server_stop(_jackServer)
+        && jackctl_server_close(_jackServer);
+}
 
-private:
-    jackctl_server_t *_jackServerHandle;
-};
+QJackDriverMap QJackServer::availableDrivers() {
+    QJackDriverMap driversMap;
+    const JSList *drivers = jackctl_server_get_drivers_list(_jackServer);
+    while(drivers) {
+        QJackDriver d = QJackDriver((jackctl_driver_t*)drivers->data);
+        driversMap.insert(d.name(), d);
+        drivers = drivers->next;
+    }
+    return driversMap;
+}
+
+QJackParameterMap QJackServer::parameters() {
+    QJackParameterMap parameterMap;
+    const JSList *parameters = jackctl_server_get_parameters(_jackServer);
+    while(parameters) {
+        QJackParameter p = QJackParameter((jackctl_parameter_t*)parameters->data);
+        parameterMap.insert(p.name(), p);
+        parameters = parameters->next;
+    }
+    return parameterMap;
+}

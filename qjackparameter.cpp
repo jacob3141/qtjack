@@ -34,14 +34,26 @@ QJackParameter::QJackParameter(jackctl_parameter_t *parameter) {
 }
 
 QString QJackParameter::name() {
+    if(!isValid()) {
+        return QString();
+    }
+
     return jackctl_parameter_get_name(_jackParameter);
 }
 
 QString QJackParameter::shortDescription() {
+    if(!isValid()) {
+        return QString();
+    }
+
     return jackctl_parameter_get_short_description(_jackParameter);
 }
 
 QString QJackParameter::longDescription() {
+    if(!isValid()) {
+        return QString();
+    }
+
     return jackctl_parameter_get_long_description(_jackParameter);
 }
 
@@ -62,14 +74,18 @@ QJackParameter::ParameterType QJackParameter::type() {
 }
 
 bool QJackParameter::isSet() {
-    return jackctl_parameter_is_set(_jackParameter);
+    return isValid() && jackctl_parameter_is_set(_jackParameter);
 }
 
 bool QJackParameter::reset() {
-    return jackctl_parameter_reset(_jackParameter);
+    return isValid() && jackctl_parameter_reset(_jackParameter);
 }
 
 QVariant QJackParameter::value() {
+    if(!isValid()) {
+        return QVariant();
+    }
+
     jackctl_parameter_value jackValue = jackctl_parameter_get_value(_jackParameter);
     switch (jackctl_parameter_get_type(_jackParameter)) {
     case JackParamInt:
@@ -87,6 +103,10 @@ QVariant QJackParameter::value() {
 }
 
 bool QJackParameter::setValue(QVariant value) {
+    if(!isValid()) {
+        return false;
+    }
+
     bool conversionSuccess;
     jackctl_parameter_value jackValue;
     QString stringValue;
@@ -120,4 +140,25 @@ bool QJackParameter::setValue(QVariant value) {
     }
 
     return false;
+}
+
+QVariant QJackParameter::defaultValue() {
+    if(!isValid()) {
+        return QVariant();
+    }
+
+    jackctl_parameter_value jackValue = jackctl_parameter_get_default_value(_jackParameter);
+    switch (jackctl_parameter_get_type(_jackParameter)) {
+    case JackParamInt:
+    default:
+        return QVariant(jackValue.i);
+    case JackParamUInt:
+        return QVariant(jackValue.ui);
+    case JackParamChar:
+        return QVariant(jackValue.c);
+    case JackParamString:
+        return QVariant(jackValue.str);
+    case JackParamBool:
+        return QVariant(jackValue.b);
+    }
 }

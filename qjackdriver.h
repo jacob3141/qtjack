@@ -31,21 +31,35 @@ typedef struct jackctl_driver jackctl_driver_t;
 
 // Qt includes
 #include <QString>
+#include <QMap>
 
 class QJackDriver
 {
-    friend class QJackServerControl;
+    friend class QJackServer;
 public:
+    // We need this for compatibility with QMap.
+    QJackDriver() {
+        _jackDriver = 0;
+    }
+
     enum DriverType {
         DriverTypeMaster,
-        DriverTypeSlave
+        DriverTypeSlave,
+        DriverTypeInvalid
     };
+
+    bool isValid() { return _jackDriver != 0; }
 
     QString name();
     DriverType type();
+    QJackParameterMap parameters();
+
+    int parseParameters(int argc, char* argv[]);
 
 private:
     QJackDriver(jackctl_driver_t *driver);
 
     jackctl_driver_t *_jackDriver;
 };
+
+typedef QMap<QString, QJackDriver> QJackDriverMap;

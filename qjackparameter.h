@@ -28,12 +28,20 @@ typedef struct jackctl_parameter jackctl_parameter_t;
 
 // Qt includes
 #include <QString>
+#include <QMap>
+
 class QVariant;
 
 class QJackParameter
 {
-    friend class QJackServerControl;
+    friend class QJackServer;
+    friend class QJackDriver;
 public:
+    // We need this for compatibility with QMap.
+    QJackParameter() {
+        _jackParameter = 0;
+    }
+
     enum ParameterType {
         ParameterTypeInt,
         ParameterTypeUInt,
@@ -41,6 +49,8 @@ public:
         ParameterTypeString,
         ParameterTypeBool
     };
+
+    bool isValid() { return _jackParameter != 0; }
 
     QString name();
     QString shortDescription();
@@ -54,8 +64,13 @@ public:
     QVariant value();
     bool setValue(QVariant value);
 
+    QVariant defaultValue();
+
 private:
     QJackParameter(jackctl_parameter_t *parameter);
 
     jackctl_parameter_t *_jackParameter;
 };
+
+typedef QMap<QString, QJackParameter> QJackParameterMap;
+

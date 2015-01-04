@@ -19,9 +19,9 @@ SOURCES += \
     qamplifier.cpp \
     qsignalgenerator.cpp \
     qequalizercontrol.cpp \
-    qjackservercontrol.cpp \
     qjackdriver.cpp \
-    qjackparameter.cpp
+    qjackparameter.cpp \
+    qjackserver.cpp
 
 HEADERS += \
     QAudioProcessor \
@@ -50,9 +50,9 @@ HEADERS += \
     QSignalGenerator \
     qequalizercontrol.h \
     QEqualizerControl \
-    qjackservercontrol.h \
-    QJackServerControl \
     qjackdriver.h \
     QJackDriver \
     qjackparameter.h \
-    QJackParameter
+    QJackParameter \
+    QJackServer \
+    qjackserver.h

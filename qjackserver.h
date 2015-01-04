@@ -21,51 +21,29 @@
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
+#pragma once
+
+// Qt includes
+#include <QMap>
+
 // Own includes
-#include "qjackservercontrol.h"
+#include <QJackDriver>
 
-#include <jack/control.h>
+// JACK includes:
+typedef struct jackctl_server jackctl_server_t;
 
-QJackServerControl::QJackServerControl() {
-    _jackServerHandle = jackctl_server_create(0, 0);
-}
+class QJackServer
+{
+public:
+    QJackServer();
+    ~QJackServer();
 
-QJackServerControl::~QJackServerControl() {
-    jackctl_server_destroy(_jackServerHandle);
-}
+    bool start(QJackDriver driver);
+    bool stop();
 
-bool QJackServerControl::open(QJackDriver driver) {
-    return jackctl_server_open(_jackServerHandle, driver._jackDriver);
-}
+    QJackDriverMap availableDrivers();
+    QJackParameterMap parameters();
 
-bool QJackServerControl::close() {
-    return _jackServerHandle && jackctl_server_close(_jackServerHandle);
-}
-
-bool QJackServerControl::start() {
-    return _jackServerHandle && jackctl_server_start(_jackServerHandle);
-}
-
-bool QJackServerControl::stop() {
-    return _jackServerHandle && jackctl_server_stop(_jackServerHandle);
-}
-
-QList<QJackDriver> QJackServerControl::availableDrivers() {
-    QList<QJackDriver> driversList;
-    const JSList *drivers = jackctl_server_get_drivers_list(_jackServerHandle);
-    while(drivers) {
-        driversList.append(QJackDriver((jackctl_driver_t*)drivers->data));
-        drivers = drivers->next;
-    }
-    return driversList;
-}
-
-QList<QJackParameter> QJackServerControl::parameters() {
-    QList<QJackParameter> parameterList;
-    const JSList *parameters = jackctl_server_get_parameters(_jackServerHandle);
-    while(parameters) {
-        parameterList.append(QJackParameter((jackctl_parameter_t*)parameters->data));
-        parameters = parameters->next;
-    }
-    return parameterList;
-}
+private:
+    jackctl_server_t *_jackServer;
+};

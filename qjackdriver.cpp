@@ -32,15 +32,47 @@ QJackDriver::QJackDriver(jackctl_driver_t *driver)
 }
 
 QString QJackDriver::name() {
+    if(!isValid()) {
+        return QString();
+    }
+
     return QString(jackctl_driver_get_name(_jackDriver));
 }
 
 QJackDriver::DriverType QJackDriver::type() {
+    if(!isValid()) {
+        return DriverTypeInvalid;
+    }
+
     switch (jackctl_driver_get_type(_jackDriver)) {
     case JackMaster:
-    default:
         return DriverTypeMaster;
     case JackSlave:
         return DriverTypeSlave;
+    default:
+        return DriverTypeInvalid;
     }
+}
+
+QJackParameterMap QJackDriver::parameters() {
+    if(!isValid()) {
+        return QJackParameterMap();
+    }
+
+    QJackParameterMap parameterMap;
+    const JSList *parameters = jackctl_driver_get_parameters(_jackDriver);
+    while(parameters) {
+        QJackParameter p = QJackParameter((jackctl_parameter_t*)parameters->data);
+        parameterMap.insert(p.name(), p);
+        parameters = parameters->next;
+    }
+    return parameterMap;
+}
+
+int QJackDriver::parseParameters(int argc, char* argv[]) {
+    if(!isValid()) {
+        return -1;
+    }
+
+    return jackctl_driver_params_parse(_jackDriver, argc, argv);
 }
