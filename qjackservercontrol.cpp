@@ -1,7 +1,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 //                                                                           //
 //    This file is part of QJackAudio.                                       //
-//    Copyright (C) 2014 Jacob Dawid, jacob@omg-it.works                     //
+//    Copyright (C) 2015 Jacob Dawid, jacob@omg-it.works                     //
 //                                                                           //
 //    QJackAudio is free software: you can redistribute it and/or modify     //
 //    it under the terms of the GNU General Public License as published by   //
@@ -21,52 +21,51 @@
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#pragma once
-
 // Own includes
-#include <QSampleBuffer>
+#include "qjackservercontrol.h"
 
-// JACK includes
-#include <jack/jack.h>
+#include <jack/control.h>
 
-// Qt includes
-#include <QString>
+QJackServerControl::QJackServerControl() {
+    _jackServerHandle = jackctl_server_create(0, 0);
+}
 
-/**
- * @class QJackPort
- * @author Jacob Dawid ( jacob.dawid@omg-it.works )
- */
-class QJackPort
-{
-    friend class QJackClient;
-public:
-    bool isValid() { return _port != 0; }
-    QString fullName();
-    QString clientName();
-    QString portName();
-    QSampleBuffer sampleBuffer();
+QJackServerControl::~QJackServerControl() {
+    jackctl_server_destroy(_jackServerHandle);
+}
 
-    /** @returns true when this port is an audio port. */
-    bool isAudioPort();
+bool QJackServerControl::open(QJackDriver driver) {
+    return jackctl_server_open(_jackServerHandle, driver._jackDriver);
+}
 
-    /** @returns true when this port is a midi port. */
-    bool isMidiPort();
+bool QJackServerControl::close() {
+    return _jackServerHandle && jackctl_server_close(_jackServerHandle);
+}
 
-    /** @returns true, when this port can receive data. */
-    bool isInput();
+bool QJackServerControl::start() {
+    return _jackServerHandle && jackctl_server_start(_jackServerHandle);
+}
 
-    /** @returns true, when data can be read from this port. */
-    bool isOutput();
+bool QJackServerControl::stop() {
+    return _jackServerHandle && jackctl_server_stop(_jackServerHandle);
+}
 
-    /** @returns true, when this port corresponds to a physical I/O connector. */
-    bool isPhysical();
+QList<QJackDriver> QJackServerControl::availableDrivers() {
+    QList<QJackDriver> driversList;
+    const JSList *drivers = jackctl_server_get_drivers_list(_jackServerHandle);
+    while(drivers) {
+        driversList.append(QJackDriver((jackctl_driver_t*)drivers->data));
+        drivers = drivers->next;
+    }
+    return driversList;
+}
 
-    bool canMonitor();
-    bool isTerminal();
-
-private:
-    QJackPort(jack_port_t *port);
-    QJackPort();
-
-    jack_port_t *_port;
-};
+QList<QJackParameter> QJackServerControl::parameters() {
+    QList<QJackParameter> parameterList;
+    const JSList *parameters = jackctl_server_get_parameters(_jackServerHandle);
+    while(parameters) {
+        parameterList.append(QJackParameter((jackctl_parameter_t*)parameters->data));
+        parameters = parameters->next;
+    }
+    return parameterList;
+}

@@ -21,8 +21,7 @@
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#ifndef QAUDIOPROCESSOR_H
-#define QAUDIOPROCESSOR_H
+#pragma once
 
 /**
  * @class QAudioProcessor
@@ -44,5 +43,3 @@ public:
      */
     virtual void process() { }
 };
-
-#endif // QAUDIOPROCESSOR_H

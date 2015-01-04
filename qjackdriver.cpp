@@ -1,7 +1,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 //                                                                           //
 //    This file is part of QJackAudio.                                       //
-//    Copyright (C) 2014 Jacob Dawid, jacob@omg-it.works                     //
+//    Copyright (C) 2015 Jacob Dawid, jacob@omg-it.works                     //
 //                                                                           //
 //    QJackAudio is free software: you can redistribute it and/or modify     //
 //    it under the terms of the GNU General Public License as published by   //
@@ -21,52 +21,26 @@
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#pragma once
-
 // Own includes
-#include <QSampleBuffer>
+#include "qjackdriver.h"
 
-// JACK includes
-#include <jack/jack.h>
+#include <jack/control.h>
 
-// Qt includes
-#include <QString>
-
-/**
- * @class QJackPort
- * @author Jacob Dawid ( jacob.dawid@omg-it.works )
- */
-class QJackPort
+QJackDriver::QJackDriver(jackctl_driver_t *driver)
 {
-    friend class QJackClient;
-public:
-    bool isValid() { return _port != 0; }
-    QString fullName();
-    QString clientName();
-    QString portName();
-    QSampleBuffer sampleBuffer();
+    _jackDriver = driver;
+}
 
-    /** @returns true when this port is an audio port. */
-    bool isAudioPort();
+QString QJackDriver::name() {
+    return QString(jackctl_driver_get_name(_jackDriver));
+}
 
-    /** @returns true when this port is a midi port. */
-    bool isMidiPort();
-
-    /** @returns true, when this port can receive data. */
-    bool isInput();
-
-    /** @returns true, when data can be read from this port. */
-    bool isOutput();
-
-    /** @returns true, when this port corresponds to a physical I/O connector. */
-    bool isPhysical();
-
-    bool canMonitor();
-    bool isTerminal();
-
-private:
-    QJackPort(jack_port_t *port);
-    QJackPort();
-
-    jack_port_t *_port;
-};
+QJackDriver::DriverType QJackDriver::type() {
+    switch (jackctl_driver_get_type(_jackDriver)) {
+    case JackMaster:
+    default:
+        return DriverTypeMaster;
+    case JackSlave:
+        return DriverTypeSlave;
+    }
+}

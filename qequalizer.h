@@ -21,8 +21,7 @@
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#ifndef QEQUALIZER_H
-#define QEQUALIZER_H
+#pragma once
 
 // Own includes
 #include <QJackClient>
@@ -84,5 +83,3 @@ private:
     int _controlsSize;
     double *_controls;
 };
-
-#endif // QEQUALIZER_H

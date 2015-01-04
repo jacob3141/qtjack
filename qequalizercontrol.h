@@ -21,8 +21,7 @@
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#ifndef QEQUALIZERCONTROL_H
-#define QEQUALIZERCONTROL_H
+#pragma once
 
 // Qt includes
 #include <QObject>
@@ -157,5 +156,3 @@ private:
     /** The equalizer this control belongs to. */
     QEqualizer *_equalizer;
 };
-
-#endif // QEQUALIZERCONTROL_H

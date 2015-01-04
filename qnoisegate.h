@@ -21,8 +21,7 @@
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#ifndef QNOISEGATE_H
-#define QNOISEGATE_H
+#pragma once
 
 // Own includes
 #include <QDigitalFilter>
@@ -92,5 +91,3 @@ private:
     bool _muting;
     int _sampleCount;
 };
-
-#endif // QNOISEGATE_H

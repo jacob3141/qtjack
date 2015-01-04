@@ -1,7 +1,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 //                                                                           //
 //    This file is part of QJackAudio.                                       //
-//    Copyright (C) 2014 Jacob Dawid, jacob@omg-it.works                     //
+//    Copyright (C) 2015 Jacob Dawid, jacob@omg-it.works                     //
 //                                                                           //
 //    QJackAudio is free software: you can redistribute it and/or modify     //
 //    it under the terms of the GNU General Public License as published by   //
@@ -23,50 +23,30 @@
 
 #pragma once
 
-// Own includes
-#include <QSampleBuffer>
-
-// JACK includes
-#include <jack/jack.h>
-
 // Qt includes
-#include <QString>
+#include <QList>
 
-/**
- * @class QJackPort
- * @author Jacob Dawid ( jacob.dawid@omg-it.works )
- */
-class QJackPort
+// Own includes
+#include <QJackDriver>
+
+// JACK includes:
+typedef struct jackctl_server jackctl_server_t;
+
+class QJackServerControl
 {
-    friend class QJackClient;
 public:
-    bool isValid() { return _port != 0; }
-    QString fullName();
-    QString clientName();
-    QString portName();
-    QSampleBuffer sampleBuffer();
+    QJackServerControl();
+    ~QJackServerControl();
 
-    /** @returns true when this port is an audio port. */
-    bool isAudioPort();
+    bool open(QJackDriver driver);
+    bool close();
 
-    /** @returns true when this port is a midi port. */
-    bool isMidiPort();
+    bool start();
+    bool stop();
 
-    /** @returns true, when this port can receive data. */
-    bool isInput();
-
-    /** @returns true, when data can be read from this port. */
-    bool isOutput();
-
-    /** @returns true, when this port corresponds to a physical I/O connector. */
-    bool isPhysical();
-
-    bool canMonitor();
-    bool isTerminal();
+    QList<QJackDriver> availableDrivers();
+    QList<QJackParameter> parameters();
 
 private:
-    QJackPort(jack_port_t *port);
-    QJackPort();
-
-    jack_port_t *_port;
+    jackctl_server_t *_jackServerHandle;
 };

@@ -21,8 +21,7 @@
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#ifndef QSAMPLEBUFFER_H
-#define QSAMPLEBUFFER_H
+#pragma once
 
 // Qt includes
 #include <QString>
@@ -103,5 +102,3 @@ private:
     /** Flag that indicates that this buffer's memory has been allocated manually. */
     bool _isMemoryBuffer;
 };
-
-#endif // QSAMPLEBUFFER_H

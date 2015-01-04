@@ -21,8 +21,7 @@
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#ifndef QAMPLIFIER_H
-#define QAMPLIFIER_H
+#pragma once
 
 // Own includes
 #include <QDigitalFilter>
@@ -65,5 +64,3 @@ private:
     /** Gain in dB. */
     double _gain;
 };
-
-#endif // QAMPLIFIER_H

@@ -21,8 +21,7 @@
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#ifndef QUNITS_H
-#define QUNITS_H
+#pragma once
 
 /**
  * @brief The QUnits class
@@ -40,5 +39,3 @@ public:
 
     static double sumDb(double valueDb1, double valueDb2);
 };
-
-#endif // QUNITS_H

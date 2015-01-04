@@ -21,8 +21,7 @@
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#ifndef QSIGNALGENERATOR_H
-#define QSIGNALGENERATOR_H
+#pragma once
 
 // Own includes
 #include <QDigitalFilter>
@@ -87,5 +86,3 @@ private:
     /** Signal frequency in Hz. */
     double _frequency;
 };
-
-#endif // QSIGNALGENERATOR_H

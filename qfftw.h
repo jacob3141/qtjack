@@ -21,8 +21,7 @@
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#ifndef QFFTW_H
-#define QFFTW_H
+#pragma once
 
 // JACK includes:
 #include <jack/jack.h>
@@ -71,5 +70,3 @@ namespace QFFTW {
     */
   void performInverseFFT(fftw_complex *input, fftw_complex *result, int n);
 }
-
-#endif // QFFTW_H

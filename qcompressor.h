@@ -21,8 +21,7 @@
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#ifndef QCOMPRESSOR_H
-#define QCOMPRESSOR_H
+#pragma once
 
 // Own includes
 #include <QJackClient>
@@ -150,5 +149,3 @@ private:
     /** Make-up gain in dB. */
     double _makeupGain;
 };
-
-#endif // QCOMPRESSOR_H

@@ -21,8 +21,7 @@
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#ifndef QJACKAUDIO_H
-#define QJACKAUDIO_H
+#pragma once
 
 // JACK includes:
 #include <jack/jack.h>
@@ -43,7 +42,7 @@
 #include <QSemaphore>
 
 /**
- * @class QJackAudio
+ * @class QJackClient
  * @author Jacob Dawid ( jacob.dawid@omg-it.works )
  * @brief C++ Wrapper for the JACK Audio Connection Kit client API.
  * This class wraps a singleton around the C API of JACK in order to provide
@@ -65,6 +64,12 @@ public:
       * application as a client.
       */
     bool connectToServer(QString name);
+
+    /**
+     * Disconnects from the server.
+     * @returns true, when successfully disconnected.
+     */
+    bool disconnectFromServer();
 
     /** Registers a port. Only possible, if connected to a JACK server. */
     QJackPort registerPort(QString name, QString portType, JackPortFlags jackPortFlags);
@@ -105,11 +110,14 @@ public:
       */
     void setAudioProcessor(QAudioProcessor *processor);
 
-    /** Activates audio processing. */
+    /** Activates audio processing for this client. */
     void startAudioProcessing();
 
-    /** Deactivates audio processing and disconnects from the audio server. */
+    /** Deactivates audio processing for this client. */
     void stopAudioProcessing();
+
+    void startTransport();
+    void stopTransport();
 
     /** @returns the sample rate in Hz. */
     int sampleRate();
@@ -140,7 +148,10 @@ signals:
     void portRegistered(QJackPort port);
 
     /** Emitted when successfully connected to JACK server. */
-    void connected();
+    void connectedToServer();
+
+    /** Emitted when successfully disconnected from JACK server. */
+    void disconnectedFromServer();
 
     /** Emitted when audio processing has been started successfully. */
     void startedAudioProcessing();
@@ -224,5 +235,3 @@ private:
     /** Singleton instance for this class. */
     static QJackClient _instance;
 };
-
-#endif // QJACKAUDIO_H

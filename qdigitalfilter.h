@@ -21,8 +21,7 @@
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#ifndef QDIGITALFILTER_H
-#define QDIGITALFILTER_H
+#pragma once
 
 // Qt includes
 #include <QObject>
@@ -87,5 +86,3 @@ protected:
     /** Mutex for thread-safe access of filter parameters. */
     QMutex _mutex;
 };
-
-#endif // QDIGITALFILTER_H

@@ -1,7 +1,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 //                                                                           //
 //    This file is part of QJackAudio.                                       //
-//    Copyright (C) 2014 Jacob Dawid, jacob@omg-it.works                     //
+//    Copyright (C) 2015 Jacob Dawid, jacob@omg-it.works                     //
 //                                                                           //
 //    QJackAudio is free software: you can redistribute it and/or modify     //
 //    it under the terms of the GNU General Public License as published by   //
@@ -23,50 +23,39 @@
 
 #pragma once
 
-// Own includes
-#include <QSampleBuffer>
-
 // JACK includes
-#include <jack/jack.h>
+typedef struct jackctl_parameter jackctl_parameter_t;
 
 // Qt includes
 #include <QString>
+class QVariant;
 
-/**
- * @class QJackPort
- * @author Jacob Dawid ( jacob.dawid@omg-it.works )
- */
-class QJackPort
+class QJackParameter
 {
-    friend class QJackClient;
+    friend class QJackServerControl;
 public:
-    bool isValid() { return _port != 0; }
-    QString fullName();
-    QString clientName();
-    QString portName();
-    QSampleBuffer sampleBuffer();
+    enum ParameterType {
+        ParameterTypeInt,
+        ParameterTypeUInt,
+        ParameterTypeChar,
+        ParameterTypeString,
+        ParameterTypeBool
+    };
 
-    /** @returns true when this port is an audio port. */
-    bool isAudioPort();
+    QString name();
+    QString shortDescription();
+    QString longDescription();
+    ParameterType type();
 
-    /** @returns true when this port is a midi port. */
-    bool isMidiPort();
+    /** @returns true, if this parameters has been set, false otherwise. */
+    bool isSet();
+    bool reset();
 
-    /** @returns true, when this port can receive data. */
-    bool isInput();
-
-    /** @returns true, when data can be read from this port. */
-    bool isOutput();
-
-    /** @returns true, when this port corresponds to a physical I/O connector. */
-    bool isPhysical();
-
-    bool canMonitor();
-    bool isTerminal();
+    QVariant value();
+    bool setValue(QVariant value);
 
 private:
-    QJackPort(jack_port_t *port);
-    QJackPort();
+    QJackParameter(jackctl_parameter_t *parameter);
 
-    jack_port_t *_port;
+    jackctl_parameter_t *_jackParameter;
 };

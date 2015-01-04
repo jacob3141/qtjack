@@ -52,15 +52,26 @@ bool QJackClient::connectToServer(QString name) {
     if((_jackClient = jack_client_open(name.toStdString().c_str(), JackNullOption, NULL)) == 0) {
         emitError("Can't connect to JACK Server.");
         return false;
+    } else {
+        jack_set_process_callback(_jackClient, QJackClient::process, 0);
+        jack_set_buffer_size_callback(_jackClient, QJackClient::bufferSizeCallback, 0);
+        jack_set_sample_rate_callback(_jackClient, QJackClient::sampleRateCallback, 0);
+        jack_set_xrun_callback(_jackClient, QJackClient::xrunCallback, 0);
+        jack_set_error_function(QJackClient::errorCallback);
+        jack_set_info_function(QJackClient::informationCallback);
+        emit connectedToServer();
+        return true;
     }
+}
 
-    jack_set_process_callback(_jackClient, QJackClient::process, 0);
-    jack_set_buffer_size_callback(_jackClient, QJackClient::bufferSizeCallback, 0);
-    jack_set_sample_rate_callback(_jackClient, QJackClient::sampleRateCallback, 0);
-    jack_set_xrun_callback(_jackClient, QJackClient::xrunCallback, 0);
-    jack_set_error_function(QJackClient::errorCallback);
-    jack_set_info_function(QJackClient::informationCallback);
-    return true;
+bool QJackClient::disconnectFromServer() {
+    if(jack_deactivate(_jackClient) == 0 && jack_client_close(_jackClient) == 0) {
+        emit disconnectedFromServer();
+        return true;
+    } else {
+        emitError("Could not disconnect from JACK server.");
+        return false;
+    }
 }
 
 QJackPort QJackClient::registerPort(QString name, QString portType, JackPortFlags jackPortFlags)  {
@@ -153,6 +164,14 @@ void QJackClient::stopAudioProcessing() {
     } else {
         emit stoppedAudioProcessing();
     }
+}
+
+void QJackClient::startTransport() {
+    jack_transport_start(_jackClient);
+}
+
+void QJackClient::stopTransport() {
+    jack_transport_stop(_jackClient);
 }
 
 int QJackClient::sampleRate() {
