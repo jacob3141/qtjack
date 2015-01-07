@@ -172,20 +172,20 @@ private:
 
     // Static callbacks that will be delegated to each instance
 
-    static int threadInitCallback(void *argument);
+    static void threadInitCallback(void *argument);
     static int processCallback(jack_nframes_t sampleCount, void *argument);
-    static int freewheelCallback(int starting, void *argument);
-    static int clientRegistrationCallback(const char* name, int reg, void *argument);
-    static int portRegistrationCallback(jack_port_id_t port, int reg, void *argument);
-    static int portConnectCallback(jack_port_id_t a, jack_port_id_t b, int connect, void *argument);
+    static void freewheelCallback(int starting, void *argument);
+    static void clientRegistrationCallback(const char* name, int reg, void *argument);
+    static void portRegistrationCallback(jack_port_id_t port, int reg, void *argument);
+    static void portConnectCallback(jack_port_id_t a, jack_port_id_t b, int connect, void *argument);
     static int portRenameCallback(jack_port_id_t port, const char* oldName, const char* newName, void *argument);
     static int graphOrderCallback(void *argument);
-    static int latencyCallback(jack_latency_callback_mode_t mode, void *argument);
+    static void latencyCallback(jack_latency_callback_mode_t mode, void *argument);
     static int sampleRateCallback(jack_nframes_t sampleCount, void *argument);
     static int bufferSizeCallback(jack_nframes_t sampleCount, void *argument);
     static int xrunCallback(void *argument);
-    static int shutdownCallback(void *argument);
-    static int infoShutdownCallback(jack_status_t code, const char* reason, void *argument);
+    static void shutdownCallback(void *argument);
+    static void infoShutdownCallback(jack_status_t code, const char* reason, void *argument);
 
     /** JACK's C API client. */
     jack_client_t *_jackClient;
