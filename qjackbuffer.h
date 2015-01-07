@@ -27,7 +27,6 @@
 #include <QString>
 
 /**
- * @class QSampleBuffer
  * @author Jacob Dawid ( jacob.dawid@omg-it.works )
  * Handle to a JACK sample buffer. Buffer handles are lightweight objects
  * that refer to a memory buffer, store some meta-information and provide
@@ -36,18 +35,18 @@
  * Buffers cannot be created as standalone objects, instead they are bound to
  * another object, for example a QJackPort.
  */
-class QSampleBuffer
+class QJackBuffer
 {
     friend class QJackPort;
 public:
     /** Create an audio buffer by allocating memory manually. */
-    static QSampleBuffer createMemoryAudioBuffer(int size);
+    static QJackBuffer createMemoryAudioBuffer(int size);
 
     /** Frees memory if this is a sample buffer create in memory. */
     void releaseMemoryBuffer();
 
     /** Copy constructor. */
-    QSampleBuffer(const QSampleBuffer& other);
+    QJackBuffer(const QJackBuffer& other);
 
     /** @returns true, if this buffer's memory has been allocated manually. */
     bool isMemoryBuffer();
@@ -72,23 +71,23 @@ public:
     void clear();
 
     /** Copies all samples from this buffer to the given sampleBuffer. */
-    bool copyTo(QSampleBuffer sampleBuffer);
+    bool copyTo(QJackBuffer sampleBuffer);
 
     /** Adds all sample from this buffer to the goven sampleBuffer. */
-    bool addTo(QSampleBuffer sampleBuffer);
+    bool addTo(QJackBuffer sampleBuffer);
 
     /** Adds all sample from this buffer to the goven sampleBuffer. */
-    bool addTo(QSampleBuffer sampleBuffer, double attenuation);
+    bool addTo(QJackBuffer sampleBuffer, double attenuation);
 
     /** Multiplies all samples by the given attenuation value. */
     void multiply(double attenuation);
 
     /** @returns the absolute value of the highest sample value in this buffer. */
-    double peak();
+    //double peak();
 
 private:
     /** Private constructor. */
-    QSampleBuffer(int size, void* buffer);
+    QJackBuffer(int size, void* buffer);
 
     /** The last error that occurred during an operation. */
     QString _lastError;

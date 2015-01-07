@@ -21,46 +21,38 @@
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#pragma once
-
 // Own includes
-#include <QDigitalFilter>
+#include <dsp/QUnits>
 
-/**
- * @class QAmplifier
- * @author Jacob Dawid ( jacob.dawid@omg-it.works )
- * @brief Amplifier.
- */
-class QAmplifier : public QDigitalFilter
+// Standard includes
+#include <cmath>
+
+double QUnits::dbToLinear(double db)
 {
-    Q_OBJECT
-public:
-    QAmplifier(QObject *parent = 0);
+   return pow(10.0, db / 20.0);
+}
 
-    /** @overload */
-    void process(QSampleBuffer sampleBuffer);
+double QUnits::linearToDb(float linear)
+{
+   return 20.0 * log10(linear);
+}
 
-    /** @returns gain in dB. */
-    double gain();
+double QUnits::peak(double value)
+{
+    return value > 0.0 ? value : -value;
+}
 
-public slots:
-    /**
-     * Sets the gain of the amplifier.
-     * @param gain
-     */
-    void setGain(double gain);
+double QUnits::msToSamples(int sampleRate, double ms)
+{
+    return (double)sampleRate * ms / 1000.0 ;
+}
 
-    /**
-     * For convenience, so that setting the gain works with widgets that
-     * expose their current value as integers.
-     */
-    void setGain(int gain) { setGain((double)gain); }
+double QUnits::samplesToMs(int sampleRate, double samples)
+{
+    return samples * 1000.0 / (double)sampleRate;
+}
 
-signals:
-    void gainChanged(double gain);
-    void gainChanged(int gain);
-
-private:
-    /** Gain in dB. */
-    double _gain;
-};
+double QUnits::sumDb(double valueDb1, double valueDb2)
+{
+    return linearToDb(dbToLinear(valueDb1) + dbToLinear(valueDb2));
+}

@@ -21,67 +21,68 @@
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#include "qamplifier.h"
+#pragma once
 
-QAmplifier::QAmplifier(QObject *parent)
-    : QDigitalFilter(parent)
+// Qt includes
+#include <QObject>
+#include <QMutex>
+#include <QMutexLocker>
+
+// Own includes
+#include <QJackBuffer>
+#include <dsp/QUnits>
+
+/**
+ * @class QDigitalFilter
+ * @author Jacob Dawid ( jacob.dawid@omg-it.works )
+ */
+class QDigitalFilter : public QObject
 {
-    _gain = 0.0;
-}
-
-void QAmplifier::process(QSampleBuffer sampleBuffer)
-{
-    //bool isClipping = false;
-    bool isActive = false;
-
-    _mutex.lock();
-    double gain = _gain;
-    bool bypass = _bypass;
-    _mutex.unlock();
-
-    if(bypass) {
-        return;
+    Q_OBJECT
+public:
+    /** Constructs a new processor. */
+    QDigitalFilter(QObject *parent = 0) : QObject(parent) {
+        _bypass = false;
     }
 
-    isActive = true;
-    sampleBuffer.multiply(QUnits::dbToLinear(gain));
+    /** Destructor. */
+    virtual ~QDigitalFilter() { }
 
-//    int bufferSize = sampleBuffer.size();
-//    for(int i = 0; i < bufferSize; i++) {
-//        // Read audio sample
-//        double result = sampleBuffer.readAudioSample(i) * QUnits::dbToLinear(gain);
-
-//        if(result > 1.0) {
-//            result = 1.0;
-//            isClipping = true;
-//        }
-
-//        if(result < -1.0) {
-//            result = -1.0;
-//            isClipping = true;
-//        }
-//        sampleBuffer.writeAudioSample(i, result);
-//    }
-
-//    if(isClipping) {
-//        emit clipping();
-//    }
-
-    if(isActive) {
-        emit active();
+    /**
+     * @brief Called whenever audio samples have to be processed.
+     * Warning: This method is time-critical.
+     */
+    virtual void process(QJackBuffer sampleBuffer) {
+        Q_UNUSED(sampleBuffer);
     }
-}
 
-double QAmplifier::gain()
-{
-    QMutexLocker mutexLocker(&_mutex);
-    return _gain;
-}
+    /** @return true, when bypassed. */
+    bool bypass() {
+        QMutexLocker mutexLocker(&_mutex);
+        return _bypass;
+    }
 
-void QAmplifier::setGain(double gain)
-{
-    QMutexLocker mutexLocker(&_mutex);
-    _gain = gain;
-    emit gainChanged(_gain);
-    emit gainChanged((int)_gain);
-}
+signals:
+    /** Emitted when signals is clipping. */
+    void clipping();
+
+    /** Emitted when signal is below threshold. */
+    void active();
+
+    /** Emitted when bypass changed. */
+    void bypassChanged(bool bypass);
+
+public slots:
+    void setBypass(bool bypass) {
+        QMutexLocker mutexLocker(&_mutex);
+       _bypass = bypass;
+       emit bypassChanged(bypass);
+    }
+
+protected:
+    /** Bypass flag. */
+    bool _bypass;
+
+    /** Mutex for thread-safe access of filter parameters. */
+    QMutex _mutex;
+};

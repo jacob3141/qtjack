@@ -24,7 +24,7 @@
 #pragma once
 
 // Own includes
-#include <QSampleBuffer>
+#include <QJackBuffer>
 
 // JACK includes
 #include <jack/jack.h>
@@ -44,7 +44,7 @@ public:
     QString fullName();
     QString clientName();
     QString portName();
-    QSampleBuffer sampleBuffer(int samples);
+    QJackBuffer sampleBuffer(int samples);
 
     /** @returns true when this port is an audio port. */
     bool isAudioPort();

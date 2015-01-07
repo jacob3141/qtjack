@@ -24,65 +24,70 @@
 #pragma once
 
 // Own includes
-#include <QDigitalFilter>
+#include <dsp/QDigitalFilter>
 
-class QSignalGenerator : public QDigitalFilter
+// Qt includes
+#include <QMutex>
+
+/**
+ * @class QNoiseGate
+ * @author Jacob Dawid ( jacob.dawid@omg-it.works )
+ * @brief Noise gate.
+ */
+class QNoiseGate : public QDigitalFilter
 {
     Q_OBJECT
 public:
-    enum SignalType {
-        Sine,
-        Square,
-        Triangle,
-        Sawtooth,
-        ReverseSawtooth
-    };
+    /** Constructs a new noise gate. */
+    QNoiseGate(QObject *parent = 0);
 
-    QSignalGenerator(QObject *parent = 0);
+    /** @returns the noise gate threshold in dB. */
+    double threshold();
 
     /** @overload @see QDigitalFilter */
-    void process(QSampleBuffer sampleBuffer);
-
-    SignalType signalType();
-    double phase();
-    double amplitude();
-    double frequency();
+    void process(QJackBuffer sampleBuffer);
 
 signals:
-    void signalTypeChanged(SignalType signalType);
-    void phaseChanged(double phase);
-    void phaseChanged(int phase);
+    /** Emitted whenever the threshold has changed. */
+    void thresholdChanged(double threshold);
+    void thresholdChanged(int threshold);
 
-    void amplitudeChanged(double amplitude);
-    void amplitudeChanged(int amplitude);
+    void sensitivityChanged(double sensitivity);
+    void sensitivityChanged(int sensitivity);
 
-    void frequencyChanged(double frequency);
-    void frequencyChanged(int frequency);
+    void resistanceChanged(double resistance);
+    void resistanceChanged(int resistance);
 
 public slots:
-    void setSignalType(SignalType signalType);
+    /**
+     * Set the threshold for the noise gate in dB. The noise gate will kill
+     * all signals below threshold.
+     * @brief setThreshold
+     * @param threshold Threshold in dB.
+     */
+    void setThreshold(double threshold);
+    void setThreshold(int threshold) { setThreshold((double)threshold); }
 
-    void setPhase(double phase);
-    void setPhase(int phase) { setPhase((double)phase); }
+    void setSensitivy(double sensitivity);
+    void setSensitivy(int sensitivity) { setSensitivy((double)sensitivity); }
 
-    void setAmplitude(double amplitude);
-    void setAmplitude(int amplitude) { setAmplitude((double)amplitude); }
-
-    void setFrequency(double frequency);
-    void setFrequency(int frequency) { setFrequency((double)frequency); }
+    void setResistance(double resistance);
+    void setResistance(int resistance) { setResistance((double)resistance); }
 
 private:
-    double _time;
+    /** Noise gate threshold in dB. */
+    double _threshold;
 
-    /** Signal type. */
-    SignalType _signalType;
+    /** Sensitivity determines how long the signal must be below threshold
+     * before the noise gate kicks in. In ms.
+     */
+    double _sensitivity;
 
-    /** Phase shift in degrees. */
-    double _phase;
+    /** Resistance determines how long the signal must be above threshold
+     * in order to disable the noise gate. In ms.
+     */
+    double _resistance;
 
-    /** Amplitude in dB. */
-    double _amplitude;
-
-    /** Signal frequency in Hz. */
-    double _frequency;
+    bool _muting;
+    int _sampleCount;
 };

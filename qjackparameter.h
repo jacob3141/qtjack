@@ -30,10 +30,13 @@ typedef struct jackctl_parameter jackctl_parameter_t;
 #include <QString>
 #include <QMap>
 
-class QVariant;
+// Without the following define, the include leads to a compilation error
+#define QT_NO_SIGNALS_SLOTS_KEYWORDS
+#include <QVariant>
 
 class QJackParameter
 {
+    // Only those should be able to create valid parameter objects.
     friend class QJackServer;
     friend class QJackDriver;
 public:
@@ -42,6 +45,7 @@ public:
         _jackParameter = 0;
     }
 
+    /** A parameter type. */
     enum ParameterType {
         ParameterTypeInt,
         ParameterTypeUInt,
@@ -50,11 +54,18 @@ public:
         ParameterTypeBool
     };
 
+    /** A parameter range. */
+    struct ParameterValueRange {
+        QVariant minimum;
+        QVariant maximum;
+    };
+
     bool isValid() { return _jackParameter != 0; }
 
     QString name();
     QString shortDescription();
     QString longDescription();
+    char id();
     ParameterType type();
 
     /** @returns true, if this parameters has been set, false otherwise. */
@@ -65,6 +76,16 @@ public:
     bool setValue(QVariant value);
 
     QVariant defaultValue();
+
+    bool hasRangeConstraint();
+    ParameterValueRange rangeConstraint();
+    bool constraintIsStrict();
+    bool constraintIsFakeValue();
+
+    bool hasEnumerationConstraint();
+    int enumerationConstraintsCount();
+    QVariant enumerationConstraintValue(int index);
+    QString enumerationConstraintDescription(int index);
 
 private:
     QJackParameter(jackctl_parameter_t *parameter);

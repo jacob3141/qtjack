@@ -184,10 +184,46 @@ void QJackClient::setAudioProcessor(QAudioProcessor *audioProcessor) {
     _audioProcessor = audioProcessor;
 }
 
+void QJackClient::threadInit() {
+}
+
 void QJackClient::process(int samples) {
     Q_UNUSED(samples);
     if(_audioProcessor)
         _audioProcessor->process();
+}
+
+void QJackClient::freewheel(int starting) {
+    Q_UNUSED(starting);
+}
+
+void QJackClient::clientRegistration(const char *name, int reg) {
+    Q_UNUSED(name);
+    Q_UNUSED(reg);
+}
+
+void QJackClient::portRegistration(jack_port_id_t port, int reg) {
+    Q_UNUSED(port);
+    Q_UNUSED(reg);
+}
+
+void QJackClient::portConnect(jack_port_id_t a, jack_port_id_t b, int connect) {
+    Q_UNUSED(a);
+    Q_UNUSED(b);
+    Q_UNUSED(connect);
+}
+
+void QJackClient::portRename(jack_port_id_t port, const char *oldName, const char *newName) {
+    Q_UNUSED(port);
+    Q_UNUSED(oldName);
+    Q_UNUSED(newName);
+}
+
+void QJackClient::graphOrder() {
+}
+
+void QJackClient::latency(jack_latency_callback_mode_t mode) {
+    Q_UNUSED(mode);
 }
 
 void QJackClient::sampleRate(int samples) {
@@ -202,6 +238,14 @@ void QJackClient::xrun() {
     emit xrunOccured();
 }
 
+void QJackClient::shutdown() {
+}
+
+void QJackClient::infoShutdown(jack_status_t code, const char *reason) {
+    Q_UNUSED(code);
+    Q_UNUSED(reason);
+}
+
 // Static callbacks
 
 int QJackClient::processCallback(jack_nframes_t sampleCount,
@@ -209,6 +253,70 @@ int QJackClient::processCallback(jack_nframes_t sampleCount,
     QJackClient *jackClient = static_cast<QJackClient*>(argument);
     if(jackClient) {
         jackClient->process(sampleCount);
+    }
+    return 0;
+}
+
+int QJackClient::threadInitCallback(void *argument) {
+    QJackClient *jackClient = static_cast<QJackClient*>(argument);
+    if(jackClient) {
+        jackClient->threadInit();
+    }
+    return 0;
+}
+
+int QJackClient::freewheelCallback(int starting, void *argument) {
+    QJackClient *jackClient = static_cast<QJackClient*>(argument);
+    if(jackClient) {
+        jackClient->freewheel(starting);
+    }
+    return 0;
+}
+
+int QJackClient::clientRegistrationCallback(const char* name, int reg, void *argument) {
+    QJackClient *jackClient = static_cast<QJackClient*>(argument);
+    if(jackClient) {
+        jackClient->clientRegistration(name, reg);
+    }
+    return 0;
+}
+
+int QJackClient::portRegistrationCallback(jack_port_id_t port, int reg, void *argument) {
+    QJackClient *jackClient = static_cast<QJackClient*>(argument);
+    if(jackClient) {
+        jackClient->portRegistration(port, reg);
+    }
+    return 0;
+}
+
+int QJackClient::portConnectCallback(jack_port_id_t a, jack_port_id_t b, int connect, void* argument) {
+    QJackClient *jackClient = static_cast<QJackClient*>(argument);
+    if(jackClient) {
+        jackClient->portConnect(a, b, connect);
+    }
+    return 0;
+}
+
+int QJackClient::portRenameCallback(jack_port_id_t port, const char* oldName, const char* newName, void *argument) {
+    QJackClient *jackClient = static_cast<QJackClient*>(argument);
+    if(jackClient) {
+        jackClient->portRename(port, oldName, newName);
+    }
+    return 0;
+}
+
+int QJackClient::graphOrderCallback(void *argument) {
+    QJackClient *jackClient = static_cast<QJackClient*>(argument);
+    if(jackClient) {
+        jackClient->graphOrder();
+    }
+    return 0;
+}
+
+int QJackClient::latencyCallback(jack_latency_callback_mode_t mode, void *argument) {
+    QJackClient *jackClient = static_cast<QJackClient*>(argument);
+    if(jackClient) {
+        jackClient->latency(mode);
     }
     return 0;
 }
@@ -235,6 +343,22 @@ int QJackClient::xrunCallback(void *argument) {
     QJackClient *jackClient = static_cast<QJackClient*>(argument);
     if(jackClient) {
         jackClient->xrun();
+    }
+    return 0;
+}
+
+int QJackClient::shutdownCallback(void *argument) {
+    QJackClient *jackClient = static_cast<QJackClient*>(argument);
+    if(jackClient) {
+        jackClient->shutdown();
+    }
+    return 0;
+}
+
+int QJackClient::infoShutdownCallback(jack_status_t code, const char* reason, void *argument) {
+    QJackClient *jackClient = static_cast<QJackClient*>(argument);
+    if(jackClient) {
+        jackClient->infoShutdown(code, reason);
     }
     return 0;
 }

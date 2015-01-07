@@ -30,7 +30,6 @@
 #include <iostream>
 
 // Own includes:
-#include <QFFTW>
 #include <QAudioProcessor>
 #include <QJackPort>
 
@@ -45,10 +44,6 @@
  * @class QJackClient
  * @author Jacob Dawid ( jacob.dawid@omg-it.works )
  * @brief C++ Wrapper for the JACK Audio Connection Kit client API.
- * This class wraps a singleton around the C API of JACK in order to provide
- * some additional features. Since it derives from QObject it can be integrated
- * into Qt's signals and slots system. Also, it includes a few routines
- * to simplify the integration of fftw.
  */
 class QJackClient : public QObject {
     Q_OBJECT
@@ -158,42 +153,39 @@ signals:
     void xrunOccured();
 
 private:
-    /**
-      * Private method to forward the request to process samples
-      * from static methods.
-      * @param samples Number of samples.
-      */
+    // Callbacks
+
+    void threadInit();
     void process(int samples);
+    void freewheel(int starting);
+    void clientRegistration(const char *name, int reg);
+    void portRegistration(jack_port_id_t port, int reg);
+    void portConnect(jack_port_id_t a, jack_port_id_t b, int connect);
+    void portRename(jack_port_id_t port, const char *oldName, const char *newName);
+    void graphOrder();
+    void latency(jack_latency_callback_mode_t mode);
     void sampleRate(int samples);
     void bufferSize(int samples);
     void xrun();
+    void shutdown();
+    void infoShutdown(jack_status_t code, const char *reason);
 
-    /**
-      * Callback for JACK's C API. Called when new samples
-      * need to be processed.
-      * @param sampleCount Number of samples.
-      * @param argument Not in use.
-      * @return Result of operation.
-      */
+    // Static callbacks that will be delegated to each instance
+
+    static int threadInitCallback(void *argument);
     static int processCallback(jack_nframes_t sampleCount, void *argument);
-
-    /**
-      * Callback for JACK's C API. Called when sample rate changes.
-      * @param sampleCount Number of samples.
-      * @param argument Not in use.
-      * @return Result of operation.
-      */
+    static int freewheelCallback(int starting, void *argument);
+    static int clientRegistrationCallback(const char* name, int reg, void *argument);
+    static int portRegistrationCallback(jack_port_id_t port, int reg, void *argument);
+    static int portConnectCallback(jack_port_id_t a, jack_port_id_t b, int connect, void *argument);
+    static int portRenameCallback(jack_port_id_t port, const char* oldName, const char* newName, void *argument);
+    static int graphOrderCallback(void *argument);
+    static int latencyCallback(jack_latency_callback_mode_t mode, void *argument);
     static int sampleRateCallback(jack_nframes_t sampleCount, void *argument);
-
-    /**
-      * Callback for JACK's C API. Called when the sample buffer size changes.
-      * @param sampleCount Number of samples.
-      * @param argument Not in use.
-      * @return Result of operation.
-      */
     static int bufferSizeCallback(jack_nframes_t sampleCount, void *argument);
-
     static int xrunCallback(void *argument);
+    static int shutdownCallback(void *argument);
+    static int infoShutdownCallback(jack_status_t code, const char* reason, void *argument);
 
     /** JACK's C API client. */
     jack_client_t *_jackClient;

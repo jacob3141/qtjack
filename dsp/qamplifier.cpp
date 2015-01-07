@@ -21,65 +21,67 @@
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#pragma once
+#include "qamplifier.h"
 
-// Own includes
-#include <QJackClient>
-#include <QDigitalFilter>
-#include <QEqualizerControl>
-
-/**
- * @class QEqualizer
- * @author Jacob Dawid ( jacob.dawid@omg-it.works )
- * @brief Modifies the frequency spectrum of the sampled audio signal.
- */
-class QEqualizer : public QDigitalFilter
+QAmplifier::QAmplifier(QObject *parent)
+    : QDigitalFilter(parent)
 {
-    Q_OBJECT
-public:
-    /**
-     * Constructs a new digital equalizer. convResolution may not be greater than
-     * half the filter resolution.
-     * @param resolution Total resolution of the equalizer.
-     * @param convResolution Resulting filter size of the filter that will be applid
-     * to the signal.
-     * @param parent
-     */
-    QEqualizer(int resolution = 2048, int convResolution = 256, QObject *parent = 0);
+    _gain = 0.0;
+}
 
-    /** Destructor. */
-    ~QEqualizer();
+void QAmplifier::process(QJackBuffer sampleBuffer)
+{
+    //bool isClipping = false;
+    bool isActive = false;
 
-    /** @overload QDigitalFilter */
-    void process(QSampleBuffer sampleBuffer);
+    _mutex.lock();
+    double gain = _gain;
+    bool bypass = _bypass;
+    _mutex.unlock();
 
-    QEqualizerControl* createEqualizerControl(QEqualizerControl::ControlType controlType = QEqualizerControl::Band);
+    if(bypass) {
+        return;
+    }
 
-public slots:
-    /**
-      * Updates the filter from the given set of equalizer control values.
-      * @param values Equalizer control values.
-      */
-    void update();
+    isActive = true;
+    sampleBuffer.multiply(QUnits::dbToLinear(gain));
 
-private:
-    QList<QEqualizerControl*> _equalizerControls;
+//    int bufferSize = sampleBuffer.size();
+//    for(int i = 0; i < bufferSize; i++) {
+//        // Read audio sample
+//        double result = sampleBuffer.readAudioSample(i) * QUnits::dbToLinear(gain);
 
-    /** The current filter coefficients for the FIR filter.
-      * These will be convoluted with the signals and need to be calculated
-      * beforehand.
-      */
-    int _filterCoefficientsSize;
-    double *_filterCoefficients;
+//        if(result > 1.0) {
+//            result = 1.0;
+//            isClipping = true;
+//        }
 
-    /**
-      * Delay line for the convolution. This memory makes it possible
-      * to access previous values and thus continous convolution.
-      */
-    int _delayLineSize;
-    double *_delayLine;
+//        if(result < -1.0) {
+//            result = -1.0;
+//            isClipping = true;
+//        }
+//        sampleBuffer.writeAudioSample(i, result);
+//    }
 
-    /** State of the equalizer controls. */
-    int _controlsSize;
-    double *_controls;
-};
+//    if(isClipping) {
+//        emit clipping();
+//    }
+
+    if(isActive) {
+        emit active();
+    }
+}
+
+double QAmplifier::gain()
+{
+    QMutexLocker mutexLocker(&_mutex);
+    return _gain;
+}
+
+void QAmplifier::setGain(double gain)
+{
+    QMutexLocker mutexLocker(&_mutex);
+    _gain = gain;
+    emit gainChanged(_gain);
+    emit gainChanged((int)_gain);
+}

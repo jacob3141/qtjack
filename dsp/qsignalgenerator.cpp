@@ -22,7 +22,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 // Own includes
-#include <QSignalGenerator>
+#include <dsp/QSignalGenerator>
 
 // Standard includes
 #include <cmath>
@@ -37,7 +37,7 @@ QSignalGenerator::QSignalGenerator(QObject *parent)
     _time = 0.0;
 }
 
-void QSignalGenerator::process(QSampleBuffer sampleBuffer)
+void QSignalGenerator::process(QJackBuffer sampleBuffer)
 {
     bool isClipping = false;
     bool isActive = false;

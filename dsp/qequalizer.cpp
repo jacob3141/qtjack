@@ -22,9 +22,9 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 // Own includes
-#include <QEqualizer>
-#include <QFFTW>
-#include <QUnits>
+#include <dsp/QEqualizer>
+#include <dsp/QFFTW>
+#include <dsp/QUnits>
 
 // Qt includes
 #include <cmath>
@@ -185,7 +185,7 @@ void QEqualizer::update()
     // +------------------------------------------------> coefficients
 }
 
-void QEqualizer::process(QSampleBuffer sampleBuffer)
+void QEqualizer::process(QJackBuffer sampleBuffer)
 {
     QMutexLocker mutexLocker(&_mutex);
     int bufferSize = sampleBuffer.size();

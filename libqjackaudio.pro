@@ -8,49 +8,29 @@ QMAKE_CXXFLAGS -= -O2
 QMAKE_CXXFLAGS += -O3
 
 SOURCES += \
-    qequalizer.cpp \
-    qfftw.cpp \
     qjackclient.cpp \
     qjackport.cpp \
-    qsamplebuffer.cpp \
-    qcompressor.cpp \
-    qunits.cpp \
-    qnoisegate.cpp \
-    qamplifier.cpp \
-    qsignalgenerator.cpp \
-    qequalizercontrol.cpp \
     qjackdriver.cpp \
     qjackparameter.cpp \
     qjackserver.cpp \
-    qjack.cpp
+    qjack.cpp \
+    dsp/qamplifier.cpp \
+    dsp/qcompressor.cpp \
+    dsp/qequalizer.cpp \
+    dsp/qequalizercontrol.cpp \
+    dsp/qfftw.cpp \
+    dsp/qnoisegate.cpp \
+    dsp/qsignalgenerator.cpp \
+    dsp/qunits.cpp \
+    qjackbuffer.cpp
 
 HEADERS += \
     QAudioProcessor \
     qaudioprocessor.h \
-    QEqualizer \
-    qequalizer.h \
-    qfftw.h \
     QJackClient \
     qjackclient.h \
     QJackPort \
     qjackport.h \
-    QFFTW \
-    qsamplebuffer.h \
-    QSampleBuffer \
-    qdigitalfilter.h \
-    QDigitalFilter \
-    qcompressor.h \
-    QCompressor \
-    qunits.h \
-    QUnits \
-    qnoisegate.h \
-    QNoiseGate \
-    qamplifier.h \
-    QAmplifier \
-    qsignalgenerator.h \
-    QSignalGenerator \
-    qequalizercontrol.h \
-    QEqualizerControl \
     qjackdriver.h \
     QJackDriver \
     qjackparameter.h \
@@ -58,4 +38,24 @@ HEADERS += \
     QJackServer \
     qjackserver.h \
     qjack.h \
-    QJack
+    QJack \
+    dsp/QAmplifier \
+    dsp/qamplifier.h \
+    dsp/QCompressor \
+    dsp/qcompressor.h \
+    dsp/QDigitalFilter \
+    dsp/qdigitalfilter.h \
+    dsp/QEqualizer \
+    dsp/qequalizer.h \
+    dsp/QEqualizerControl \
+    dsp/qequalizercontrol.h \
+    dsp/QFFTW \
+    dsp/qfftw.h \
+    dsp/QNoiseGate \
+    dsp/QSignalGenerator \
+    dsp/qsignalgenerator.h \
+    dsp/QUnits \
+    dsp/qunits.h \
+    dsp/qnoisegate.h \
+    QJackBuffer \
+    qjackbuffer.h

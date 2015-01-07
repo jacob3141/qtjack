@@ -22,7 +22,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 // FFTW3 includes:
-#include <QFFTW>
+#include <dsp/QFFTW>
 
 void QFFTW::blit(fftw_complex *fftw_complexIn,
                        jack_default_audio_sample_t *jack_default_audio_sample_tsOut,

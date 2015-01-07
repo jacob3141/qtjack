@@ -53,9 +53,9 @@ QString QJackPort::portName()
     return jack_port_short_name(_jackPort);
 }
 
-QSampleBuffer QJackPort::sampleBuffer(int samples)
+QJackBuffer QJackPort::sampleBuffer(int samples)
 {
-    return QSampleBuffer(samples, jack_port_get_buffer(_jackPort, samples));
+    return QJackBuffer(samples, jack_port_get_buffer(_jackPort, samples));
 }
 
 bool QJackPort::isAudioPort() {

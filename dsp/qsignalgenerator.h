@@ -21,38 +21,68 @@
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
+#pragma once
+
 // Own includes
-#include <QUnits>
+#include <dsp/QDigitalFilter>
 
-// Standard includes
-#include <cmath>
-
-double QUnits::dbToLinear(double db)
+class QSignalGenerator : public QDigitalFilter
 {
-   return pow(10.0, db / 20.0);
-}
+    Q_OBJECT
+public:
+    enum SignalType {
+        Sine,
+        Square,
+        Triangle,
+        Sawtooth,
+        ReverseSawtooth
+    };
 
-double QUnits::linearToDb(float linear)
-{
-   return 20.0 * log10(linear);
-}
+    QSignalGenerator(QObject *parent = 0);
 
-double QUnits::peak(double value)
-{
-    return value > 0.0 ? value : -value;
-}
+    /** @overload @see QDigitalFilter */
+    void process(QJackBuffer sampleBuffer);
 
-double QUnits::msToSamples(int sampleRate, double ms)
-{
-    return (double)sampleRate * ms / 1000.0 ;
-}
+    SignalType signalType();
+    double phase();
+    double amplitude();
+    double frequency();
 
-double QUnits::samplesToMs(int sampleRate, double samples)
-{
-    return samples * 1000.0 / (double)sampleRate;
-}
+signals:
+    void signalTypeChanged(SignalType signalType);
+    void phaseChanged(double phase);
+    void phaseChanged(int phase);
 
-double QUnits::sumDb(double valueDb1, double valueDb2)
-{
-    return linearToDb(dbToLinear(valueDb1) + dbToLinear(valueDb2));
-}
+    void amplitudeChanged(double amplitude);
+    void amplitudeChanged(int amplitude);
+
+    void frequencyChanged(double frequency);
+    void frequencyChanged(int frequency);
+
+public slots:
+    void setSignalType(SignalType signalType);
+
+    void setPhase(double phase);
+    void setPhase(int phase) { setPhase((double)phase); }
+
+    void setAmplitude(double amplitude);
+    void setAmplitude(int amplitude) { setAmplitude((double)amplitude); }
+
+    void setFrequency(double frequency);
+    void setFrequency(int frequency) { setFrequency((double)frequency); }
+
+private:
+    double _time;
+
+    /** Signal type. */
+    SignalType _signalType;
+
+    /** Phase shift in degrees. */
+    double _phase;
+
+    /** Amplitude in dB. */
+    double _amplitude;
+
+    /** Signal frequency in Hz. */
+    double _frequency;
+};

@@ -22,73 +22,82 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 // Own includes
-#include <QCompressor>
+#include <dsp/QNoiseGate>
+#include <dsp/QUnits>
 
-QCompressor::QCompressor(QObject *parent)
+// Qt includes
+#include <QMutexLocker>
+
+QNoiseGate::QNoiseGate(QObject *parent)
     : QDigitalFilter(parent)
 {
-    _threshold = 0.0;
-    _ratio = 1.0;
-    _attack = 0.0;
-    _release = 0.0;
-    _inputGain = 0.0;
-    _makeupGain = 0.0;
+    _threshold = -60.0;
+    _sensitivity = 5.0;
+    _resistance = 20.0;
+
+    _muting = false;
+    _sampleCount = 0;
 }
 
-QCompressor::~QCompressor()
-{
-}
-
-void QCompressor::process(QSampleBuffer sampleBuffer)
+void QNoiseGate::process(QJackBuffer sampleBuffer)
 {
     bool isClipping = false;
     bool isActive = false;
 
     _mutex.lock();
     double threshold = _threshold;
-    double ratio = _ratio;
-    double attack = _attack;
-    double release = _release;
-    double inputGain = _inputGain;
-    double makeupGain = _makeupGain;
     bool bypass = _bypass;
+
+    int samplesSensitvity = QUnits::msToSamples(0, _sensitivity);
+    int samplesResistance = QUnits::msToSamples(0, _resistance);
     _mutex.unlock();
 
     if(bypass) {
         return;
     }
 
-    // TODO: To be implemented.
-    Q_UNUSED(attack);
-    Q_UNUSED(release);
-
     int bufferSize = sampleBuffer.size();
-    double inputGainMultiplier = QUnits::dbToLinear(inputGain);
-    double makeupGainMultiplier = QUnits::dbToLinear(makeupGain);
     for(int i = 0; i < bufferSize; i++) {
         // Read audio sample
-        double sample = sampleBuffer.readAudioSample(i) * inputGainMultiplier;
+        double sample = sampleBuffer.readAudioSample(i);
         // Determine peak in dB
-        double peak = QUnits::peak(sample);
+        double peakDb = QUnits::linearToDb(QUnits::peak(sample));
+        double result = sample;
+        bool peakUnderThreshold = (peakDb < threshold);
 
-        double resultSample = sample;
-
-        // Check if peak is over threshold
-        if(peak > QUnits::dbToLinear(threshold)) {
-            // Perform signal compression
-            isActive = true;
-            // Calculate over treshold in linear space
-            double overThreshold = peak - QUnits::dbToLinear(threshold);
-
-            // Compress signal in logarithmic space
-            double dbOverThresholdCompressed = QUnits::linearToDb(overThreshold) / ratio;
-
-            double resultingPeak = QUnits::dbToLinear(threshold + dbOverThresholdCompressed);
-
-            resultSample = resultingPeak * ( sample > 0.0 ? 1.0 : -1.0 );
+        if(_muting) {
+            if(peakUnderThreshold) {
+                _sampleCount--;
+                if(_sampleCount < 0) {
+                    _sampleCount = 0;
+                }
+            } else {
+                _sampleCount++;
+                if(_sampleCount > samplesResistance) {
+                    _muting = false;
+                    _sampleCount = 0;
+                }
+            }
+        } else {
+            if(peakUnderThreshold) {
+                _sampleCount++;
+                if(_sampleCount > samplesSensitvity) {
+                    _muting = true;
+                    _sampleCount = 0;
+                }
+            } else {
+                _sampleCount--;
+                if(_sampleCount < 0) {
+                    _sampleCount  = 0;
+                }
+            }
         }
 
-        double result = resultSample * makeupGainMultiplier;
+        if(_muting) {
+            // Cutoff signal
+            isActive = true;
+            result = 0.0;
+        }
 
         if(result > 1.0) {
             result = 1.0;
@@ -112,80 +121,32 @@ void QCompressor::process(QSampleBuffer sampleBuffer)
     }
 }
 
-double QCompressor::threshold()
+double QNoiseGate::threshold()
 {
     QMutexLocker mutexLocker(&_mutex);
     return _threshold;
 }
 
-double QCompressor::ratio()
-{
-    QMutexLocker mutexLocker(&_mutex);
-    return _ratio;
-}
-
-double QCompressor::attack()
-{
-    QMutexLocker mutexLocker(&_mutex);
-    return _attack;
-}
-
-double QCompressor::release()
-{
-    QMutexLocker mutexLocker(&_mutex);
-    return _release;
-}
-
-double QCompressor::inputGain()
-{
-    QMutexLocker mutexLocker(&_mutex);
-    return _inputGain;
-}
-
-double QCompressor::makeupGain()
-{
-    QMutexLocker mutexLocker(&_mutex);
-    return _makeupGain;
-}
-
-void QCompressor::setThreshold(double threshold)
+void QNoiseGate::setThreshold(double threshold)
 {
     QMutexLocker mutexLocker(&_mutex);
     _threshold = threshold;
     emit thresholdChanged(_threshold);
+    emit thresholdChanged((int)_threshold);
 }
 
-void QCompressor::setRatio(double ratio)
+void QNoiseGate::setSensitivy(double sensitivity)
 {
     QMutexLocker mutexLocker(&_mutex);
-    _ratio = ratio;
-    emit ratioChanged(_ratio);
+    _sensitivity = sensitivity;
+    emit sensitivityChanged(_sensitivity);
+    emit sensitivityChanged((int)_sensitivity);
 }
 
-void QCompressor::setAttack(double attack)
+void QNoiseGate::setResistance(double resistance)
 {
     QMutexLocker mutexLocker(&_mutex);
-    _attack = attack;
-    emit attackChanged(_attack);
-}
-
-void QCompressor::setRelease(double release)
-{
-    QMutexLocker mutexLocker(&_mutex);
-    _release = release;
-    emit releaseChanged(_release);
-}
-
-void QCompressor::setInputGain(double inputGain)
-{
-    QMutexLocker mutexLocker(&_mutex);
-    _inputGain = inputGain;
-    emit inputGainChanged(_inputGain);
-}
-
-void QCompressor::setMakeupGain(double makeupGain)
-{
-    QMutexLocker mutexLocker(&_mutex);
-    _makeupGain = makeupGain;
-    emit makeupGainChanged(_makeupGain);
+    _resistance = resistance;
+    emit resistanceChanged(_resistance);
+    emit resistanceChanged((int)_resistance);
 }

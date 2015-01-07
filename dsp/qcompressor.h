@@ -25,8 +25,8 @@
 
 // Own includes
 #include <QJackClient>
-#include <QDigitalFilter>
-#include <QUnits>
+#include <dsp/QDigitalFilter>
+#include <dsp/QUnits>
 
 /**
  * @class QCompressor
@@ -44,7 +44,7 @@ public:
     ~QCompressor();
 
     /** @overload QDigitalFilter */
-    void process(QSampleBuffer sampleBuffer);
+    void process(QJackBuffer sampleBuffer);
 
     /** @returns threshold. */
     double threshold();

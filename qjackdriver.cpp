@@ -24,6 +24,7 @@
 // Own includes
 #include "qjackdriver.h"
 
+// JACK includes
 #include <jack/control.h>
 
 QJackDriver::QJackDriver(jackctl_driver_t *driver)

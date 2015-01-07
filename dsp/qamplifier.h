@@ -24,70 +24,43 @@
 #pragma once
 
 // Own includes
-#include <QDigitalFilter>
-
-// Qt includes
-#include <QMutex>
+#include <dsp/QDigitalFilter>
 
 /**
- * @class QNoiseGate
+ * @class QAmplifier
  * @author Jacob Dawid ( jacob.dawid@omg-it.works )
- * @brief Noise gate.
+ * @brief Amplifier.
  */
-class QNoiseGate : public QDigitalFilter
+class QAmplifier : public QDigitalFilter
 {
     Q_OBJECT
 public:
-    /** Constructs a new noise gate. */
-    QNoiseGate(QObject *parent = 0);
+    QAmplifier(QObject *parent = 0);
 
-    /** @returns the noise gate threshold in dB. */
-    double threshold();
+    /** @overload */
+    void process(QJackBuffer sampleBuffer);
 
-    /** @overload @see QDigitalFilter */
-    void process(QSampleBuffer sampleBuffer);
-
-signals:
-    /** Emitted whenever the threshold has changed. */
-    void thresholdChanged(double threshold);
-    void thresholdChanged(int threshold);
-
-    void sensitivityChanged(double sensitivity);
-    void sensitivityChanged(int sensitivity);
-
-    void resistanceChanged(double resistance);
-    void resistanceChanged(int resistance);
+    /** @returns gain in dB. */
+    double gain();
 
 public slots:
     /**
-     * Set the threshold for the noise gate in dB. The noise gate will kill
-     * all signals below threshold.
-     * @brief setThreshold
-     * @param threshold Threshold in dB.
+     * Sets the gain of the amplifier.
+     * @param gain
      */
-    void setThreshold(double threshold);
-    void setThreshold(int threshold) { setThreshold((double)threshold); }
+    void setGain(double gain);
 
-    void setSensitivy(double sensitivity);
-    void setSensitivy(int sensitivity) { setSensitivy((double)sensitivity); }
+    /**
+     * For convenience, so that setting the gain works with widgets that
+     * expose their current value as integers.
+     */
+    void setGain(int gain) { setGain((double)gain); }
 
-    void setResistance(double resistance);
-    void setResistance(int resistance) { setResistance((double)resistance); }
+signals:
+    void gainChanged(double gain);
+    void gainChanged(int gain);
 
 private:
-    /** Noise gate threshold in dB. */
-    double _threshold;
-
-    /** Sensitivity determines how long the signal must be below threshold
-     * before the noise gate kicks in. In ms.
-     */
-    double _sensitivity;
-
-    /** Resistance determines how long the signal must be above threshold
-     * in order to disable the noise gate. In ms.
-     */
-    double _resistance;
-
-    bool _muting;
-    int _sampleCount;
+    /** Gain in dB. */
+    double _gain;
 };

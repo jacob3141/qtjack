@@ -22,8 +22,8 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 // Own includes
-#include <QEqualizerControl>
-#include <QUnits>
+#include <dsp/QEqualizerControl>
+#include <dsp/QUnits>
 
 // Standard includes
 #include <cmath>

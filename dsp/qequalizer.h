@@ -23,66 +23,63 @@
 
 #pragma once
 
-// Qt includes
-#include <QObject>
-#include <QMutex>
-#include <QMutexLocker>
-
 // Own includes
-#include <QSampleBuffer>
-#include <QUnits>
+#include <QJackClient>
+#include <dsp/QDigitalFilter>
+#include <dsp/QEqualizerControl>
 
 /**
- * @class QDigitalFilter
+ * @class QEqualizer
  * @author Jacob Dawid ( jacob.dawid@omg-it.works )
+ * @brief Modifies the frequency spectrum of the sampled audio signal.
  */
-class QDigitalFilter : public QObject
+class QEqualizer : public QDigitalFilter
 {
     Q_OBJECT
 public:
-    /** Constructs a new processor. */
-    QDigitalFilter(QObject *parent = 0) : QObject(parent) {
-        _bypass = false;
-    }
+    /**
+     * Constructs a new digital equalizer. convResolution may not be greater than
+     * half the filter resolution.
+     * @param resolution Total resolution of the equalizer.
+     * @param convResolution Resulting filter size of the filter that will be applid
+     * to the signal.
+     * @param parent
+     */
+    QEqualizer(int resolution = 2048, int convResolution = 256, QObject *parent = 0);
 
     /** Destructor. */
-    virtual ~QDigitalFilter() { }
+    ~QEqualizer();
 
-    /**
-     * @brief Called whenever audio samples have to be processed.
-     * Warning: This method is time-critical.
-     */
-    virtual void process(QSampleBuffer sampleBuffer) {
-        Q_UNUSED(sampleBuffer);
-    }
+    /** @overload QDigitalFilter */
+    void process(QJackBuffer sampleBuffer);
 
-    /** @return true, when bypassed. */
-    bool bypass() {
-        QMutexLocker mutexLocker(&_mutex);
-        return _bypass;
-    }
-
-signals:
-    /** Emitted when signals is clipping. */
-    void clipping();
-
-    /** Emitted when signal is below threshold. */
-    void active();
-
-    /** Emitted when bypass changed. */
-    void bypassChanged(bool bypass);
+    QEqualizerControl* createEqualizerControl(QEqualizerControl::ControlType controlType = QEqualizerControl::Band);
 
 public slots:
-    void setBypass(bool bypass) {
-        QMutexLocker mutexLocker(&_mutex);
-       _bypass = bypass;
-       emit bypassChanged(bypass);
-    }
+    /**
+      * Updates the filter from the given set of equalizer control values.
+      * @param values Equalizer control values.
+      */
+    void update();
 
-protected:
-    /** Bypass flag. */
-    bool _bypass;
+private:
+    QList<QEqualizerControl*> _equalizerControls;
 
-    /** Mutex for thread-safe access of filter parameters. */
-    QMutex _mutex;
+    /** The current filter coefficients for the FIR filter.
+      * These will be convoluted with the signals and need to be calculated
+      * beforehand.
+      */
+    int _filterCoefficientsSize;
+    double *_filterCoefficients;
+
+    /**
+      * Delay line for the convolution. This memory makes it possible
+      * to access previous values and thus continous convolution.
+      */
+    int _delayLineSize;
+    double *_delayLine;
+
+    /** State of the equalizer controls. */
+    int _controlsSize;
+    double *_controls;
 };

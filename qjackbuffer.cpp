@@ -22,72 +22,71 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 // Own includes
-#include <QSampleBuffer>
-#include <QUnits>
+#include <QJackBuffer>
 
 // JACK includes
 #include <jack/jack.h>
 
-QSampleBuffer QSampleBuffer::createMemoryAudioBuffer(int size)
+QJackBuffer QJackBuffer::createMemoryAudioBuffer(int size)
 {
     if(size < 1) {
         size = 1;
     }
 
-    QSampleBuffer sampleBuffer(size, (void*)new jack_default_audio_sample_t[size]);
+    QJackBuffer sampleBuffer(size, (void*)new jack_default_audio_sample_t[size]);
     sampleBuffer._isMemoryBuffer = true;
     return sampleBuffer;
 }
 
-QSampleBuffer::QSampleBuffer(const QSampleBuffer& other)
+QJackBuffer::QJackBuffer(const QJackBuffer& other)
 {
     _size = other._size;
     _buffer = other._buffer;
     _isMemoryBuffer = other._isMemoryBuffer;
 }
 
-QSampleBuffer::QSampleBuffer(int bufferSize, void *buffer)
+QJackBuffer::QJackBuffer(int bufferSize, void *buffer)
 {
     _size = bufferSize;
     _buffer = buffer;
     _isMemoryBuffer = false;
 }
 
-bool QSampleBuffer::isMemoryBuffer()
+bool QJackBuffer::isMemoryBuffer()
 {
     return _isMemoryBuffer;
 }
 
-int QSampleBuffer::size()
+int QJackBuffer::size()
 {
     return _size;
 }
 
-double QSampleBuffer::readAudioSample(int i)
+double QJackBuffer::readAudioSample(int i)
 {
     return (double)((i >= 0 && i < _size) ? ((jack_default_audio_sample_t*)(_buffer))[i] : 0.0);
 }
 
-void QSampleBuffer::writeAudioSample(int i, double value)
+void QJackBuffer::writeAudioSample(int i, double value)
 {
     if(i >= 0 && i < _size) {
         ((jack_default_audio_sample_t*)_buffer)[i] = (jack_default_audio_sample_t)value;
     }
 }
 
-QString QSampleBuffer::lastError()
+QString QJackBuffer::lastError()
 {
     return _lastError;
 }
 
-void QSampleBuffer::clear()
+void QJackBuffer::clear()
 {
     for(int i = 0; i < _size; i++) {
         ((jack_default_audio_sample_t*)_buffer)[i] = 0.0;
     }
 }
 
-bool QSampleBuffer::copyTo(QSampleBuffer sampleBuffer)
+bool QJackBuffer::copyTo(QJackBuffer sampleBuffer)
 {
     if(_size != sampleBuffer._size) {
         _lastError = QString("Trying to copy from a sample buffer with %1 samples to a sample buffer with %2.").arg(_size).arg(sampleBuffer._size);
@@ -101,7 +100,7 @@ bool QSampleBuffer::copyTo(QSampleBuffer sampleBuffer)
     return true;
 }
 
-bool QSampleBuffer::addTo(QSampleBuffer sampleBuffer)
+bool QJackBuffer::addTo(QJackBuffer sampleBuffer)
 {
     if(_size != sampleBuffer._size) {
         _lastError = QString("Trying to add a sample buffer with %1 samples to a sample buffer with %2.").arg(_size).arg(sampleBuffer._size);
@@ -115,7 +114,7 @@ bool QSampleBuffer::addTo(QSampleBuffer sampleBuffer)
     return true;
 }
 
-bool QSampleBuffer::addTo(QSampleBuffer sampleBuffer, double attenuation)
+bool QJackBuffer::addTo(QJackBuffer sampleBuffer, double attenuation)
 {
     if(_size != sampleBuffer._size) {
         _lastError = QString("Trying to add a sample buffer with %1 samples to a sample buffer with %2.").arg(_size).arg(sampleBuffer._size);
@@ -129,24 +128,24 @@ bool QSampleBuffer::addTo(QSampleBuffer sampleBuffer, double attenuation)
     return true;
 }
 
-void QSampleBuffer::multiply(double attenuation)
+void QJackBuffer::multiply(double attenuation)
 {
     for(int i = 0; i < _size; i++) {
         ((jack_default_audio_sample_t*)_buffer)[i] *= attenuation;
     }
 }
 
-double QSampleBuffer::peak()
-{
-    double peak = 0.0;
-    for(int i = 0; i < _size; i++) {
-        double sample = QUnits::peak(((jack_default_audio_sample_t*)_buffer)[i]);
-        peak = sample > peak ? sample : peak;
-    }
-    return peak;
-}
+//double QJackBuffer::peak()
+//{
+//    double peak = 0.0;
+//    for(int i = 0; i < _size; i++) {
+//        double sample = QUnits::peak(((jack_default_audio_sample_t*)_buffer)[i]);
+//        peak = sample > peak ? sample : peak;
+//    }
+//    return peak;
+//}
 
-void QSampleBuffer::releaseMemoryBuffer()
+void QJackBuffer::releaseMemoryBuffer()
 {
     if(_isMemoryBuffer) {
         delete[] (jack_default_audio_sample_t*)_buffer;

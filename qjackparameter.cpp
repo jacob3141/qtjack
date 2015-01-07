@@ -57,6 +57,13 @@ QString QJackParameter::longDescription() {
     return jackctl_parameter_get_long_description(_jackParameter);
 }
 
+char QJackParameter::id() {
+    if(!isValid()) {
+        return 0;
+    }
+    return jackctl_parameter_get_id(_jackParameter);
+}
+
 QJackParameter::ParameterType QJackParameter::type() {
     switch (jackctl_parameter_get_type(_jackParameter)) {
     case JackParamInt:
@@ -161,4 +168,96 @@ QVariant QJackParameter::defaultValue() {
     case JackParamBool:
         return QVariant(jackValue.b);
     }
+}
+
+bool QJackParameter::hasRangeConstraint() {
+    return isValid() && jackctl_parameter_has_range_constraint(_jackParameter);
+}
+
+
+QJackParameter::ParameterValueRange QJackParameter::rangeConstraint() {
+    if(!isValid()) {
+        return ParameterValueRange();
+    }
+
+    ParameterValueRange parameterValueRange;
+    jackctl_parameter_value min, max;
+    jackctl_parameter_get_range_constraint(_jackParameter, &min, &max);
+
+    switch (type()) {
+    case ParameterTypeBool:
+        parameterValueRange.minimum = QVariant(min.b);
+        parameterValueRange.maximum = QVariant(max.b);
+        break;
+    case ParameterTypeChar:
+        parameterValueRange.minimum = QVariant(min.c);
+        parameterValueRange.maximum = QVariant(max.c);
+        break;
+    case ParameterTypeInt:
+        parameterValueRange.minimum = QVariant(min.i);
+        parameterValueRange.maximum = QVariant(max.i);
+        break;
+    case ParameterTypeString:
+        parameterValueRange.minimum = QVariant(min.str);
+        parameterValueRange.maximum = QVariant(max.str);
+        break;
+    case ParameterTypeUInt:
+        parameterValueRange.minimum = QVariant(min.ui);
+        parameterValueRange.maximum = QVariant(max.ui);
+        break;
+    }
+
+    return parameterValueRange;
+}
+
+bool QJackParameter::constraintIsStrict() {
+    return isValid() && jackctl_parameter_constraint_is_strict(_jackParameter);
+}
+
+bool QJackParameter::constraintIsFakeValue() {
+    return isValid() && jackctl_parameter_constraint_is_fake_value(_jackParameter);
+}
+
+bool QJackParameter::hasEnumerationConstraint() {
+    return isValid() && jackctl_parameter_has_enum_constraint(_jackParameter);
+}
+
+int QJackParameter::enumerationConstraintsCount() {
+    return isValid() && jackctl_parameter_get_enum_constraints_count(_jackParameter);
+}
+
+QVariant QJackParameter::enumerationConstraintValue(int index) {
+    if(!isValid()) {
+        return 0;
+    }
+
+    jackctl_parameter_value jackParameterValue = jackctl_parameter_get_enum_constraint_value(_jackParameter, index);
+    QVariant value;
+
+    switch (type()) {
+    case ParameterTypeBool:
+        value = jackParameterValue.b;
+        break;
+    case ParameterTypeChar:
+        value = jackParameterValue.c;
+        break;
+    case ParameterTypeInt:
+        value = jackParameterValue.i;
+        break;
+    case ParameterTypeString:
+        value = jackParameterValue.str;
+        break;
+    case ParameterTypeUInt:
+        value = jackParameterValue.ui;
+        break;
+    }
+    return value;
+}
+
+QString QJackParameter::enumerationConstraintDescription(int index) {
+    if(!isValid()) {
+        return QString();
+    }
+
+    return jackctl_parameter_get_enum_constraint_description(_jackParameter, index);
 }

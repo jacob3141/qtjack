@@ -29,8 +29,21 @@
 class QJack : public QObject {
     Q_OBJECT
 public:    
-    /** Returns the instance for this singleton. */
+    struct Version {
+        int major;
+        int minor;
+        int micro;
+        int proto;
+    };
+
+    /** @returns the instance for this singleton. */
     static QJack *instance();
+
+    /** @returns a human readable version string for JACK. */
+    QString versionString();
+
+    /** @returns a struct that contains the JACK version. */
+    Version version();
 
     /**
       * Callback for JACK's C API. Called when an error occurs.

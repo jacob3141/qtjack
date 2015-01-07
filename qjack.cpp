@@ -46,6 +46,19 @@ QJack *QJack::instance() {
     return &_instance;
 }
 
+QString QJack::versionString() {
+    return QString(jack_get_version_string());
+}
+
+QJack::Version QJack::version() {
+    Version version;
+    jack_get_version(&version.major,
+                     &version.minor,
+                     &version.micro,
+                     &version.proto);
+    return version;
+}
+
 void QJack::errorCallback(const char *message) {
     instance()->emitError(QString(message));
 }
