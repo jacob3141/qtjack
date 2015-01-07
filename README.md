@@ -56,7 +56,7 @@ LIBS += -L../libqjackaudio/lib \
 
 Next, we need to add QJackAudio as a submodule to git. Do that by executing the following command:
 ```
-git submodule add https://github.com/cybercatalyst/qjackaudio.git libqjackaudio
+git submodule add https://github.com/cybercatalyst/libqjackaudio.git libqjackaudio
 ```
 
 Now you are all set up. Open the *project.pro* file with QtCreator and start developing. Make sure you clone your repository with the *--recursive*-option, so git will also clone all submodules, too, when cloning your repository.
@@ -107,7 +107,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     // Setup QJackAudio
-    QJackClient* jackClient = QJackClient::instance();
+    _jackClient = new QJackClient();
     if(jackClient->connectToServer("qjackaudio")) {
         // Create two inputs
         _in1 = jackClient->registerAudioInPort("in_1");
@@ -126,7 +126,7 @@ MainWindow::MainWindow(QWidget *parent) :
         jackClient->setAudioProcessor(this);
 
         // Take off!
-        jackClient->startAudioProcessing();
+        jackClient->activate();
     }
 }
 
