@@ -49,7 +49,7 @@ How to use QJack to build a JACK server
 ==========
 
 ```cpp
-#include <QJackServer>
+#include "qjack/server.h"
 
 // ..
 
@@ -71,7 +71,7 @@ _jackServer->stop();
 
 ```
 
-How to use QJackAudio to build a JACK client
+How to use QJack to build a JACK client
 ==========
 
 Sample code:
@@ -81,7 +81,7 @@ Sample code:
 #include "ui_mainwindow.h"
 
 // QJackClient includes
-#include <QJackClient>
+#include "qjack/client.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -92,6 +92,10 @@ MainWindow::MainWindow(QWidget *parent) :
 
     // Setup QJack
     _jackClient = new QJack::Client();
+    
+    // Create an instance of the processor
+    _myProcessor = new MyProcessor();
+    
     if(jackClient->connectToServer("qjackClientName")) {
         // Create two inputs
         _in1 = jackClient->registerAudioInPort("in_1");
@@ -103,7 +107,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
         // Tell QJack that this instance is responsible for processing
         // audio. QJack will automatically call process() when needed.
-        jackClient->setProcessor(this);
+        jackClient->setProcessor(_myProcessor);
 
         // Take off!
         jackClient->activate();
@@ -117,24 +121,25 @@ MainWindow::~MainWindow()
 
 // ..
 
-void MyProcessor::process()
+// Subclass QJack::Processor an override process()-method
+void MyProcessor::process(int samples)
 {
     // Get handles to input buffers
-    QJack::Buffer buffer1 = _in1->buffer();
-    QJack::Buffer buffer2 = _in2->buffer();
+    QJack::Buffer buffer1 = _in1->buffer(samples);
+    QJack::Buffer buffer2 = _in2->buffer(samples);
 
     // .. Perform time-critical operations
 
     // Write result to output buffers
-    buffer1.copyTo(_out1->buffer());
-    buffer2.copyTo(_out2->buffer());
+    buffer1.copyTo(_out1->buffer(samples));
+    buffer2.copyTo(_out2->buffer(samples));
 }
 
 ```
 
 License
 ========
-QJackAudio is licensed under the terms of the GNU GPL v3. Contact me to obtain a proprietary license (closed-source) at jacob@omg-it.works .
+QJack is licensed under the terms of the GNU GPL v3. Contact me to obtain a proprietary license (closed-source) at jacob@omg-it.works .
 
 Happy hacking!
 
