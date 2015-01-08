@@ -74,65 +74,43 @@ _jackServer->stop();
 How to use QJack to build a JACK client
 ==========
 
-Sample code:
+A complete JACK app with QJack
 ```cpp
-// Own includes
-#include "mainwindow.h"
-#include "ui_mainwindow.h"
+#include <QCoreApplication>
+#include <Client>
+#include <Processor>
 
-// QJackClient includes
-#include "qjack/client.h"
-
-MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::MainWindow)
-{
-    // Setup UI
-    ui->setupUi(this);
-
-    // Setup QJack
-    _jackClient = new QJack::Client();
-    
-    // Create an instance of the processor
-    _myProcessor = new MyProcessor();
-    
-    if(jackClient->connectToServer("qjackClientName")) {
-        // Create two inputs
-        _in1 = jackClient->registerAudioInPort("in_1");
-        _in2 = jackClient->registerAudioInPort("in_2");
-
-        // Create two outpus
-        _out1 = jackClient->registerAudioOutPort("out_1");
-        _out2 = jackClient->registerAudioOutPort("out_2");
-
-        // Tell QJack that this instance is responsible for processing
-        // audio. QJack will automatically call process() when needed.
-        jackClient->setProcessor(_myProcessor);
-
-        // Take off!
-        jackClient->activate();
+class MyProcessor : public QJack::Processor {
+public:
+    MyProcessor(QJack::Port in, QJack::Port out)
+        : Processor(), in(in), out(out) {
     }
-}
 
-MainWindow::~MainWindow()
+    void process(int samples) {
+        QJack::Buffer inBuffer = in.sampleBuffer(samples);
+        inBuffer.multiply(0.5);
+        inBuffer.copyTo(out.sampleBuffer(samples));
+    }
+
+private:
+    QJack::Port& in;
+    QJack::Port& out;
+};
+
+int main(int argc, char *argv[])
 {
-    delete ui;
-}
+    QCoreApplication a(argc, argv);
 
-// ..
+    QJack::Client client;
+    client.connectToServer("attenuator");
 
-// Subclass QJack::Processor an override process()-method
-void MyProcessor::process(int samples)
-{
-    // Get handles to input buffers
-    QJack::Buffer buffer1 = _in1->buffer(samples);
-    QJack::Buffer buffer2 = _in2->buffer(samples);
+    MyProcessor processor(client.registerAudioInPort("in"),
+                          client.registerAudioOutPort("out"));
 
-    // .. Perform time-critical operations
+    client.setProcessor(&processor);
+    client.activate();
 
-    // Write result to output buffers
-    buffer1.copyTo(_out1->buffer(samples));
-    buffer2.copyTo(_out2->buffer(samples));
+    return a.exec();
 }
 
 ```
