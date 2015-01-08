@@ -38,7 +38,8 @@ SOURCES += \
     driver.cpp \
     parameter.cpp \
     port.cpp \
-    server.cpp
+    server.cpp \
+    ringbuffer.cpp
 
 HEADERS += \
     system.h \
@@ -56,4 +57,6 @@ HEADERS += \
     Server \
     server.h \
     processor.h \
-    Processor
+    Processor \
+    ringbuffer.h \
+    RingBuffer
