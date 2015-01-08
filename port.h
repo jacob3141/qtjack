@@ -41,6 +41,8 @@ class Port
 {
     friend class Client;
 public:
+    Port(const Port& other);
+
     bool isValid() { return _jackPort != 0; }
     QString fullName();
     QString clientName();

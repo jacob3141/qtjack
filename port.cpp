@@ -40,6 +40,10 @@ Port::Port()
     _jackPort = 0;
 }
 
+Port::Port(const Port& other) {
+    _jackPort = other._jackPort;
+}
+
 QString Port::fullName()
 {
     return jack_port_name(_jackPort);
