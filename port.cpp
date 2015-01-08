@@ -59,7 +59,7 @@ QString Port::portName()
     return jack_port_short_name(_jackPort);
 }
 
-Buffer Port::sampleBuffer(int samples)
+Buffer Port::buffer(int samples)
 {
     return Buffer(samples, jack_port_get_buffer(_jackPort, samples));
 }

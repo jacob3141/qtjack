@@ -13,9 +13,9 @@ public:
     }
 
     void process(int samples) {
-        QJack::Buffer inBuffer = in.sampleBuffer(samples);
-        inBuffer.multiply(0.5);
-        inBuffer.copyTo(out.sampleBuffer(samples));
+        QJack::Buffer buffer = in.buffer(samples);
+        buffer.multiply(0.5);
+        buffer.copyTo(out.buffer(samples));
     }
 
 private:

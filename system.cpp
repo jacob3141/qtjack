@@ -48,6 +48,8 @@ System *System::instance() {
     return &_instance;
 }
 
+#ifdef SUPPORT_JACK2_API
+
 QString System::versionString() {
     return QString(jack_get_version_string());
 }
@@ -60,6 +62,8 @@ System::Version System::version() {
                      &version.proto);
     return version;
 }
+
+#endif
 
 void System::errorCallback(const char *message) {
     instance()->emitError(QString(message));

@@ -47,7 +47,7 @@ public:
     QString fullName();
     QString clientName();
     QString portName();
-    Buffer sampleBuffer(int samples);
+    Buffer buffer(int samples);
 
     /** @returns true when this port is an audio port. */
     bool isAudioPort();
