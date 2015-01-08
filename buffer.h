@@ -53,9 +53,6 @@ public:
     /** @returns true, if this buffer's memory has been allocated manually. */
     bool isMemoryBuffer();
 
-    /** @returns a human-readable string containing the last error occurred. */
-    QString lastError();
-
     // Single sample operations
 
     /** @return the buffer size. */
@@ -90,9 +87,6 @@ public:
 private:
     /** Private constructor. */
     Buffer(int size, void* buffer);
-
-    /** The last error that occurred during an operation. */
-    QString _lastError;
 
     /** Size of sample buffer. */
     int _size;

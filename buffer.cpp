@@ -76,11 +76,6 @@ void Buffer::writeAudioSample(int i, double value)
     }
 }
 
-QString Buffer::lastError()
-{
-    return _lastError;
-}
-
 void Buffer::clear()
 {
     for(int i = 0; i < _size; i++) {
@@ -91,7 +86,6 @@ void Buffer::clear()
 bool Buffer::copyTo(Buffer sampleBuffer)
 {
     if(_size != sampleBuffer._size) {
-        _lastError = QString("Trying to copy from a sample buffer with %1 samples to a sample buffer with %2.").arg(_size).arg(sampleBuffer._size);
         return false;
     }
 
@@ -105,7 +99,6 @@ bool Buffer::copyTo(Buffer sampleBuffer)
 bool Buffer::addTo(Buffer sampleBuffer)
 {
     if(_size != sampleBuffer._size) {
-        _lastError = QString("Trying to add a sample buffer with %1 samples to a sample buffer with %2.").arg(_size).arg(sampleBuffer._size);
         return false;
     }
 
@@ -119,7 +112,6 @@ bool Buffer::addTo(Buffer sampleBuffer)
 bool Buffer::addTo(Buffer sampleBuffer, double attenuation)
 {
     if(_size != sampleBuffer._size) {
-        _lastError = QString("Trying to add a sample buffer with %1 samples to a sample buffer with %2.").arg(_size).arg(sampleBuffer._size);
         return false;
     }
 
