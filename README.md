@@ -40,7 +40,7 @@ LIBS += -L../qjack/lib \
 
 Next, we need to add QJack as a submodule to git. Do that by executing the following command:
 ```
-git submodule add https://github.com/cybercatalyst/qjack.git
+git submodule add https://github.com/cybercatalyst/QJack.git qjack
 ```
 
 Now you are all set up. Open the *project.pro* file with QtCreator and start developing. Make sure you clone your repository with the *--recursive*-option, so git will also clone all submodules, too, when cloning your repository.
@@ -77,24 +77,35 @@ How to use QJack to build a JACK client
 A complete JACK app with QJack
 ```cpp
 #include <QCoreApplication>
+
 #include <Client>
 #include <Processor>
 
 class MyProcessor : public QJack::Processor {
 public:
-    MyProcessor(QJack::Port in, QJack::Port out)
-        : Processor(), in(in), out(out) {
+    MyProcessor(QJack::Client& client)
+        : Processor(client)  {
+        in = client.registerAudioInPort("in");
+        out = client.registerAudioOutPort("out");
+        memoryBuffer = QJack::Buffer::createMemoryAudioBuffer(4096);
     }
 
     void process(int samples) {
-        QJack::Buffer inBuffer = in.sampleBuffer(samples);
-        inBuffer.multiply(0.5);
-        inBuffer.copyTo(out.sampleBuffer(samples));
+        // Copy from input buffer to memory buffer
+        in.buffer(samples).copyTo(memoryBuffer);
+
+        // Process
+        memoryBuffer.multiply(0.5);
+
+        // Copy result to output buffer
+        memoryBuffer.copyTo(out.buffer(samples));
     }
 
 private:
-    QJack::Port& in;
-    QJack::Port& out;
+    QJack::Port in;
+    QJack::Port out;
+
+    QJack::Buffer memoryBuffer;
 };
 
 int main(int argc, char *argv[])
@@ -102,12 +113,9 @@ int main(int argc, char *argv[])
     QCoreApplication a(argc, argv);
 
     QJack::Client client;
-    client.connectToServer("attenuator");
+    client.connectToServer("attenuator_demo");
 
-    MyProcessor processor(client.registerAudioInPort("in"),
-                          client.registerAudioOutPort("out"));
-
-    client.setProcessor(&processor);
+    MyProcessor processor(client);
     client.activate();
 
     return a.exec();

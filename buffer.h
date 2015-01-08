@@ -30,36 +30,47 @@ namespace QJack {
 
 /**
  * @author Jacob Dawid ( jacob.dawid@omg-it.works )
- * Handle to a JACK sample buffer. Buffer handles are lightweight objects
+ * Handle to a memory buffer. Buffer handles are lightweight objects
  * that refer to a memory buffer, store some meta-information and provide
  * convenience methods to read and write the buffer.
- *
- * Buffers cannot be created as standalone objects, instead they are bound to
- * another object, for example a QJackPort.
  */
-class Buffer
-{
+class Buffer {
     friend class Port;
 public:
-    /** Create an audio buffer by allocating memory manually. */
+    Buffer() {
+        _buffer = 0;
+    }
+
+    /**
+     * Create an audio buffer by allocating memory manually.
+     * @warning: Do not call this method in RT code.
+     */
     static Buffer createMemoryAudioBuffer(int size);
 
-    /** Frees memory if this is a sample buffer create in memory. */
+    /**
+     * Frees memory if this is a sample buffer create in memory.
+     * @warning: Do not call this method in RT code.
+     */
     void releaseMemoryBuffer();
 
     /** Copy constructor. */
     Buffer(const Buffer& other);
 
-    /** @returns true, if this buffer's memory has been allocated manually. */
-    bool isMemoryBuffer();
+    bool isValid() const { return _buffer != 0; }
+
+    /**
+     * @returns true, if this buffer's memory has been allocated manually.
+     * (ie. the memory is being managed by the user, not JACK)
+     */
+    bool isMemoryBuffer() const;
 
     // Single sample operations
 
     /** @return the buffer size. */
-    int size();
+    int size() const;
 
     /** @returns sample at position i in the audio buffer. */
-    double readAudioSample(int i);
+    double readAudioSample(int i) const;
 
     /** Writes sample at position i in the audio buffer. */
     void writeAudioSample(int i, double value);
@@ -69,20 +80,37 @@ public:
     /** Sets all samples to zero. */
     void clear();
 
-    /** Copies all samples from this buffer to the given sampleBuffer. */
-    bool copyTo(Buffer sampleBuffer);
+    /**
+     * Copies all samples from this buffer to the given buffer.
+     * If the source buffer is greater than the target buffer, samples
+     * will be truncated. If the target buffer is greater than the
+     * source buffer, this operation affects the n samples at the
+     * beginning of the target buffer.
+     */
+    bool copyTo(Buffer targetBuffer) const;
 
-    /** Adds all sample from this buffer to the goven sampleBuffer. */
-    bool addTo(Buffer sampleBuffer);
+    /**
+     * Adds all samples from this buffer to the given buffer.
+     * If the source buffer is greater than the target buffer, samples
+     * will be truncated. If the target buffer is greater than the
+     * source buffer, this operation affects the n samples at the
+     * beginning of the target buffer.
+     */
+    bool addTo(Buffer targetBuffer) const;
 
-    /** Adds all sample from this buffer to the goven sampleBuffer. */
-    bool addTo(Buffer sampleBuffer, double attenuation);
+    /**
+     * Multiplies and adds all samples from this buffer to the given buffer.
+     * If the source buffer is greater than the target buffer, samples
+     * will be truncated. If the target buffer is greater than the
+     * source buffer, this operation affects the n samples at the
+     * beginning of the target buffer.
+     */
+    bool addTo(Buffer targetBuffer, double attenuation) const;
 
-    /** Multiplies all samples by the given attenuation value. */
+    /**
+     * Multiplies all samples in this buffer with @attenuation.
+     */
     void multiply(double attenuation);
-
-    /** @returns the absolute value of the highest sample value in this buffer. */
-    //double peak();
 
 private:
     /** Private constructor. */
@@ -94,7 +122,10 @@ private:
     /** Pointer to memory buffer. */
     void *_buffer;
 
-    /** Flag that indicates that this buffer's memory has been allocated manually. */
+    /**
+     * Flag that indicates that this buffer's memory has been allocated manually.
+     * (ie. the memory is being managed by the user, not JACK)
+     */
     bool _isMemoryBuffer;
 };
 

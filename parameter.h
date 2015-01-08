@@ -36,8 +36,7 @@ typedef struct jackctl_parameter jackctl_parameter_t;
 
 namespace QJack {
 
-class Parameter
-{
+class Parameter {
     // Only those should be able to create valid parameter objects.
     friend class Server;
     friend class Driver;
@@ -62,7 +61,7 @@ public:
         QVariant maximum;
     };
 
-    bool isValid() { return _jackParameter != 0; }
+    bool isValid() const { return _jackParameter != 0; }
 
     QString name();
     QString shortDescription();

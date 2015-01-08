@@ -29,8 +29,8 @@
 
 namespace QJack {
 
-Buffer Buffer::createMemoryAudioBuffer(int size)
-{
+Buffer Buffer::createMemoryAudioBuffer(int size) {
+    // A buffer with less than a single sample does not make any sense.
     if(size < 1) {
         size = 1;
     }
@@ -40,109 +40,108 @@ Buffer Buffer::createMemoryAudioBuffer(int size)
     return sampleBuffer;
 }
 
-Buffer::Buffer(const Buffer& other)
-{
+Buffer::Buffer(const Buffer& other) {
     _size = other._size;
     _buffer = other._buffer;
     _isMemoryBuffer = other._isMemoryBuffer;
 }
 
-Buffer::Buffer(int bufferSize, void *buffer)
-{
+Buffer::Buffer(int bufferSize, void *buffer) {
     _size = bufferSize;
     _buffer = buffer;
     _isMemoryBuffer = false;
 }
 
-bool Buffer::isMemoryBuffer()
-{
+bool Buffer::isMemoryBuffer() const {
     return _isMemoryBuffer;
 }
 
-int Buffer::size()
-{
+int Buffer::size() const {
     return _size;
 }
 
-double Buffer::readAudioSample(int i)
-{
+double Buffer::readAudioSample(int i) const {
+    if(!isValid()) {
+        return 0.0;
+    }
     return (double)((i >= 0 && i < _size) ? ((jack_default_audio_sample_t*)(_buffer))[i] : 0.0);
 }
 
-void Buffer::writeAudioSample(int i, double value)
-{
+void Buffer::writeAudioSample(int i, double value) {
+    if(!isValid()) {
+        return;
+    }
     if(i >= 0 && i < _size) {
         ((jack_default_audio_sample_t*)_buffer)[i] = (jack_default_audio_sample_t)value;
     }
 }
 
-void Buffer::clear()
-{
+void Buffer::clear() {
+    if(!isValid()) {
+        return;
+    }
     for(int i = 0; i < _size; i++) {
         ((jack_default_audio_sample_t*)_buffer)[i] = 0.0;
     }
 }
 
-bool Buffer::copyTo(Buffer sampleBuffer)
-{
-    if(_size != sampleBuffer._size) {
+bool Buffer::copyTo(Buffer targetBuffer) const {
+    if(!isValid()) {
         return false;
     }
 
-    for(int i = 0; i < _size; i++) {
-        ((jack_default_audio_sample_t*)sampleBuffer._buffer)[i] = ((jack_default_audio_sample_t*)_buffer)[i];
+    int size = _size < targetBuffer.size() ? _size : targetBuffer.size();
+    for(int i = 0; i < size; i++) {
+        ((jack_default_audio_sample_t*)targetBuffer._buffer)[i] = ((jack_default_audio_sample_t*)_buffer)[i];
     }
 
     return true;
 }
 
-bool Buffer::addTo(Buffer sampleBuffer)
-{
-    if(_size != sampleBuffer._size) {
+bool Buffer::addTo(Buffer targetBuffer) const {
+    if(!isValid()) {
         return false;
     }
 
-    for(int i = 0; i < _size; i++) {
-        ((jack_default_audio_sample_t*)sampleBuffer._buffer)[i] += ((jack_default_audio_sample_t*)_buffer)[i];
+    int size = _size < targetBuffer.size() ? _size : targetBuffer.size();
+    for(int i = 0; i < size; i++) {
+        ((jack_default_audio_sample_t*)targetBuffer._buffer)[i] += ((jack_default_audio_sample_t*)_buffer)[i];
     }
 
     return true;
 }
 
-bool Buffer::addTo(Buffer sampleBuffer, double attenuation)
-{
-    if(_size != sampleBuffer._size) {
+bool Buffer::addTo(Buffer targetBuffer, double attenuation) const {
+    if(!isValid()) {
         return false;
     }
 
-    for(int i = 0; i < _size; i++) {
-        ((jack_default_audio_sample_t*)sampleBuffer._buffer)[i] += (((jack_default_audio_sample_t*)_buffer)[i] * attenuation);
+    int size = _size < targetBuffer.size() ? _size : targetBuffer.size();
+    for(int i = 0; i < size; i++) {
+        ((jack_default_audio_sample_t*)targetBuffer._buffer)[i] += (((jack_default_audio_sample_t*)_buffer)[i] * attenuation);
     }
 
     return true;
 }
 
-void Buffer::multiply(double attenuation)
-{
+void Buffer::multiply(double attenuation) {
+    if(!isValid()) {
+        return;
+    }
+
     for(int i = 0; i < _size; i++) {
         ((jack_default_audio_sample_t*)_buffer)[i] *= attenuation;
     }
 }
 
-//double QJackBuffer::peak()
-//{
-//    double peak = 0.0;
-//    for(int i = 0; i < _size; i++) {
-//        double sample = QUnits::peak(((jack_default_audio_sample_t*)_buffer)[i]);
-//        peak = sample > peak ? sample : peak;
-//    }
-//    return peak;
-//}
+void Buffer::releaseMemoryBuffer() {
+    if(!isValid()) {
+        return;
+    }
 
-void Buffer::releaseMemoryBuffer()
-{
     if(_isMemoryBuffer) {
         delete[] (jack_default_audio_sample_t*)_buffer;
+        _buffer = 0;
     }
 }
 

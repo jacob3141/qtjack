@@ -26,13 +26,15 @@
 // Qt includes
 #include <QObject>
 
-#define SUPPORT_JACK2_API
+#define USING_JACK2
 
 namespace QJack {
 
 class System : public QObject {
     Q_OBJECT
 public:    
+
+#ifdef USING_JACK2
     struct Version {
         int major;
         int minor;
@@ -40,16 +42,15 @@ public:
         int proto;
     };
 
-    /** @returns the instance for this singleton. */
-    static System *instance();
-
-#ifdef SUPPORT_JACK2_API
     /** @returns a human readable version string for JACK. */
-    QString versionString();
+    QString versionString() const;
 
     /** @returns a struct that contains the JACK version. */
-    Version version();
+    Version version() const;
 #endif
+
+    /** @returns the instance for this singleton. */
+    static System *instance();
 
     /**
       * Callback for JACK's C API. Called when an error occurs.

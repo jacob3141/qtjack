@@ -24,7 +24,6 @@
 #pragma once
 
 // Own includes:
-#include "processor.h"
 #include "port.h"
 
 // JACK includes:
@@ -45,6 +44,7 @@ namespace QJack {
  * @author Jacob Dawid ( jacob.dawid@omg-it.works )
  * @brief C++ Wrapper for the JACK Audio Connection Kit client API.
  */
+class Processor;
 class Client : public QObject {
     Q_OBJECT
 public:
@@ -109,21 +109,23 @@ public:
     /** Deactivates audio processing for this client. */
     bool deactivate();
 
+    /** Transport control. */
     void startTransport();
+
+    /** Transport control. */
     void stopTransport();
 
     /** @returns the sample rate in Hz. */
-    int sampleRate();
+    int sampleRate() const;
 
     /** @returns the current buffer size in samples. */
-    int bufferSize();
+    int bufferSize() const;
 
     /** @returns the current CPU load in percent. */
-    float cpuLoad();
+    float cpuLoad() const;
 
     /** @returns true, when running in realtime mode. */
-    bool isRealtime();
-
+    bool isRealtime() const;
 
 signals:
     /** Emitted when successfully connected to JACK server. */

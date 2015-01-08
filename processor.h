@@ -23,15 +23,19 @@
 
 #pragma once
 
+// Own includes
+#include <Client>
+
 namespace QJack {
 /**
  * @author Jacob Dawid ( jacob.dawid@omg-it.works )
  */
-class Processor
-{
+class Processor {
 public:
     /** Constructs a new processor. */
-    Processor() { }
+    Processor(Client& client) {
+        client.setProcessor(this);
+    }
 
     /** Destructor. */
     virtual ~Processor() { }
@@ -40,7 +44,7 @@ public:
      * @brief Called whenever audio samples have to be processed.
      * Warning: This method is time-critical.
      */
-    virtual void process(int) { }
+    virtual void process(int samples) { Q_UNUSED(samples); }
 };
 
 }

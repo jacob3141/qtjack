@@ -35,8 +35,7 @@ typedef struct jackctl_driver jackctl_driver_t;
 
 namespace QJack {
 
-class Driver
-{
+class Driver {
     friend class Server;
 public:
     // We need this for compatibility with QMap.
@@ -50,7 +49,7 @@ public:
         DriverTypeInvalid
     };
 
-    bool isValid() { return _jackDriver != 0; }
+    bool isValid() const { return _jackDriver != 0; }
 
     QString name();
     DriverType type();

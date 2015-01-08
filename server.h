@@ -35,17 +35,18 @@ typedef struct jackctl_server jackctl_server_t;
 
 namespace QJack {
 
-class Server
-{
+class Server {
 public:
     Server();
     ~Server();
 
+    bool isValid() const { return _jackServer != 0; }
+
     bool start(Driver driver);
     bool stop();
 
-    DriverMap availableDrivers();
-    ParameterMap parameters();
+    DriverMap availableDrivers() const;
+    ParameterMap parameters() const;
 
 private:
     jackctl_server_t *_jackServer;

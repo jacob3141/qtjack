@@ -48,13 +48,13 @@ System *System::instance() {
     return &_instance;
 }
 
-#ifdef SUPPORT_JACK2_API
+#ifdef USING_JACK2
 
-QString System::versionString() {
+QString System::versionString() const {
     return QString(jack_get_version_string());
 }
 
-System::Version System::version() {
+System::Version System::version() const {
     Version version;
     jack_get_version(&version.major,
                      &version.minor,

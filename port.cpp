@@ -27,6 +27,7 @@
 
 // Qt includes
 #include <QStringList>
+#include <QDebug>
 
 namespace QJack {
 
@@ -44,54 +45,69 @@ Port::Port(const Port& other) {
     _jackPort = other._jackPort;
 }
 
-QString Port::fullName()
-{
+QString Port::fullName() const {
+    if(!isValid()) {
+        return QString();
+    }
     return jack_port_name(_jackPort);
 }
 
-QString Port::clientName()
-{
+QString Port::clientName() const {
+    if(!isValid()) {
+        return QString();
+    }
     return fullName().split(":").at(0);
 }
 
-QString Port::portName()
-{
+QString Port::portName() const {
+    if(!isValid()) {
+        return QString();
+    }
     return jack_port_short_name(_jackPort);
 }
 
-Buffer Port::buffer(int samples)
-{
-    return Buffer(samples, jack_port_get_buffer(_jackPort, samples));
+Buffer Port::buffer(int samples) const {
+    if(isValid()) {
+        return Buffer(samples, jack_port_get_buffer(_jackPort, samples));
+    }
+    return Buffer(samples, 0);
 }
 
-bool Port::isAudioPort() {
+QString Port::portType() const {
+    if(!isValid()) {
+        return QString();
+    }
+    return QString(jack_port_type(_jackPort));
+}
+
+bool Port::isAudioPort() const {
     QString portType(jack_port_type(_jackPort));
-    return portType == "audio";
+    return isValid() && portType.toLower().contains("audio");
 }
 
-bool Port::isMidiPort() {
+bool Port::isMidiPort() const {
     QString portType(jack_port_type(_jackPort));
-    return portType == "midi";
+    return isValid() && portType.toLower().contains("midi");
 }
 
-bool Port::isInput() {
-    return jack_port_flags(_jackPort) & JackPortIsInput;
+bool Port::isInput() const {
+    return isValid() && (jack_port_flags(_jackPort) & JackPortIsInput);
 }
 
-bool Port::isOutput() {
-    return jack_port_flags(_jackPort) & JackPortIsOutput;
+bool Port::isOutput() const {
+    return isValid() && (jack_port_flags(_jackPort) & JackPortIsOutput);
 }
 
-bool Port::isPhysical() {
-    return jack_port_flags(_jackPort) & JackPortIsPhysical;
+bool Port::isPhysical() const {
+    return isValid() && (jack_port_flags(_jackPort) & JackPortIsPhysical);
 }
 
-bool Port::canMonitor() {
-    return jack_port_flags(_jackPort) & JackPortCanMonitor;
+bool Port::canMonitor() const {
+    return isValid() && (jack_port_flags(_jackPort) & JackPortCanMonitor);
 }
 
-bool Port::isTerminal() {
-    return jack_port_flags(_jackPort) & JackPortIsTerminal;
+bool Port::isTerminal() const {
+    return isValid() && (jack_port_flags(_jackPort) & JackPortIsTerminal);
 }
 
 }

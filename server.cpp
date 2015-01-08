@@ -38,19 +38,23 @@ Server::~Server() {
 }
 
 bool Server::start(Driver driver) {
-    return _jackServer
+    return isValid()
         && driver.isValid()
         && jackctl_server_open(_jackServer, driver._jackDriver)
         && jackctl_server_start(_jackServer);
 }
 
 bool Server::stop() {
-    return _jackServer
+    return isValid()
         && jackctl_server_stop(_jackServer)
         && jackctl_server_close(_jackServer);
 }
 
-DriverMap Server::availableDrivers() {
+DriverMap Server::availableDrivers() const {
+    if(!isValid()) {
+        return DriverMap();
+    }
+
     DriverMap driversMap;
     const JSList *drivers = jackctl_server_get_drivers_list(_jackServer);
     while(drivers) {
@@ -61,7 +65,11 @@ DriverMap Server::availableDrivers() {
     return driversMap;
 }
 
-ParameterMap Server::parameters() {
+ParameterMap Server::parameters() const {
+    if(!isValid()) {
+        return ParameterMap();
+    }
+
     ParameterMap parameterMap;
     const JSList *parameters = jackctl_server_get_parameters(_jackServer);
     while(parameters) {

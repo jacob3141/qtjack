@@ -22,6 +22,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 // Own includes:
+#include "processor.h"
 #include "client.h"
 
 // Standard includes
@@ -29,6 +30,7 @@
 
 // Qt includes
 #include <QStringList>
+#include <QDebug>
 
 namespace QJack {
 
@@ -69,6 +71,7 @@ bool Client::connectToServer(QString name) {
 
 bool Client::disconnectFromServer() {
     if(jack_deactivate(_jackClient) == 0 && jack_client_close(_jackClient) == 0) {
+        _jackClient = 0;
         emit disconnectedFromServer();
         return true;
     } else {
@@ -76,7 +79,7 @@ bool Client::disconnectFromServer() {
     }
 }
 
-Port Client::registerPort(QString name, QString portType, JackPortFlags jackPortFlags)  {
+Port Client::registerPort(QString name, QString portType, JackPortFlags jackPortFlags) {
     Port jackPort(jack_port_register(
                            _jackClient,
                            name.toStdString().c_str(),
@@ -174,19 +177,19 @@ void Client::stopTransport() {
     jack_transport_stop(_jackClient);
 }
 
-int Client::sampleRate() {
+int Client::sampleRate() const {
     return jack_get_sample_rate(_jackClient);
 }
 
-int Client::bufferSize() {
+int Client::bufferSize() const {
     return jack_get_buffer_size(_jackClient);
 }
 
-float Client::cpuLoad() {
+float Client::cpuLoad() const {
     return jack_cpu_load(_jackClient);
 }
 
-bool Client::isRealtime() {
+bool Client::isRealtime() const {
     return jack_is_realtime(_jackClient) == 1;
 }
 
@@ -249,11 +252,13 @@ void Client::xrun() {
 }
 
 void Client::shutdown() {
+    qDebug() << "s1";
 }
 
 void Client::infoShutdown(jack_status_t code, const char *reason) {
     Q_UNUSED(code);
     Q_UNUSED(reason);
+    qDebug() << "s2";
 }
 
 // Static callbacks
