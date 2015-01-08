@@ -26,6 +26,8 @@
 // Qt includes
 #include <QObject>
 
+#define SUPPORT_JACK2_API
+
 namespace QJack {
 
 class System : public QObject {
@@ -41,11 +43,13 @@ public:
     /** @returns the instance for this singleton. */
     static System *instance();
 
+#ifdef SUPPORT_JACK2_API
     /** @returns a human readable version string for JACK. */
     QString versionString();
 
     /** @returns a struct that contains the JACK version. */
     Version version();
+#endif
 
     /**
       * Callback for JACK's C API. Called when an error occurs.
