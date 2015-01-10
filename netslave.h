@@ -23,58 +23,73 @@
 
 #pragma once
 
-// JACK includes
-#include <jack/ringbuffer.h>
-#include <jack/net.h>
 // Qt includes
-#include <QSharedPointer>
-#include <QByteArray>
+#include <QObject>
+#include <QString>
+
+// JACK includes
+#include <jack/net.h>
+
+// Own includes
+#include "processor.h"
 
 namespace QJack {
 
-/** Lock-free ringbuffer. */
-class RingBufferPrivate;
-class RingBuffer {
+/**
+ * The net slave class can be used to establish JACK connections
+ * via network. This is the slave part that processes audio buffers
+ * as requested by the master.
+ *
+ * First create a master component and make it listen. Then connect
+ * with the slave component.
+ */
+class NetSlave : public QObject {
+    Q_OBJECT
 public:
-    RingBuffer(int size = 4096);
-    RingBuffer(const RingBuffer& other);
-    virtual ~RingBuffer();
+    NetSlave(QObject *parent = 0);
+    virtual ~NetSlave();
 
-    /** Locks ring buffer to memory. Not a RT operation. */
-    bool memoryLock();
+    /**
+     * Establishes a connection to a JACK net master.
+     * @param ip The IP address of the JACK net master.
+     * @param port The port at which to connect.
+     * @param name The slave's name reported to the master.
+     * @returns true, if a connection could be established.
+     */
+    bool open(QString ip, int port, QString name);
 
-    /** Empties this buffer. @attention Not threadsafe. */
-    void reset();
-    /** Empties and resizes this buffer. @attention Not threadsafe. */
-    void resetSize(int size);
+    /**
+     * Close the connection to the JACK net master.
+     * @returns 0 on success, an error code otherwise.
+     */
+    int close();
 
-    /** @returns how many bytes are available for reading. */
-    int readSpace() const;
+    /**
+     * Activates this slave.
+     * @returns 0 on success, an error code otherwise.
+     */
+    int activate();
 
-    /** @returns how many bytes are available for writing. */
-    int writeSpace() const ;
+    /**
+     * Deactivates this slave.
+     * @returns 0 on success, an error code otherwise.
+     */
+    int deactivate();
 
-    /** Read @a size bytes from the ringbuffer. */
-    QByteArray read(int size);
-
-    /** Write @a data to the ringbuffer. */
-    int write(QByteArray data);
+    /** Assigns a processor that will handle audio processing.
+      * @param processor The processor that will handle audio processing.
+      */
+    void setProcessor(Processor *processor);
 
 private:
-    QSharedPointer<RingBufferPrivate> _p;
-};
+    NetSlave(jack_net_slave_t *jackNetSlave);
 
-class RingBufferPrivate {
-public:
-    RingBufferPrivate(int size) {
-        _jackRingBuffer = jack_ringbuffer_create(size);
-    }
+    jack_net_slave_t *_jackNetSlave;
+    jack_slave_t _jackSlave;
+    jack_master_t _jackMaster;
 
-    virtual ~RingBufferPrivate() {
-        jack_ringbuffer_free(_jackRingBuffer);
-    }
-
-    jack_ringbuffer_t *_jackRingBuffer;
+    /** Pointer to the current processor object. */
+    Processor *_processor;
 };
 
 }

@@ -21,60 +21,56 @@
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#pragma once
-
-// JACK includes
-#include <jack/ringbuffer.h>
-#include <jack/net.h>
-// Qt includes
-#include <QSharedPointer>
-#include <QByteArray>
+// Own includes
+#include "netslave.h"
 
 namespace QJack {
 
-/** Lock-free ringbuffer. */
-class RingBufferPrivate;
-class RingBuffer {
-public:
-    RingBuffer(int size = 4096);
-    RingBuffer(const RingBuffer& other);
-    virtual ~RingBuffer();
+NetSlave::NetSlave(QObject *parent)
+    : QObject(parent) {
+    _jackNetSlave = 0;
+}
 
-    /** Locks ring buffer to memory. Not a RT operation. */
-    bool memoryLock();
+NetSlave::~NetSlave() {
+}
 
-    /** Empties this buffer. @attention Not threadsafe. */
-    void reset();
-    /** Empties and resizes this buffer. @attention Not threadsafe. */
-    void resetSize(int size);
+bool NetSlave::open(QString ip, int port, QString name) {
+    _jackNetSlave = jack_net_slave_open(ip.toStdString().c_str(),
+                                        port,
+                                        name.toStdString().c_str(),
+                                        &_jackSlave,
+                                        &_jackMaster);
+    return _jackNetSlave != 0;
+}
 
-    /** @returns how many bytes are available for reading. */
-    int readSpace() const;
-
-    /** @returns how many bytes are available for writing. */
-    int writeSpace() const ;
-
-    /** Read @a size bytes from the ringbuffer. */
-    QByteArray read(int size);
-
-    /** Write @a data to the ringbuffer. */
-    int write(QByteArray data);
-
-private:
-    QSharedPointer<RingBufferPrivate> _p;
-};
-
-class RingBufferPrivate {
-public:
-    RingBufferPrivate(int size) {
-        _jackRingBuffer = jack_ringbuffer_create(size);
+int NetSlave::close() {
+    if(!_jackNetSlave) {
+        // Already closed
+        return -1;
     }
+    return jack_net_slave_close(_jackNetSlave);
+}
 
-    virtual ~RingBufferPrivate() {
-        jack_ringbuffer_free(_jackRingBuffer);
+int NetSlave::activate() {
+    if(!_jackNetSlave) {
+        return -1;
     }
+    return jack_net_slave_activate(_jackNetSlave);
+}
 
-    jack_ringbuffer_t *_jackRingBuffer;
-};
+int NetSlave::deactivate() {
+    if(!_jackNetSlave) {
+        return -1;
+    }
+    return jack_net_slave_deactivate(_jackNetSlave);
+}
+
+NetSlave::NetSlave(jack_net_slave_t *jackNetSlave) {
+    _jackNetSlave = jackNetSlave;
+}
+
+void NetSlave::setProcessor(Processor *audioProcessor) {
+    _processor = audioProcessor;
+}
 
 }

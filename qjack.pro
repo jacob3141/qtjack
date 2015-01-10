@@ -39,7 +39,9 @@ SOURCES += \
     parameter.cpp \
     port.cpp \
     server.cpp \
-    ringbuffer.cpp
+    ringbuffer.cpp \
+    netslave.cpp \
+    netmaster.cpp
 
 HEADERS += \
     system.h \
@@ -59,4 +61,8 @@ HEADERS += \
     processor.h \
     Processor \
     ringbuffer.h \
-    RingBuffer
+    RingBuffer \
+    netslave.h \
+    NetSlave \
+    netmaster.h \
+    NetMaster

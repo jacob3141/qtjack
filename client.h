@@ -48,7 +48,7 @@ class Processor;
 class Client : public QObject {
     Q_OBJECT
 public:
-    Client();
+    Client(QObject *parent = 0);
     virtual ~Client();
 
     /**
@@ -110,10 +110,10 @@ public:
     bool deactivate();
 
     /** Transport control. */
-    void startTransport();
+    bool startTransport();
 
     /** Transport control. */
-    void stopTransport();
+    bool stopTransport();
 
     /** @returns the sample rate in Hz. */
     int sampleRate() const;

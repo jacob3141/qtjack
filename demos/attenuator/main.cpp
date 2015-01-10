@@ -1,7 +1,10 @@
 #include <QCoreApplication>
+#include <QDebug>
 
 #include <Client>
 #include <Processor>
+#include <NetMaster>
+#include <NetSlave>
 
 class MyProcessor : public QJack::Processor {
 public:
@@ -40,5 +43,8 @@ int main(int argc, char *argv[])
     MyProcessor processor(client);
     client.activate();
 
+    QJack::NetMaster netMaster;
+    bool s = netMaster.open("localhost", 9090, "test");
+qDebug() << s;
     return a.exec();
 }

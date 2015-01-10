@@ -13,4 +13,4 @@ SOURCES += main.cpp
 
 INCLUDEPATH += ../..
 
-LIBS += -L../../lib -lqjack -ljack
+LIBS += -L../../lib -lqjack -ljack -ljacknet

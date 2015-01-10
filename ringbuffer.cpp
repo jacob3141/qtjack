@@ -27,44 +27,44 @@
 namespace QJack {
 
 RingBuffer::RingBuffer(int size) {
-    _sharedRingBuffer = QSharedPointer<RingBufferPrivate>(new RingBufferPrivate(size));
+    _p = QSharedPointer<RingBufferPrivate>(new RingBufferPrivate(size));
 }
 
 RingBuffer::RingBuffer(const RingBuffer& other) {
-    _sharedRingBuffer = other._sharedRingBuffer;
+    _p = other._p;
 }
 
 RingBuffer::~RingBuffer() {
 }
 
 bool RingBuffer::memoryLock() {
-    return (bool)jack_ringbuffer_mlock(_sharedRingBuffer->_jackRingBuffer);
+    return (bool)jack_ringbuffer_mlock(_p->_jackRingBuffer);
 }
 
 void RingBuffer::reset() {
-    jack_ringbuffer_reset(_sharedRingBuffer->_jackRingBuffer);
+    jack_ringbuffer_reset(_p->_jackRingBuffer);
 }
 
 void RingBuffer::resetSize(int size) {
-    jack_ringbuffer_reset_size(_sharedRingBuffer->_jackRingBuffer, size);
+    jack_ringbuffer_reset_size(_p->_jackRingBuffer, size);
 }
 
 QByteArray RingBuffer::read(int size) {
     char buf[size];
-    int bytesRead = jack_ringbuffer_read(_sharedRingBuffer->_jackRingBuffer, buf, size);
+    int bytesRead = jack_ringbuffer_read(_p->_jackRingBuffer, buf, size);
     return QByteArray(buf, bytesRead);
 }
 
 int RingBuffer::write(QByteArray data) {
-    return jack_ringbuffer_write(_sharedRingBuffer->_jackRingBuffer, data.constData(), data.count());
+    return jack_ringbuffer_write(_p->_jackRingBuffer, data.constData(), data.count());
 }
 
 int RingBuffer::readSpace() const {
-    return jack_ringbuffer_read_space(_sharedRingBuffer->_jackRingBuffer);
+    return jack_ringbuffer_read_space(_p->_jackRingBuffer);
 }
 
 int RingBuffer::writeSpace() const {
-    return jack_ringbuffer_write_space(_sharedRingBuffer->_jackRingBuffer);
+    return jack_ringbuffer_write_space(_p->_jackRingBuffer);
 }
 
 }

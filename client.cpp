@@ -34,17 +34,22 @@
 
 namespace QJack {
 
-Client::Client() :
-   QObject(),
+Client::Client(QObject *parent) :
+   QObject(parent),
    _processor(0) {
     _jackClient = 0;
 }
 
 Client::~Client() {
-    jack_client_close(_jackClient);
+    disconnectFromServer();
 }
 
 bool Client::connectToServer(QString name) {
+    if(_jackClient) {
+        // Already connected
+        return false;
+    }
+
     if((_jackClient = jack_client_open(name.toStdString().c_str(), JackNullOption, NULL)) == 0) {
         return false;
     } else {
@@ -70,6 +75,11 @@ bool Client::connectToServer(QString name) {
 }
 
 bool Client::disconnectFromServer() {
+    if(!_jackClient) {
+        // Already disconnected
+        return false;
+    }
+
     if(jack_deactivate(_jackClient) == 0 && jack_client_close(_jackClient) == 0) {
         _jackClient = 0;
         emit disconnectedFromServer();
@@ -80,6 +90,11 @@ bool Client::disconnectFromServer() {
 }
 
 Port Client::registerPort(QString name, QString portType, JackPortFlags jackPortFlags) {
+    if(!_jackClient) {
+        // When not connected, return invalid port.
+        return Port();
+    }
+
     Port jackPort(jack_port_register(
                            _jackClient,
                            name.toStdString().c_str(),
@@ -106,6 +121,10 @@ Port Client::registerMidiInPort(QString name) {
 }
 
 bool Client::connectPorts(Port portA, Port portB) {
+    if(!_jackClient) {
+        return false;
+    }
+
     int result = jack_connect(_jackClient,
                               portA.fullName().toStdString().c_str(),
                               portB.fullName().toStdString().c_str());
@@ -113,6 +132,10 @@ bool Client::connectPorts(Port portA, Port portB) {
 }
 
 bool Client::disconnectPorts(Port portA, Port portB) {
+    if(!_jackClient) {
+        return false;
+    }
+
     int result = jack_disconnect(_jackClient,
                                  portA.fullName().toStdString().c_str(),
                                  portB.fullName().toStdString().c_str());
@@ -120,6 +143,10 @@ bool Client::disconnectPorts(Port portA, Port portB) {
 }
 
 QStringList Client::clientList() {
+    if(!_jackClient) {
+        return QStringList();
+    }
+
     QStringList clientList;
     const char **ports = jack_get_ports(_jackClient, 0, 0, 0);
     for(int i = 0; ports && ports[i]; ++i) {
@@ -137,6 +164,10 @@ QStringList Client::clientList() {
 }
 
 QList<Port> Client::portsForClient(QString clientName) {
+    if(!_jackClient) {
+        return QList<Port>();
+    }
+
     QList<Port> portList;
     const char **ports = jack_get_ports(_jackClient, 0, 0, 0);
     for(int i = 0; ports && ports[i]; ++i) {
@@ -154,6 +185,10 @@ QList<Port> Client::portsForClient(QString clientName) {
 }
 
 bool Client::activate() {
+    if(!_jackClient) {
+        return false;
+    }
+
     if(jack_activate(_jackClient) != 0) {
         emit activated();
         return true;
@@ -162,6 +197,10 @@ bool Client::activate() {
 }
 
 bool Client::deactivate() {
+    if(!_jackClient) {
+        return false;
+    }
+
     if(jack_deactivate(_jackClient) != 0) {
         emit deactivated();
         return true;
@@ -169,27 +208,48 @@ bool Client::deactivate() {
     return false;
 }
 
-void Client::startTransport() {
-    jack_transport_start(_jackClient);
+bool Client::startTransport() {
+    if(_jackClient) {
+        jack_transport_start(_jackClient);
+        return true;
+    }
+    return false;
 }
 
-void Client::stopTransport() {
-    jack_transport_stop(_jackClient);
+bool Client::stopTransport() {
+    if(_jackClient) {
+        jack_transport_stop(_jackClient);
+        return true;
+    }
+    return false;
 }
 
 int Client::sampleRate() const {
+    if(!_jackClient) {
+        return -1;
+    }
     return jack_get_sample_rate(_jackClient);
 }
 
 int Client::bufferSize() const {
+    if(!_jackClient) {
+        return -1;
+    }
     return jack_get_buffer_size(_jackClient);
 }
 
 float Client::cpuLoad() const {
+    if(!_jackClient) {
+        return 0.0;
+    }
     return jack_cpu_load(_jackClient);
 }
 
 bool Client::isRealtime() const {
+    if(!_jackClient) {
+        return false;
+    }
+
     return jack_is_realtime(_jackClient) == 1;
 }
 
