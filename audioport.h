@@ -24,64 +24,32 @@
 #pragma once
 
 // Own includes
-#include "buffer.h"
-
-// JACK includes
-#include <jack/jack.h>
-
-// Qt includes
-#include <QString>
+#include "port.h"
+#include "audiobuffer.h"
 
 namespace QJack {
 
-/**
- * @author Jacob Dawid ( jacob.dawid@omg-it.works )
- */
-class Port {
+class AudioPort : public Port {
     friend class Client;
 public:
-    Port();
-    Port(const Port& other);
+    AudioPort();
+    AudioPort(const AudioPort& other);
 
-    bool isValid() const { return _jackPort != 0; }
+    /**
+     * @returns a buffer that points to the memory of this port.
+     * @warning: Please be aware that if this port is an input port, modifying
+     * samples within the buffer can lead to unexpected behaviour for other clients.
+     * You have direct access to the input memory buffer and the recommended way
+     * is to create a memory buffer, copy all samples over and alter them in the
+     * memory buffer. For reasons of RT execution safety, you should create your
+     * memory buffers outside of the JACK process thread (for example in the
+     * constructor of your processor object).
+     */
+    AudioBuffer buffer(int samples) const;
 
-    /** @returns the full name of this port (including the clients name). */
-    QString fullName() const;
-
-    /** @returns the name of the client this port belongs to. */
-    QString clientName() const;
-
-    /** @returns this ports name. */
-    QString portName() const;
-
-    /** @returns the full type of this port. */
-    QString portType() const;
-
-    /** @returns true when this port is an audio port. */
-    bool isAudioPort() const;
-
-    /** @returns true when this port is a midi port. */
-    bool isMidiPort() const;
-
-    /** @returns true, when this port can receive data. */
-    bool isInput() const;
-
-    /** @returns true, when data can be read from this port. */
-    bool isOutput() const;
-
-    /** @returns true, when this port corresponds to a physical I/O connector. */
-    bool isPhysical() const;
-
-    /** @returns whether this port can monitor. */
-    bool canMonitor() const;
-
-    /** @returns whether this port is a terminal. */
-    bool isTerminal() const;
 
 protected:
-    Port(jack_port_t *port);
-
-    jack_port_t *_jackPort;
+    AudioPort(jack_port_t *port);
 };
 
 }

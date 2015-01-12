@@ -24,7 +24,8 @@
 #pragma once
 
 // Own includes:
-#include "port.h"
+#include "audioport.h"
+#include "midiport.h"
 
 // JACK includes:
 #include <jack/jack.h>
@@ -64,26 +65,25 @@ public:
      */
     bool disconnectFromServer();
 
-    /** Registers a port. Only possible, if connected to a JACK server. */
-    Port registerPort(QString name, QString portType, JackPortFlags jackPortFlags);
-
     /** Registers an audio output port. Only possible, if connected to a JACK server. */
-    Port registerAudioOutPort(QString name);
+    AudioPort registerAudioOutPort(QString name);
 
     /** Registers an audio input port. Only possible, if connected to a JACK server. */
-    Port registerAudioInPort(QString name);
+    AudioPort registerAudioInPort(QString name);
 
     /** Registers a midi output port. Only possible, if connected to a JACK server. */
-    Port registerMidiOutPort(QString name);
+    MidiPort registerMidiOutPort(QString name);
 
     /** Registers a midi input port. Only possible, if connected to a JACK server. */
-    Port registerMidiInPort(QString name);
+    MidiPort registerMidiInPort(QString name);
 
     /** Connects two ports. */
-    bool connectPorts(Port portA, Port portB);
+    bool connect(AudioPort source, AudioPort destination);
+    bool connect(MidiPort source, MidiPort destination);
 
     /** Disconnects two ports. */
-    bool disconnectPorts(Port portA, Port portB);
+    bool disconnect(AudioPort source, AudioPort destination);
+    bool disconnect(MidiPort source, MidiPort destination);
 
     /**
      * @returns a list of connected clients, that means their name to be specific.
@@ -141,7 +141,8 @@ signals:
     void deactivated();
 
     /** Emitted whenever a port has been registered successfully by this client. */
-    void portRegistered(Port port);
+    void audioPortRegistered(AudioPort audioPort);
+    void midiPortRegistered(MidiPort midiPort);
 
     /** Emitted on change of the sample rate. */
     void sampleRateChanged(int sampleRate);
@@ -153,6 +154,9 @@ signals:
     void xrunOccured();
 
 private:
+    /** Registers a port. Only possible, if connected to a JACK server. */
+    Port registerPort(QString name, QString portType, JackPortFlags jackPortFlags);
+
     // Callbacks
 
     void threadInit();

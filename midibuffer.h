@@ -26,62 +26,17 @@
 // Own includes
 #include "buffer.h"
 
-// JACK includes
-#include <jack/jack.h>
-
-// Qt includes
-#include <QString>
-
 namespace QJack {
 
-/**
- * @author Jacob Dawid ( jacob.dawid@omg-it.works )
- */
-class Port {
-    friend class Client;
+class MidiBuffer : public Buffer {
+    friend class MidiPort;
 public:
-    Port();
-    Port(const Port& other);
-
-    bool isValid() const { return _jackPort != 0; }
-
-    /** @returns the full name of this port (including the clients name). */
-    QString fullName() const;
-
-    /** @returns the name of the client this port belongs to. */
-    QString clientName() const;
-
-    /** @returns this ports name. */
-    QString portName() const;
-
-    /** @returns the full type of this port. */
-    QString portType() const;
-
-    /** @returns true when this port is an audio port. */
-    bool isAudioPort() const;
-
-    /** @returns true when this port is a midi port. */
-    bool isMidiPort() const;
-
-    /** @returns true, when this port can receive data. */
-    bool isInput() const;
-
-    /** @returns true, when data can be read from this port. */
-    bool isOutput() const;
-
-    /** @returns true, when this port corresponds to a physical I/O connector. */
-    bool isPhysical() const;
-
-    /** @returns whether this port can monitor. */
-    bool canMonitor() const;
-
-    /** @returns whether this port is a terminal. */
-    bool isTerminal() const;
+    MidiBuffer();
+    MidiBuffer(const MidiBuffer& other);
 
 protected:
-    Port(jack_port_t *port);
+    MidiBuffer(int size, void *buffer);
 
-    jack_port_t *_jackPort;
 };
 
 }

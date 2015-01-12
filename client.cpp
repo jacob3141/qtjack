@@ -35,8 +35,8 @@
 namespace QJack {
 
 Client::Client(QObject *parent) :
-   QObject(parent),
-   _processor(0) {
+    QObject(parent),
+    _processor(0) {
     _jackClient = 0;
 }
 
@@ -89,56 +89,103 @@ bool Client::disconnectFromServer() {
     }
 }
 
-Port Client::registerPort(QString name, QString portType, JackPortFlags jackPortFlags) {
+AudioPort Client::registerAudioOutPort(QString name) {
     if(!_jackClient) {
-        // When not connected, return invalid port.
-        return Port();
+        return AudioPort();
     }
 
-    Port jackPort(jack_port_register(
-                           _jackClient,
-                           name.toStdString().c_str(),
-                           portType.toStdString().c_str(),
-                           jackPortFlags, 0));
-    emit portRegistered(jackPort);
-    return jackPort;
+    AudioPort audioPort = AudioPort(jack_port_register(
+                                        _jackClient,
+                                        name.toStdString().c_str(),
+                                        JACK_DEFAULT_AUDIO_TYPE,
+                                        JackPortIsOutput, 0));
+    emit audioPortRegistered(audioPort);
+    return audioPort;
 }
 
-Port Client::registerAudioOutPort(QString name) {
-    return registerPort(name, JACK_DEFAULT_AUDIO_TYPE, JackPortIsOutput);
+AudioPort Client::registerAudioInPort(QString name) {
+    if(!_jackClient) {
+        return AudioPort();
+    }
+
+    AudioPort audioPort = AudioPort(jack_port_register(
+                                        _jackClient,
+                                        name.toStdString().c_str(),
+                                        JACK_DEFAULT_AUDIO_TYPE,
+                                        JackPortIsInput, 0));
+    emit audioPortRegistered(audioPort);
+    return audioPort;
 }
 
-Port Client::registerAudioInPort(QString name) {
-    return registerPort(name, JACK_DEFAULT_AUDIO_TYPE, JackPortIsInput);
+MidiPort Client::registerMidiOutPort(QString name) {
+    if(!_jackClient) {
+        return MidiPort();
+    }
+
+    MidiPort midiPort = MidiPort(jack_port_register(
+                                     _jackClient,
+                                     name.toStdString().c_str(),
+                                     JACK_DEFAULT_MIDI_TYPE,
+                                     JackPortIsOutput, 0));
+    emit midiPortRegistered(midiPort);
+    return midiPort;
 }
 
-Port Client::registerMidiOutPort(QString name) {
-    return registerPort(name, JACK_DEFAULT_MIDI_TYPE, JackPortIsOutput);
+MidiPort Client::registerMidiInPort(QString name) {
+    if(!_jackClient) {
+        return MidiPort();
+    }
+
+    MidiPort midiPort = MidiPort(jack_port_register(
+                                     _jackClient,
+                                     name.toStdString().c_str(),
+                                     JACK_DEFAULT_MIDI_TYPE,
+                                     JackPortIsInput, 0));
+    emit midiPortRegistered(midiPort);
+    return midiPort;
 }
 
-Port Client::registerMidiInPort(QString name) {
-    return registerPort(name, JACK_DEFAULT_MIDI_TYPE, JackPortIsInput);
-}
-
-bool Client::connectPorts(Port portA, Port portB) {
+bool Client::connect(AudioPort source, AudioPort destination) {
     if(!_jackClient) {
         return false;
     }
 
     int result = jack_connect(_jackClient,
-                              portA.fullName().toStdString().c_str(),
-                              portB.fullName().toStdString().c_str());
+                              source.fullName().toStdString().c_str(),
+                              destination.fullName().toStdString().c_str());
     return result == 0;
 }
 
-bool Client::disconnectPorts(Port portA, Port portB) {
+bool Client::connect(MidiPort source, MidiPort destination) {
+    if(!_jackClient) {
+        return false;
+    }
+
+    int result = jack_connect(_jackClient,
+                              source.fullName().toStdString().c_str(),
+                              destination.fullName().toStdString().c_str());
+    return result == 0;
+}
+
+bool Client::disconnect(AudioPort source, AudioPort destination) {
     if(!_jackClient) {
         return false;
     }
 
     int result = jack_disconnect(_jackClient,
-                                 portA.fullName().toStdString().c_str(),
-                                 portB.fullName().toStdString().c_str());
+                                 source.fullName().toStdString().c_str(),
+                                 destination.fullName().toStdString().c_str());
+    return result == 0;
+}
+
+bool Client::disconnect(MidiPort source, MidiPort destination) {
+    if(!_jackClient) {
+        return false;
+    }
+
+    int result = jack_disconnect(_jackClient,
+                                 source.fullName().toStdString().c_str(),
+                                 destination.fullName().toStdString().c_str());
     return result == 0;
 }
 
@@ -324,7 +371,7 @@ void Client::infoShutdown(jack_status_t code, const char *reason) {
 // Static callbacks
 
 int Client::processCallback(jack_nframes_t sampleCount,
-                        void *argument) {
+                            void *argument) {
     Client *jackClient = static_cast<Client*>(argument);
     if(jackClient) {
         jackClient->process(sampleCount);
@@ -391,7 +438,7 @@ void Client::latencyCallback(jack_latency_callback_mode_t mode, void *argument) 
 }
 
 int Client::sampleRateCallback(jack_nframes_t sampleCount,
-                                   void *argument) {
+                               void *argument) {
     Client *jackClient = static_cast<Client*>(argument);
     if(jackClient) {
         jackClient->sampleRate(sampleCount);
@@ -400,7 +447,7 @@ int Client::sampleRateCallback(jack_nframes_t sampleCount,
 }
 
 int Client::bufferSizeCallback(jack_nframes_t bufferSize,
-                                   void *argument) {
+                               void *argument) {
     Client *jackClient = static_cast<Client*>(argument);
     if(jackClient) {
         jackClient->bufferSize(bufferSize);

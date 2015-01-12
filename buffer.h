@@ -23,8 +23,8 @@
 
 #pragma once
 
-// Qt includes
-#include <QString>
+// Own includes
+#include "ringbuffer.h"
 
 namespace QJack {
 
@@ -35,11 +35,15 @@ namespace QJack {
  * convenience methods to read and write the buffer.
  */
 class Buffer {
-    friend class Port;
+    friend class AudioBuffer;
+    friend class MidiBuffer;
 public:
-    Buffer() {
-        _buffer = 0;
-    }
+    virtual ~Buffer();
+
+    enum BufferType {
+        BufferTypeJack,
+        BufferTypeMemory
+    };
 
     /**
      * Create an audio buffer by allocating memory manually.
@@ -53,68 +57,16 @@ public:
      */
     void releaseMemoryBuffer();
 
-    /** Copy constructor. */
-    Buffer(const Buffer& other);
-
     bool isValid() const { return _buffer != 0; }
-
-    /**
-     * @returns true, if this buffer's memory has been allocated manually.
-     * (ie. the memory is being managed by the user, not JACK)
-     */
-    bool isMemoryBuffer() const;
-
-    // Single sample operations
 
     /** @return the buffer size. */
     int size() const;
 
-    /** @returns sample at position i in the audio buffer. */
-    double readAudioSample(int i) const;
+protected:
+    Buffer(BufferType bufferType = BufferTypeJack);
+    Buffer(const Buffer& other);
 
-    /** Writes sample at position i in the audio buffer. */
-    void writeAudioSample(int i, double value);
-
-    // Operations targeting all samples in the buffer
-
-    /** Sets all samples to zero. */
-    void clear();
-
-    /**
-     * Copies all samples from this buffer to the given buffer.
-     * If the source buffer is greater than the target buffer, samples
-     * will be truncated. If the target buffer is greater than the
-     * source buffer, this operation affects the n samples at the
-     * beginning of the target buffer.
-     */
-    bool copyTo(Buffer targetBuffer) const;
-
-    /**
-     * Adds all samples from this buffer to the given buffer.
-     * If the source buffer is greater than the target buffer, samples
-     * will be truncated. If the target buffer is greater than the
-     * source buffer, this operation affects the n samples at the
-     * beginning of the target buffer.
-     */
-    bool addTo(Buffer targetBuffer) const;
-
-    /**
-     * Multiplies and adds all samples from this buffer to the given buffer.
-     * If the source buffer is greater than the target buffer, samples
-     * will be truncated. If the target buffer is greater than the
-     * source buffer, this operation affects the n samples at the
-     * beginning of the target buffer.
-     */
-    bool addTo(Buffer targetBuffer, double attenuation) const;
-
-    /**
-     * Multiplies all samples in this buffer with @attenuation.
-     */
-    void multiply(double attenuation);
-
-private:
-    /** Private constructor. */
-    Buffer(int size, void* buffer);
+    Buffer(int size, void* buffer, BufferType bufferType = BufferTypeJack);
 
     /** Size of sample buffer. */
     int _size;
@@ -122,11 +74,7 @@ private:
     /** Pointer to memory buffer. */
     void *_buffer;
 
-    /**
-     * Flag that indicates that this buffer's memory has been allocated manually.
-     * (ie. the memory is being managed by the user, not JACK)
-     */
-    bool _isMemoryBuffer;
+    BufferType _bufferType;
 };
 
 }

@@ -39,9 +39,12 @@ SOURCES += \
     parameter.cpp \
     port.cpp \
     server.cpp \
-    ringbuffer.cpp \
     netslave.cpp \
-    netmaster.cpp
+    netmaster.cpp \
+    audioport.cpp \
+    midiport.cpp \
+    audiobuffer.cpp \
+    midibuffer.cpp
 
 HEADERS += \
     system.h \
@@ -65,4 +68,11 @@ HEADERS += \
     netslave.h \
     NetSlave \
     netmaster.h \
-    NetMaster
+    NetMaster \
+    audioport.h \
+    AudioPort \
+    midiport.h \
+    audiobuffer.h \
+    midibuffer.h \
+    AudioBuffer \
+    MidiBuffer

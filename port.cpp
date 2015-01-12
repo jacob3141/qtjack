@@ -27,7 +27,6 @@
 
 // Qt includes
 #include <QStringList>
-#include <QDebug>
 
 namespace QJack {
 
@@ -64,13 +63,6 @@ QString Port::portName() const {
         return QString();
     }
     return jack_port_short_name(_jackPort);
-}
-
-Buffer Port::buffer(int samples) const {
-    if(isValid()) {
-        return Buffer(samples, jack_port_get_buffer(_jackPort, samples));
-    }
-    return Buffer(samples, 0);
 }
 
 QString Port::portType() const {

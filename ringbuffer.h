@@ -26,44 +26,14 @@
 // JACK includes
 #include <jack/ringbuffer.h>
 #include <jack/net.h>
+
 // Qt includes
 #include <QSharedPointer>
-#include <QByteArray>
+#include <QVector>
 
 namespace QJack {
 
 /** Lock-free ringbuffer. */
-class RingBufferPrivate;
-class RingBuffer {
-public:
-    RingBuffer(int size = 4096);
-    RingBuffer(const RingBuffer& other);
-    virtual ~RingBuffer();
-
-    /** Locks ring buffer to memory. Not a RT operation. */
-    bool memoryLock();
-
-    /** Empties this buffer. @attention Not threadsafe. */
-    void reset();
-    /** Empties and resizes this buffer. @attention Not threadsafe. */
-    void resetSize(int size);
-
-    /** @returns how many bytes are available for reading. */
-    int readSpace() const;
-
-    /** @returns how many bytes are available for writing. */
-    int writeSpace() const ;
-
-    /** Read @a size bytes from the ringbuffer. */
-    QByteArray read(int size);
-
-    /** Write @a data to the ringbuffer. */
-    int write(QByteArray data);
-
-private:
-    QSharedPointer<RingBufferPrivate> _p;
-};
-
 class RingBufferPrivate {
 public:
     RingBufferPrivate(int size) {
@@ -75,6 +45,69 @@ public:
     }
 
     jack_ringbuffer_t *_jackRingBuffer;
+};
+
+template<typename Type>
+class RingBuffer {
+public:
+    RingBuffer(int numberOfElements = 4096) {
+        _p = QSharedPointer<RingBufferPrivate>(new RingBufferPrivate(numberOfElements * bytesPerElement()));
+    }
+
+    RingBuffer(const RingBuffer& other) {
+        _p = other._p;
+    }
+
+    virtual ~RingBuffer() {
+    }
+
+    /** Locks ring buffer to memory. Not a RT operation. */
+    bool memoryLock()  {
+        return (bool)jack_ringbuffer_mlock(_p->_jackRingBuffer);
+    }
+
+    /** Empties this buffer. @attention Not threadsafe. */
+    void reset()  {
+        jack_ringbuffer_reset(_p->_jackRingBuffer);
+    }
+
+    /** Empties and resizes this buffer. @attention Not threadsafe. */
+    void resetSize(int size)  {
+        jack_ringbuffer_reset_size(_p->_jackRingBuffer, size * bytesPerElement());
+    }
+
+    /** @returns how many elements are available for reading. */
+    int numberOfBytesAvailableForRead() const {
+        return jack_ringbuffer_read_space(_p->_jackRingBuffer) / bytesPerElement();
+    }
+
+    /** @returns how many elements are available for writing. */
+    int numberOfBytesCanBeWritten() const {
+        return jack_ringbuffer_write_space(_p->_jackRingBuffer) / bytesPerElement();
+    }
+
+    /** Read @a numberOfElements of elements from the ringbuffer. */
+    int read(Type *data, int numberOfElements) {
+        int bytesRead = jack_ringbuffer_read(_p->_jackRingBuffer,
+                                             (char*)data,
+                                             numberOfElements * bytesPerElement());
+        return bytesRead / bytesPerElement();
+    }
+
+    /** Write @a data to the ringbuffer. */
+    int write(Type *data, int numberOfElements) {
+        int bytesWritten = jack_ringbuffer_write(_p->_jackRingBuffer,
+                                                 (char*)data,
+                                                 numberOfElements * bytesPerElement());
+        return bytesWritten / bytesPerElement();
+    }
+
+    int bytesPerElement() const {
+        return sizeof(Type);
+    }
+
+private:
+    QSharedPointer<RingBufferPrivate> _p;
 };
 
 }
