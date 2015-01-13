@@ -24,7 +24,9 @@
 #pragma once
 
 // Own includes
-#include <Client>
+#include "global.h"
+#include "client.h"
+
 
 namespace QJack {
 /**

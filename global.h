@@ -21,64 +21,20 @@
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-// Own includes
-#include "driver.h"
+#pragma once
 
 // JACK includes
-#include <jack/control.h>
-
+#include <jack/types.h>
+#include <jack/net.h>
 
 namespace QJack {
-
-Driver::Driver(jackctl_driver_t *driver)
-{
-    _jackDriver = driver;
-}
-
-QString Driver::name() {
-    if(!isValid()) {
-        return QString();
-    }
-
-    return QString(jackctl_driver_get_name(_jackDriver));
-}
-
-Driver::DriverType Driver::type() {
-    if(!isValid()) {
-        return DriverTypeInvalid;
-    }
-
-    switch (jackctl_driver_get_type(_jackDriver)) {
-    case JackMaster:
-        return DriverTypeMaster;
-    case JackSlave:
-        return DriverTypeSlave;
-    default:
-        return DriverTypeInvalid;
-    }
-}
-
-ParameterMap Driver::parameters() {
-    if(!isValid()) {
-        return ParameterMap();
-    }
-
-    ParameterMap parameterMap;
-    const JSList *parameters = jackctl_driver_get_parameters(_jackDriver);
-    while(parameters) {
-        Parameter p = Parameter((jackctl_parameter_t*)parameters->data);
-        parameterMap.insert(p.name(), p);
-        parameters = parameters->next;
-    }
-    return parameterMap;
-}
-
-int Driver::parseParameters(int argc, char* argv[]) {
-    if(!isValid()) {
-        return -1;
-    }
-
-    return jackctl_driver_params_parse(_jackDriver, argc, argv);
-}
+typedef jack_default_audio_sample_t AudioSample;
 
 }
+
+// Marker to state that methods are realtime safe. That means, that in general
+// those methods do not block for a large amount of time and thus are suited
+// for realtime operation.
+#define REALTIME_SAFE
+
+#define USING_JACK2

@@ -34,8 +34,8 @@ MidiPort::MidiPort(const MidiPort& other)
     : Port(other) {
 }
 
-MidiPort::MidiPort(jack_port_t *port)
-    : Port(port) {
+MidiPort::MidiPort(jack_port_t *jackPort)
+    : Port(jackPort) {
 }
 
 MidiBuffer MidiPort::buffer(int samples) const {

@@ -30,6 +30,9 @@
 #include <QString>
 #include <QSharedPointer>
 
+// Own includes
+#include "global.h"
+
 namespace QJack {
 
 class NetMasterPrivate;

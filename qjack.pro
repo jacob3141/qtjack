@@ -75,4 +75,6 @@ HEADERS += \
     audiobuffer.h \
     midibuffer.h \
     AudioBuffer \
-    MidiBuffer
+    MidiBuffer \
+    global.h \
+    MidiPort

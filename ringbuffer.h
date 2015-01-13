@@ -25,11 +25,13 @@
 
 // JACK includes
 #include <jack/ringbuffer.h>
-#include <jack/net.h>
 
 // Qt includes
 #include <QSharedPointer>
 #include <QVector>
+
+// Own includes
+#include "global.h"
 
 namespace QJack {
 
@@ -58,6 +60,10 @@ public:
         _p = other._p;
     }
 
+    bool isValid() REALTIME_SAFE {
+        return _p->_jackRingBuffer != 0;
+    }
+
     virtual ~RingBuffer() {
     }
 
@@ -67,7 +73,7 @@ public:
     }
 
     /** Empties this buffer. @attention Not threadsafe. */
-    void reset()  {
+    void reset() {
         jack_ringbuffer_reset(_p->_jackRingBuffer);
     }
 
@@ -77,17 +83,17 @@ public:
     }
 
     /** @returns how many elements are available for reading. */
-    int numberOfBytesAvailableForRead() const {
+    int numberOfElementsAvailableForRead() const REALTIME_SAFE {
         return jack_ringbuffer_read_space(_p->_jackRingBuffer) / bytesPerElement();
     }
 
     /** @returns how many elements are available for writing. */
-    int numberOfBytesCanBeWritten() const {
+    int numberOfElementsCanBeWritten() const REALTIME_SAFE {
         return jack_ringbuffer_write_space(_p->_jackRingBuffer) / bytesPerElement();
     }
 
     /** Read @a numberOfElements of elements from the ringbuffer. */
-    int read(Type *data, int numberOfElements) {
+    int read(Type *data, int numberOfElements) REALTIME_SAFE {
         int bytesRead = jack_ringbuffer_read(_p->_jackRingBuffer,
                                              (char*)data,
                                              numberOfElements * bytesPerElement());
@@ -95,19 +101,21 @@ public:
     }
 
     /** Write @a data to the ringbuffer. */
-    int write(Type *data, int numberOfElements) {
+    int write(Type *data, int numberOfElements) REALTIME_SAFE {
         int bytesWritten = jack_ringbuffer_write(_p->_jackRingBuffer,
                                                  (char*)data,
                                                  numberOfElements * bytesPerElement());
         return bytesWritten / bytesPerElement();
     }
 
-    int bytesPerElement() const {
+    int bytesPerElement() const REALTIME_SAFE {
         return sizeof(Type);
     }
 
 private:
     QSharedPointer<RingBufferPrivate> _p;
 };
+
+typedef RingBuffer<jack_default_audio_sample_t> AudioRingBuffer;
 
 }

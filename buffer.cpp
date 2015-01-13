@@ -29,21 +29,19 @@
 
 namespace QJack {
 
-Buffer::Buffer(BufferType bufferType) {
-    _buffer = 0;
-    _bufferType = bufferType;
+Buffer::Buffer() {
+    _size = 1024;
+    _jackBuffer = 0;
 }
 
 Buffer::Buffer(const Buffer& other) {
     _size = other._size;
-    _buffer = other._buffer;
-    _bufferType = other._bufferType;
+    _jackBuffer = other._jackBuffer;
 }
 
-Buffer::Buffer(int bufferSize, void *buffer, BufferType bufferType) {
+Buffer::Buffer(int bufferSize, void *buffer) {
     _size = bufferSize;
-    _buffer = buffer;
-    _bufferType = bufferType;
+    _jackBuffer = buffer;
 }
 
 Buffer::~Buffer() {

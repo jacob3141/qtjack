@@ -24,6 +24,7 @@
 #pragma once
 
 // Own includes
+#include "global.h"
 #include "port.h"
 #include "midibuffer.h"
 
@@ -48,7 +49,7 @@ public:
     MidiBuffer buffer(int samples) const;
 
 protected:
-    MidiPort(jack_port_t *port);
+    MidiPort(jack_port_t *jackPort);
 
 };
 

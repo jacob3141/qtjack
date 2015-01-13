@@ -24,6 +24,7 @@
 #pragma once
 
 // Own includes
+#include "global.h"
 #include "port.h"
 #include "audiobuffer.h"
 
@@ -45,11 +46,11 @@ public:
      * memory buffers outside of the JACK process thread (for example in the
      * constructor of your processor object).
      */
-    AudioBuffer buffer(int samples) const;
+    AudioBuffer buffer(int samples) const REALTIME_SAFE;
 
 
 protected:
-    AudioPort(jack_port_t *port);
+    AudioPort(jack_port_t *jackPort);
 };
 
 }

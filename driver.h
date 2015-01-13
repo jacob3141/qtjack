@@ -24,6 +24,7 @@
 #pragma once
 
 // Own includes
+#include "global.h"
 #include "parameter.h"
 
 // JACK includes

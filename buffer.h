@@ -24,6 +24,7 @@
 #pragma once
 
 // Own includes
+#include "global.h"
 #include "ringbuffer.h"
 
 namespace QJack {
@@ -40,41 +41,22 @@ class Buffer {
 public:
     virtual ~Buffer();
 
-    enum BufferType {
-        BufferTypeJack,
-        BufferTypeMemory
-    };
-
-    /**
-     * Create an audio buffer by allocating memory manually.
-     * @warning: Do not call this method in RT code.
-     */
-    static Buffer createMemoryAudioBuffer(int size);
-
-    /**
-     * Frees memory if this is a sample buffer create in memory.
-     * @warning: Do not call this method in RT code.
-     */
-    void releaseMemoryBuffer();
-
-    bool isValid() const { return _buffer != 0; }
+    bool isValid() const REALTIME_SAFE { return _jackBuffer != 0; }
 
     /** @return the buffer size. */
     int size() const;
 
 protected:
-    Buffer(BufferType bufferType = BufferTypeJack);
+    Buffer();
     Buffer(const Buffer& other);
 
-    Buffer(int size, void* buffer, BufferType bufferType = BufferTypeJack);
+    Buffer(int size, void* buffer);
 
     /** Size of sample buffer. */
     int _size;
 
     /** Pointer to memory buffer. */
-    void *_buffer;
-
-    BufferType _bufferType;
+    void *_jackBuffer;
 };
 
 }

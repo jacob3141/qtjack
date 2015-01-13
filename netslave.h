@@ -31,6 +31,7 @@
 #include <jack/net.h>
 
 // Own includes
+#include "global.h"
 #include "processor.h"
 
 namespace QJack {

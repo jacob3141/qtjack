@@ -30,9 +30,9 @@
 
 namespace QJack {
 
-Port::Port(jack_port_t *port)
+Port::Port(jack_port_t *jackPort)
 {
-    _jackPort = port;
+    _jackPort = jackPort;
 }
 
 Port::Port()

@@ -23,14 +23,14 @@
 
 #pragma once
 
-// Own includes
-#include "buffer.h"
-
 // JACK includes
 #include <jack/jack.h>
 
 // Qt includes
 #include <QString>
+
+// Own includes
+#include "global.h"
 
 namespace QJack {
 
@@ -43,43 +43,43 @@ public:
     Port();
     Port(const Port& other);
 
-    bool isValid() const { return _jackPort != 0; }
+    bool isValid() const REALTIME_SAFE { return _jackPort != 0; }
 
     /** @returns the full name of this port (including the clients name). */
-    QString fullName() const;
+    QString fullName() const REALTIME_SAFE;
 
     /** @returns the name of the client this port belongs to. */
-    QString clientName() const;
+    QString clientName() const REALTIME_SAFE;
 
     /** @returns this ports name. */
-    QString portName() const;
+    QString portName() const REALTIME_SAFE;
 
     /** @returns the full type of this port. */
-    QString portType() const;
+    QString portType() const REALTIME_SAFE;
 
     /** @returns true when this port is an audio port. */
-    bool isAudioPort() const;
+    bool isAudioPort() const REALTIME_SAFE;
 
     /** @returns true when this port is a midi port. */
-    bool isMidiPort() const;
+    bool isMidiPort() const REALTIME_SAFE;
 
     /** @returns true, when this port can receive data. */
-    bool isInput() const;
+    bool isInput() const REALTIME_SAFE;
 
     /** @returns true, when data can be read from this port. */
-    bool isOutput() const;
+    bool isOutput() const REALTIME_SAFE;
 
     /** @returns true, when this port corresponds to a physical I/O connector. */
-    bool isPhysical() const;
+    bool isPhysical() const REALTIME_SAFE;
 
     /** @returns whether this port can monitor. */
-    bool canMonitor() const;
+    bool canMonitor() const REALTIME_SAFE;
 
     /** @returns whether this port is a terminal. */
-    bool isTerminal() const;
+    bool isTerminal() const REALTIME_SAFE;
 
 protected:
-    Port(jack_port_t *port);
+    Port(jack_port_t *jackPort);
 
     jack_port_t *_jackPort;
 };

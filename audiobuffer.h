@@ -24,27 +24,26 @@
 #pragma once
 
 // Own includes
+#include "global.h"
 #include "buffer.h"
 
 namespace QJack {
 
-typedef jack_default_audio_sample_t AudioSample;
-
 class AudioBuffer : public Buffer {
     friend class AudioPort;
 public:
-    AudioBuffer(BufferType bufferType = BufferTypeJack);
+    AudioBuffer();
     AudioBuffer(const AudioBuffer& other);
     virtual ~AudioBuffer();
 
     /** Sets all samples to zero. */
-    bool clear();
+    bool clear() REALTIME_SAFE;
 
     /** @returns sample at position i in the audio buffer. */
-    AudioSample read(int i, bool *ok = 0) const;
+    AudioSample read(int i, bool *ok = 0) const REALTIME_SAFE;
 
     /** Writes sample at position i in the audio buffer. */
-    bool write(int i, AudioSample value);
+    bool write(int i, AudioSample value) REALTIME_SAFE;
 
     /**
      * Copies all samples from this buffer to the given buffer.
@@ -53,7 +52,7 @@ public:
      * source buffer, this operation affects the n samples at the
      * beginning of the target buffer.
      */
-    bool copyTo(Buffer targetBuffer) const;
+    bool copyTo(AudioBuffer targetBuffer) const REALTIME_SAFE;
 
 
     /**
@@ -63,7 +62,7 @@ public:
      * source buffer, this operation affects the n samples at the
      * beginning of the target buffer.
      */
-    bool addTo(AudioBuffer targetBuffer) const;
+    bool addTo(AudioBuffer targetBuffer) const REALTIME_SAFE;
 
     /**
      * Multiplies and adds all samples from this buffer to the given buffer.
@@ -72,33 +71,33 @@ public:
      * source buffer, this operation affects the n samples at the
      * beginning of the target buffer.
      */
-    bool addTo(AudioBuffer targetBuffer, double attenuation) const;
+    bool addTo(AudioBuffer targetBuffer, double attenuation) const REALTIME_SAFE;
 
     /**
      * Multiplies all samples in this buffer with @attenuation.
      */
-    void multiply(double attenuation);
+    void multiply(double attenuation) REALTIME_SAFE;
 
     /**
      * Pushes the contents of this buffer to the specified ring buffer.
      * @param ringBuffer The ring buffer to write to.
      * @returns true on succes, false otherwise.
      */
-    bool push(RingBuffer<AudioSample>& ringBuffer);
+    bool push(AudioRingBuffer& ringBuffer) REALTIME_SAFE;
 
     /**
      * Pops the contents of this buffer from the specified ring buffer.
      * @param ringBuffer The ring buffer to read from.
      * @returns true on succes, false otherwise.
      */
-    bool pop(RingBuffer<AudioSample>& ringBuffer);
+    bool pop(AudioRingBuffer& ringBuffer) REALTIME_SAFE;
 
 protected:
-    void allocateMemory(int size);
+    void allocateMemory();
     void releaseMemory();
 
 private:
-    AudioBuffer(int size, void *buffer, BufferType bufferType = BufferTypeJack);
+    AudioBuffer(int size, void *buffer);
 };
 
 }

@@ -34,6 +34,9 @@ typedef struct jackctl_parameter jackctl_parameter_t;
 #define QT_NO_SIGNALS_SLOTS_KEYWORDS
 #include <QVariant>
 
+// Own includes
+#include "global.h"
+
 namespace QJack {
 
 class Parameter {

@@ -26,7 +26,8 @@
 // Qt includes
 #include <QObject>
 
-#define USING_JACK2
+// Own includes
+#include "global.h"
 
 namespace QJack {
 

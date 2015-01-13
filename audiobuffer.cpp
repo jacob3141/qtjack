@@ -24,27 +24,23 @@
 // Own includes
 #include "audiobuffer.h"
 
+#include <QDebug>
+
 namespace QJack {
 
-AudioBuffer::AudioBuffer(BufferType bufferType)
-    : Buffer(bufferType) {
+AudioBuffer::AudioBuffer()
+    : Buffer() {
 }
 
 AudioBuffer::AudioBuffer(const AudioBuffer& other)
     : Buffer(other) {
 }
 
-AudioBuffer::AudioBuffer(int size, void *buffer, BufferType bufferType)
-    : Buffer(size, buffer, bufferType) {
-    if(_bufferType == BufferTypeMemory) {
-        allocateMemory(size);
-    }
+AudioBuffer::AudioBuffer(int size, void *buffer)
+    : Buffer(size, buffer) {
 }
 
 AudioBuffer::~AudioBuffer() {
-    if(_bufferType == BufferTypeMemory) {
-        releaseMemory();
-    }
 }
 
 bool AudioBuffer::clear() {
@@ -52,7 +48,7 @@ bool AudioBuffer::clear() {
         return false;
     }
     for(int i = 0; i < _size; i++) {
-        ((AudioSample*)_buffer)[i] = 0.0;
+        ((AudioSample*)_jackBuffer)[i] = 0.0;
     }
     return true;
 }
@@ -68,7 +64,7 @@ AudioSample AudioBuffer::read(int i, bool *ok) const {
     if(ok) {
         (*ok) = true;
     }
-    return (double)((i >= 0 && i < _size) ? ((AudioSample*)(_buffer))[i] : 0.0);
+    return (double)((i >= 0 && i < _size) ? ((AudioSample*)(_jackBuffer))[i] : 0.0);
 }
 
 bool AudioBuffer::write(int i, AudioSample value) {
@@ -76,19 +72,19 @@ bool AudioBuffer::write(int i, AudioSample value) {
         return false;
     }
     if(i >= 0 && i < _size) {
-        ((AudioSample*)_buffer)[i] = (AudioSample)value;
+        ((AudioSample*)_jackBuffer)[i] = (AudioSample)value;
     }
     return true;
 }
 
-bool AudioBuffer::copyTo(Buffer targetBuffer) const {
+bool AudioBuffer::copyTo(AudioBuffer targetBuffer) const {
     if(!isValid()) {
         return false;
     }
 
     int size = _size < targetBuffer.size() ? _size : targetBuffer.size();
     for(int i = 0; i < size; i++) {
-        ((AudioSample*)targetBuffer._buffer)[i] = ((AudioSample*)_buffer)[i];
+        ((AudioSample*)targetBuffer._jackBuffer)[i] = ((AudioSample*)_jackBuffer)[i];
     }
 
     return true;
@@ -101,7 +97,7 @@ bool AudioBuffer::addTo(AudioBuffer targetBuffer) const {
 
     int size = _size < targetBuffer.size() ? _size : targetBuffer.size();
     for(int i = 0; i < size; i++) {
-        ((AudioSample*)targetBuffer._buffer)[i] += ((AudioSample*)_buffer)[i];
+        ((AudioSample*)targetBuffer._jackBuffer)[i] += ((AudioSample*)_jackBuffer)[i];
     }
 
     return true;
@@ -114,7 +110,7 @@ bool AudioBuffer::addTo(AudioBuffer targetBuffer, double attenuation) const {
 
     int size = _size < targetBuffer.size() ? _size : targetBuffer.size();
     for(int i = 0; i < size; i++) {
-        ((AudioSample*)targetBuffer._buffer)[i] += (((AudioSample*)_buffer)[i] * attenuation);
+        ((AudioSample*)targetBuffer._jackBuffer)[i] += (((AudioSample*)_jackBuffer)[i] * attenuation);
     }
 
     return true;
@@ -126,42 +122,24 @@ void AudioBuffer::multiply(double attenuation) {
     }
 
     for(int i = 0; i < _size; i++) {
-        ((AudioSample*)_buffer)[i] *= attenuation;
+        ((AudioSample*)_jackBuffer)[i] *= attenuation;
     }
 }
 
-bool AudioBuffer::push(RingBuffer<AudioSample>& ringBuffer) {
-    if(_size >= ringBuffer.numberOfBytesCanBeWritten()) {
-        ringBuffer.write((AudioSample*)_buffer, _size);
+bool AudioBuffer::push(AudioRingBuffer &ringBuffer) {
+    if(_size <= ringBuffer.numberOfElementsCanBeWritten()) {
+        ringBuffer.write((AudioSample*)_jackBuffer, _size);
         return true;
     }
     return false;
 }
 
-bool AudioBuffer::pop(RingBuffer<AudioSample>& ringBuffer) {
-    if(ringBuffer.numberOfBytesAvailableForRead() >= _size) {
-        ringBuffer.read((AudioSample*)_buffer, _size);
+bool AudioBuffer::pop(AudioRingBuffer &ringBuffer) {
+    if(ringBuffer.numberOfElementsAvailableForRead() >= _size) {
+        ringBuffer.read((AudioSample*)_jackBuffer, _size);
         return true;
     }
     return false;
-}
-
-void AudioBuffer::allocateMemory(int size) {
-    // If memory has already been allocated, make sure to free
-    // it before allocating new memory.
-    if(_buffer) {
-        releaseMemory();
-    }
-
-    // TODO: What if allcating memory fails?
-    _buffer = new AudioSample[size];
-}
-
-void AudioBuffer::releaseMemory() {
-    if(_buffer) {
-        delete[] (AudioSample*)_buffer;
-    }
-    _buffer = 0;
 }
 
 }

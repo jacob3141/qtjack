@@ -34,8 +34,8 @@ AudioPort::AudioPort(const AudioPort& other)
     : Port(other) {
 }
 
-AudioPort::AudioPort(jack_port_t *port)
-    : Port(port) {
+AudioPort::AudioPort(jack_port_t *jackPort)
+    : Port(jackPort) {
 }
 
 AudioBuffer AudioPort::buffer(int samples) const {
