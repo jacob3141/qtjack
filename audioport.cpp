@@ -30,6 +30,14 @@ AudioPort::AudioPort()
     : Port() {
 }
 
+AudioPort::AudioPort(const Port& other)
+    : Port(other) {
+    if(!other.isAudioPort()) {
+        // Invalidate.
+        _jackPort = 0;
+    }
+}
+
 AudioPort::AudioPort(const AudioPort& other)
     : Port(other) {
 }

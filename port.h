@@ -28,6 +28,7 @@
 
 // Qt includes
 #include <QString>
+#include <QMetaType>
 
 // Own includes
 #include "global.h"
@@ -42,6 +43,7 @@ class Port {
 public:
     Port();
     Port(const Port& other);
+    virtual ~Port();
 
     bool isValid() const REALTIME_SAFE { return _jackPort != 0; }
 
@@ -85,3 +87,17 @@ protected:
 };
 
 }
+
+Q_DECLARE_METATYPE(QJack::Port)
+
+namespace QJack {
+    class PortMetaTypeInitializer {
+    public:
+        PortMetaTypeInitializer() {
+            qRegisterMetaType<QJack::Port>();
+        }
+    };
+
+    static PortMetaTypeInitializer portMetaTypeInitializer;
+}
+

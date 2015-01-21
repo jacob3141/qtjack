@@ -44,6 +44,10 @@ Port::Port(const Port& other) {
     _jackPort = other._jackPort;
 }
 
+Port::~Port() {
+
+}
+
 QString Port::fullName() const {
     if(!isValid()) {
         return QString();

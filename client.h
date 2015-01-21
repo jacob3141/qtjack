@@ -142,8 +142,23 @@ signals:
     void deactivated();
 
     /** Emitted whenever a port has been registered successfully by this client. */
-    void audioPortRegistered(AudioPort audioPort);
-    void midiPortRegistered(MidiPort midiPort);
+    void clientRegistered(QString clientName);
+    void clientUnregistered(QString clientName);
+
+    void portRegistered(QJack::Port port);
+    void portUnregistered(QJack::Port port);
+
+    void portsConnected(QJack::Port from, QJack::Port to);
+    void portsDisconnected(QJack::Port from, QJack::Port to);
+
+    void portRenamed(QJack::Port port, QString oldName, QString newName);
+
+    void graphOrderHasChanged();
+
+    void startedFreewheeling();
+    void stoppedFreewheeling();
+
+    void serverShutdown();
 
     /** Emitted on change of the sample rate. */
     void sampleRateChanged(int sampleRate);
@@ -164,9 +179,9 @@ private:
     void process(int samples);
     void freewheel(int starting);
     void clientRegistration(const char *name, int reg);
-    void portRegistration(jack_port_id_t port, int reg);
+    void portRegistration(jack_port_id_t portId, int reg);
     void portConnect(jack_port_id_t a, jack_port_id_t b, int connect);
-    void portRename(jack_port_id_t port, const char *oldName, const char *newName);
+    void portRename(jack_port_id_t portId, const char *oldName, const char *newName);
     void graphOrder();
     void latency(jack_latency_callback_mode_t mode);
     void sampleRate(int samples);

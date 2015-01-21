@@ -34,6 +34,7 @@ class AudioPort : public Port {
     friend class Client;
 public:
     AudioPort();
+    AudioPort(const Port& other);
     AudioPort(const AudioPort& other);
 
     /**

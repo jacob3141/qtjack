@@ -99,7 +99,6 @@ AudioPort Client::registerAudioOutPort(QString name) {
                                         name.toStdString().c_str(),
                                         JACK_DEFAULT_AUDIO_TYPE,
                                         JackPortIsOutput, 0));
-    emit audioPortRegistered(audioPort);
     return audioPort;
 }
 
@@ -113,7 +112,6 @@ AudioPort Client::registerAudioInPort(QString name) {
                                         name.toStdString().c_str(),
                                         JACK_DEFAULT_AUDIO_TYPE,
                                         JackPortIsInput, 0));
-    emit audioPortRegistered(audioPort);
     return audioPort;
 }
 
@@ -127,7 +125,6 @@ MidiPort Client::registerMidiOutPort(QString name) {
                                      name.toStdString().c_str(),
                                      JACK_DEFAULT_MIDI_TYPE,
                                      JackPortIsOutput, 0));
-    emit midiPortRegistered(midiPort);
     return midiPort;
 }
 
@@ -141,7 +138,6 @@ MidiPort Client::registerMidiInPort(QString name) {
                                      name.toStdString().c_str(),
                                      JACK_DEFAULT_MIDI_TYPE,
                                      JackPortIsInput, 0));
-    emit midiPortRegistered(midiPort);
     return midiPort;
 }
 
@@ -314,32 +310,54 @@ void Client::process(int samples) {
 }
 
 void Client::freewheel(int starting) {
-    Q_UNUSED(starting);
+    if(starting == 0) {
+        emit stoppedFreewheeling();
+    } else {
+        emit startedFreewheeling();
+    }
 }
 
 void Client::clientRegistration(const char *name, int reg) {
-    Q_UNUSED(name);
-    Q_UNUSED(reg);
+    if(reg == 0) {
+        emit clientRegistered(QString(name));
+    } else {
+        emit clientUnregistered(QString(name));
+    }
 }
 
-void Client::portRegistration(jack_port_id_t port, int reg) {
-    Q_UNUSED(port);
-    Q_UNUSED(reg);
+void Client::portRegistration(jack_port_id_t portId, int reg) {
+    QJack::Port port(jack_port_by_id(_jackClient, portId));
+    if(port.isValid()) {
+        if(reg == 0) {
+            emit portUnregistered(port);
+        } else {
+            emit portRegistered(port);
+        }
+    }
 }
 
 void Client::portConnect(jack_port_id_t a, jack_port_id_t b, int connect) {
-    Q_UNUSED(a);
-    Q_UNUSED(b);
-    Q_UNUSED(connect);
+    QJack::Port portA(jack_port_by_id(_jackClient, a));
+    QJack::Port portB(jack_port_by_id(_jackClient, b));
+
+    if(portA.isValid() && portB.isValid()) {
+        if(connect == 0) {
+            emit portsDisconnected(portA, portB);
+        } else {
+            emit portsConnected(portA, portB);
+        }
+    }
 }
 
-void Client::portRename(jack_port_id_t port, const char *oldName, const char *newName) {
-    Q_UNUSED(port);
-    Q_UNUSED(oldName);
-    Q_UNUSED(newName);
+void Client::portRename(jack_port_id_t portId, const char *oldName, const char *newName) {
+    QJack::Port port(jack_port_by_id(_jackClient, portId));
+    if(port.isValid()) {
+        emit portRenamed(port, QString(oldName), QString(newName));
+    }
 }
 
 void Client::graphOrder() {
+    emit graphOrderHasChanged();
 }
 
 void Client::latency(jack_latency_callback_mode_t mode) {
@@ -359,7 +377,7 @@ void Client::xrun() {
 }
 
 void Client::shutdown() {
-    qDebug() << "s1";
+    emit serverShutdown();
 }
 
 void Client::infoShutdown(jack_status_t code, const char *reason) {
