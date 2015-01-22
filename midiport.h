@@ -54,3 +54,16 @@ protected:
 };
 
 }
+
+Q_DECLARE_METATYPE(QJack::MidiPort)
+
+namespace QJack {
+    class MidiPortMetaTypeInitializer {
+    public:
+        MidiPortMetaTypeInitializer() {
+            qRegisterMetaType<QJack::MidiPort>();
+        }
+    };
+
+    static MidiPortMetaTypeInitializer midiPortMetaTypeInitializer;
+}

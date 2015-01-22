@@ -55,3 +55,16 @@ protected:
 };
 
 }
+
+Q_DECLARE_METATYPE(QJack::AudioPort)
+
+namespace QJack {
+    class AudioPortMetaTypeInitializer {
+    public:
+        AudioPortMetaTypeInitializer() {
+            qRegisterMetaType<QJack::AudioPort>();
+        }
+    };
+
+    static AudioPortMetaTypeInitializer audioPortMetaTypeInitializer;
+}

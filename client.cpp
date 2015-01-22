@@ -319,9 +319,9 @@ void Client::freewheel(int starting) {
 
 void Client::clientRegistration(const char *name, int reg) {
     if(reg == 0) {
-        emit clientRegistered(QString(name));
-    } else {
         emit clientUnregistered(QString(name));
+    } else {
+        emit clientRegistered(QString(name));
     }
 }
 

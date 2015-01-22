@@ -106,4 +106,19 @@ bool Port::isTerminal() const {
     return isValid() && (jack_port_flags(_jackPort) & JackPortIsTerminal);
 }
 
+int Port::numberOfConnections() const {
+    if(!isValid()) {
+        return 0;
+    }
+    return jack_port_connected(_jackPort);
+}
+
+bool Port::isConnectedTo(const Port &other) const {
+    if(!isValid() || !other.isValid()) {
+        return false;
+    }
+
+    return jack_port_connected_to(_jackPort, other.fullName().toStdString().c_str());
+}
+
 }

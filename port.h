@@ -80,6 +80,10 @@ public:
     /** @returns whether this port is a terminal. */
     bool isTerminal() const REALTIME_SAFE;
 
+    int numberOfConnections() const REALTIME_SAFE;
+
+    bool isConnectedTo(const Port& other) const REALTIME_SAFE;
+
 protected:
     Port(jack_port_t *jackPort);
 
