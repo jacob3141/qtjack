@@ -30,6 +30,14 @@ MidiPort::MidiPort()
     : Port() {
 }
 
+MidiPort::MidiPort(const Port& other)
+    : Port(other) {
+    if(!other.isMidiPort()) {
+        // Invalidate.
+        _jackPort = 0;
+    }
+}
+
 MidiPort::MidiPort(const MidiPort& other)
     : Port(other) {
 }

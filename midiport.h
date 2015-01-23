@@ -34,6 +34,7 @@ class MidiPort : public Port {
     friend class Client;
 public:
     MidiPort();
+    MidiPort(const Port& other);
     MidiPort(const MidiPort& other);
 
     /**
