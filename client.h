@@ -90,14 +90,14 @@ public:
      * @returns a list of connected clients, that means their name to be specific.
      * This will only list client that offer ports.
      */
-    QStringList clientList();
+    QStringList clientList() const;
 
     /**
      * @param clientName The name of the client the ports should be listed of.
      * @returns a list of ports of this client.
      * @see clientList() to obtain a list of available clients.
      */
-    QList<Port> portsForClient(QString clientName);
+    QList<Port> portsForClient(QString clientName) const;
 
     /** Assigns a processor that will handle audio processing.
       * @param processor The processor that will handle audio processing.
@@ -127,6 +127,12 @@ public:
 
     /** @returns true, when running in realtime mode. */
     bool isRealtime() const;
+
+    /** @returns the number of input ports for this client. */
+    int numberOfInputPorts(QString clientName) const;
+
+    /** @returns the number of output ports for this client. */
+    int numberOfOutputPorts(QString clientName) const;
 
 signals:
     /** Emitted when successfully connected to JACK server. */

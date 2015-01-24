@@ -185,7 +185,7 @@ bool Client::disconnect(MidiPort source, MidiPort destination) {
     return result == 0;
 }
 
-QStringList Client::clientList() {
+QStringList Client::clientList() const {
     if(!_jackClient) {
         return QStringList();
     }
@@ -206,7 +206,7 @@ QStringList Client::clientList() {
     return clientList;
 }
 
-QList<Port> Client::portsForClient(QString clientName) {
+QList<Port> Client::portsForClient(QString clientName) const {
     if(!_jackClient) {
         return QList<Port>();
     }
@@ -294,6 +294,28 @@ bool Client::isRealtime() const {
     }
 
     return jack_is_realtime(_jackClient) == 1;
+}
+
+int Client::numberOfInputPorts(QString clientName) const {
+    QList<Port> ports = portsForClient(clientName);
+    int inputPortCount = 0;
+    foreach(Port port, ports) {
+        if(port.isInput()) {
+            inputPortCount++;
+        }
+    }
+    return inputPortCount;
+}
+
+int Client::numberOfOutputPorts(QString clientName) const {
+    QList<Port> ports = portsForClient(clientName);
+    int outputPortCount = 0;
+    foreach(Port port, ports) {
+        if(port.isOutput()) {
+            outputPortCount++;
+        }
+    }
+    return outputPortCount;
 }
 
 void Client::setProcessor(Processor *audioProcessor) {

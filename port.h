@@ -84,6 +84,8 @@ public:
 
     bool isConnectedTo(const Port& other) const REALTIME_SAFE;
 
+    bool operator ==(const Port& other) const REALTIME_SAFE;
+
 protected:
     Port(jack_port_t *jackPort);
 
