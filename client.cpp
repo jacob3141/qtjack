@@ -232,7 +232,7 @@ bool Client::activate() {
         return false;
     }
 
-    if(jack_activate(_jackClient) != 0) {
+    if(jack_activate(_jackClient) == 0) {
         emit activated();
         return true;
     }
@@ -244,7 +244,7 @@ bool Client::deactivate() {
         return false;
     }
 
-    if(jack_deactivate(_jackClient) != 0) {
+    if(jack_deactivate(_jackClient) == 0) {
         emit deactivated();
         return true;
     }
