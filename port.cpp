@@ -121,6 +121,13 @@ bool Port::isConnectedTo(const Port &other) const {
     return jack_port_connected_to(_jackPort, other.fullName().toStdString().c_str());
 }
 
+bool Port::rename(QString name) {
+    if(!isValid()) {
+        return false;
+    }
+    return jack_port_set_name(_jackPort, name.toStdString().c_str()) == 0;
+}
+
 bool Port::operator ==(const Port& other) const {
     return _jackPort == other._jackPort;
 }
