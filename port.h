@@ -80,10 +80,13 @@ public:
     /** @returns whether this port is a terminal. */
     bool isTerminal() const REALTIME_SAFE;
 
+    /** @returns the number of connections to this port. */
     int numberOfConnections() const REALTIME_SAFE;
 
+    /** @returns true, when this port is connected to the given port. */
     bool isConnectedTo(const Port& other) const REALTIME_SAFE;
 
+    /** @overload */
     bool operator ==(const Port& other) const REALTIME_SAFE;
 
 protected:

@@ -318,6 +318,23 @@ int Client::numberOfOutputPorts(QString clientName) const {
     return outputPortCount;
 }
 
+
+Port Client::portByName(QString name) {
+    if(!_jackClient) {
+        return Port();
+    }
+
+    return Port(jack_port_by_name(_jackClient, name.toStdString().c_str()));
+}
+
+Port Client::portById(int id) {
+    if(!_jackClient) {
+        return Port();
+    }
+
+    return Port(jack_port_by_id(_jackClient, id));
+}
+
 void Client::setProcessor(Processor *audioProcessor) {
     _processor = audioProcessor;
 }
