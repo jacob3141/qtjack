@@ -5,6 +5,9 @@ The purpose of QJack is to make it easy to interface with a JACK audio server fr
 
 I really like to develop based on practical aspects. If you find QJack hard to understand or to use, please let me know. This is a clear indicator that it is lacking documentation or needs refactoring and will be treated as a bug.
 
+Also checkout the example repository:
+https://github.com/cybercatalyst/QJack-Examples
+
 How To Build
 ============
 
