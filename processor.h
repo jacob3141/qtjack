@@ -34,6 +34,8 @@ namespace QJack {
  */
 class Processor {
 public:
+    Processor() { }
+
     /** Constructs a new processor. */
     Processor(Client& client) {
         client.setProcessor(this);
