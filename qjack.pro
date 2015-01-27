@@ -24,9 +24,9 @@
 TEMPLATE = lib
 CONFIG += staticlib flat
 TARGET = qjack
-DESTDIR = lib
-OBJECTS_DIR = obj
-MOC_DIR = moc
+
+OBJECTS_DIR = .obj
+MOC_DIR = .moc
 
 QMAKE_CXXFLAGS -= -O2
 QMAKE_CXXFLAGS += -O3
