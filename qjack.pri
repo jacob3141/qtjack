@@ -1,0 +1,1 @@
+LIBS += -ljack -ljackserver -ljacknet
