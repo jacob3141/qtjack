@@ -15,38 +15,8 @@ QJack solely relies on a recent Qt and libjack-jack2-dev. Install using the foll
 
 `sudo apt-get install libjack-jackd2-dev`
 
-Like any other Qt application, QJack relies on qmake and the toolchain qmake is orchestrating. There are ways to build a Qt application without qmake, but this is beyond the scope of this document. Navigate to the folder the .pro is located in and type *qmake* followed by *make*. If you want to integrate qjackaudio into your application, I strongly recommend adding it as a submodule to git, and as a subproject to your project. If you do it this way, you can fix bugs while simultaneously using the library and even commit a fix. On the other hand, you can simply update the library by doing a *git pull*.
-
-In the root of your project create a Qt subdirs project by creating a file *project.pro* with the following contents:
-```
-TEMPLATE = subdirs
-SUBDIRS = myapp qjack
-
-myapp.subdir = myapp
-myapp.depends = qjack
-
-qjack.subdir = qjack
-qjack.depends =
-```
-
-*myapp* is the name of your app. You app has to be located under myapp/ and have a project file called myapp.pro. Inside myapp.pro, make sure build against QJack by filing in the following lines:
-```
-INCLUDEPATH += .. ../qjack
-
-LIBS += -L../qjack/lib \
-                -lqjack \
-                # Only needed when using the client API
-                -ljack \
-                # Only needed when using the server API
-                -ljackserver
-```
-
-Next, we need to add QJack as a submodule to git. Do that by executing the following command:
-```
-git submodule add https://github.com/cybercatalyst/QJack.git qjack
-```
-
-Now you are all set up. Open the *project.pro* file with QtCreator and start developing. Make sure you clone your repository with the *--recursive*-option, so git will also clone all submodules, too, when cloning your repository.
+You can add QJack to your project easily by using qt-pods. Read more about qt-pods here:
+https://github.com/cybercatalyst/qt-pods
 
 How to use QJack to build a JACK server
 ==========
