@@ -2,6 +2,6 @@ INCLUDEPATH += \
     $$PWD
 
 LIBS += \
-    -L../qjack -lqjack
+    -L../qtjack -lqtjack
 
 LIBS += -ljack -ljackserver -ljacknet

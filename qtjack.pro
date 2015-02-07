@@ -22,8 +22,8 @@
 ###############################################################################
 
 TEMPLATE = lib
-CONFIG += staticlib flat
-TARGET = qjack
+CONFIG += staticlib
+TARGET = qtjack
 
 OBJECTS_DIR = .obj
 MOC_DIR = .moc
