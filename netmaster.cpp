@@ -1,22 +1,22 @@
 ///////////////////////////////////////////////////////////////////////////////
 //                                                                           //
-//    This file is part of QJack.                                            //
+//    This file is part of QtJack.                                           //
 //    Copyright (C) 2014-2015 Jacob Dawid <jacob@omg-it.works>               //
 //                                                                           //
-//    QJack is free software: you can redistribute it and/or modify          //
+//    QtJack is free software: you can redistribute it and/or modify         //
 //    it under the terms of the GNU General Public License as published by   //
 //    the Free Software Foundation, either version 3 of the License, or      //
 //    (at your option) any later version.                                    //
 //                                                                           //
-//    QJack is distributed in the hope that it will be useful,               //
+//    QtJack is distributed in the hope that it will be useful,              //
 //    but WITHOUT ANY WARRANTY; without even the implied warranty of         //
 //    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the          //
 //    GNU General Public License for more details.                           //
 //                                                                           //
 //    You should have received a copy of the GNU General Public License      //
-//    along with QJack. If not, see <http://www.gnu.org/licenses/>.          //
+//    along with QtJack. If not, see <http://www.gnu.org/licenses/>.         //
 //                                                                           //
-//    It is possible to obtain a closed-source license of QJack.             //
+//    It is possible to obtain a closed-source license of QtJack.            //
 //    If you're interested, contact me at: jacob@omg-it.works                //
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
@@ -24,9 +24,7 @@
 // Own includes
 #include "netmaster.h"
 
-#include <QDebug>
-
-namespace QJack {
+namespace QtJack {
 
 NetMaster::NetMaster() {
     _p = QSharedPointer<NetMasterPrivate>(new NetMasterPrivate());
@@ -46,13 +44,11 @@ bool NetMaster::open(QString ip,
     _p->_jackMaster.audio_input = -1;
     _p->_jackMaster.audio_output = -1;
     strcpy(_p->_jackMaster.master_name, name.toStdString().c_str());
-    qDebug() << "a";
     _p->_jackNetMaster = jack_net_master_open(ip.toStdString().c_str(),
                                               port,
                                               name.toStdString().c_str(),
                                               &_p->_jackMaster,
                                               &_p->_jackSlave);
-    qDebug() << "b";
     return _p->_jackNetMaster != 0;
 }
 
@@ -93,4 +89,4 @@ int NetMaster::synchronizeOutputBuffers(int numberOfAudioBuffers,
                                 midiBuffers);
 }
 
-}
+} // namespace QtJack

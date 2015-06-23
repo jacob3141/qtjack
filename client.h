@@ -1,22 +1,22 @@
 ///////////////////////////////////////////////////////////////////////////////
 //                                                                           //
-//    This file is part of QJack.                                            //
+//    This file is part of QtJack.                                           //
 //    Copyright (C) 2014-2015 Jacob Dawid <jacob@omg-it.works>               //
 //                                                                           //
-//    QJack is free software: you can redistribute it and/or modify          //
+//    QtJack is free software: you can redistribute it and/or modify         //
 //    it under the terms of the GNU General Public License as published by   //
 //    the Free Software Foundation, either version 3 of the License, or      //
 //    (at your option) any later version.                                    //
 //                                                                           //
-//    QJack is distributed in the hope that it will be useful,               //
+//    QtJack is distributed in the hope that it will be useful,              //
 //    but WITHOUT ANY WARRANTY; without even the implied warranty of         //
 //    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the          //
 //    GNU General Public License for more details.                           //
 //                                                                           //
 //    You should have received a copy of the GNU General Public License      //
-//    along with QJack. If not, see <http://www.gnu.org/licenses/>.          //
+//    along with QtJack. If not, see <http://www.gnu.org/licenses/>.         //
 //                                                                           //
-//    It is possible to obtain a closed-source license of QJack.             //
+//    It is possible to obtain a closed-source license of QtJack.            //
 //    If you're interested, contact me at: jacob@omg-it.works                //
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
@@ -39,10 +39,10 @@
 #include <QString>
 #include <QList>
 
-namespace QJack {
+namespace QtJack {
 
 /**
- * @class QJackClient
+ * @class QtJackClient
  * @author Jacob Dawid ( jacob.dawid@omg-it.works )
  * @brief C++ Wrapper for the JACK Audio Connection Kit client API.
  */
@@ -163,19 +163,19 @@ signals:
     void clientUnregistered(QString clientName);
 
     /** Emitted when a port has been registered. */
-    void portRegistered(QJack::Port port);
+    void portRegistered(QtJack::Port port);
 
     /** Emitted when a port has been unregistered. */
-    void portUnregistered(QJack::Port port);
+    void portUnregistered(QtJack::Port port);
 
     /** Emitted when two ports have been connected. */
-    void portsConnected(QJack::Port from, QJack::Port to);
+    void portsConnected(QtJack::Port from, QtJack::Port to);
 
     /** Emitted when two ports have been disconnected. */
-    void portsDisconnected(QJack::Port from, QJack::Port to);
+    void portsDisconnected(QtJack::Port from, QtJack::Port to);
 
     /** Emitted when a port has been renamed. */
-    void portRenamed(QJack::Port port, QString oldName, QString newName);
+    void portRenamed(QtJack::Port port, QString oldName, QString newName);
 
     /** Emitted when the connection graph has changed. */
     void graphOrderHasChanged();
@@ -243,4 +243,4 @@ private:
     Processor *_processor;
 };
 
-}
+} // namespace QtJack
