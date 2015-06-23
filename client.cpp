@@ -335,6 +335,16 @@ Port Client::portById(int id) {
     return Port(jack_port_by_id(_jackClient, id));
 }
 
+TransportPosition Client::transportPosition() {
+    if(!_jackClient) {
+        return TransportPosition();
+    }
+    jack_position_t jackPosition;
+    jack_transport_query(_jackClient, &jackPosition);
+
+    return TransportPosition(jackPosition);
+}
+
 void Client::setProcessor(Processor *audioProcessor) {
     _processor = audioProcessor;
 }
