@@ -30,6 +30,15 @@
 namespace QtJack {
 typedef jack_default_audio_sample_t AudioSample;
 
+enum TransportState {
+    TransportStateStopped,
+    TransportStateRolling,
+    TransportStateLooping,
+    TransportStateStarting,
+    TransportStateNetStarting,
+    TransportStateUnknown
+};
+
 struct TransportPosition {
     TransportPosition() { }
     TransportPosition(jack_position_t jackPosition) {

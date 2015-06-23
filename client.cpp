@@ -335,6 +335,22 @@ Port Client::portById(int id) {
     return Port(jack_port_by_id(_jackClient, id));
 }
 
+TransportState Client::transportState() {
+    if(!_jackClient) {
+        return TransportStateUnknown;
+    }
+    jack_transport_state_t jackTransportState = jack_transport_query(_jackClient, 0);
+    switch (jackTransportState) {
+        case JackTransportStopped: return TransportStateStopped; break;
+        case JackTransportRolling: return TransportStateRolling; break;
+        case JackTransportLooping: return TransportStateLooping; break;
+        case JackTransportStarting: return TransportStateStarting; break;
+        case JackTransportNetStarting: return TransportStateNetStarting; break;
+        default: break;
+    }
+    return TransportStateUnknown;
+}
+
 TransportPosition Client::transportPosition() {
     if(!_jackClient) {
         return TransportPosition();

@@ -140,6 +140,9 @@ public:
     /** @returns a port by its id. */
     Port portById(int id);
 
+    /** @returns the current transport state. */
+    TransportState transportState();
+
     /** @returns the current transport position. */
     TransportPosition transportPosition();
 
