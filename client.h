@@ -53,6 +53,8 @@ public:
     Client(QObject *parent = 0);
     virtual ~Client();
 
+    bool isValid() const REALTIME_SAFE { return _jackClient != 0; }
+
     /**
       * This method attempts to connect to the audio server.
       * @param name Name that will be used to register this
