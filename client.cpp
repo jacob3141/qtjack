@@ -85,6 +85,7 @@ bool Client::disconnectFromServer() {
         emit disconnectedFromServer();
         return true;
     } else {
+        _jackClient = 0;
         return false;
     }
 }
