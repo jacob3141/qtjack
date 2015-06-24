@@ -143,8 +143,15 @@ public:
     /** @returns the current transport state. */
     TransportState transportState();
 
-    /** @returns the current transport position. */
-    TransportPosition transportPosition();
+    /** Queries and @returns the current transport position. */
+    TransportPosition queryTransportPosition();
+
+    /**
+     * Requests the JACK server to reposition the transport to the given
+     * position.
+     * @returns true if successful, false otherwise.
+     */
+    bool requestTransportReposition(TransportPosition queryTransportPosition);
 
 signals:
     /** Emitted when successfully connected to JACK server. */

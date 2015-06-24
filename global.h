@@ -106,6 +106,28 @@ struct TransportPosition {
 
     bool contentsConsistent() { return _uniqueId == _uniqueId2; }
 
+    jack_position_t toJackPosition() {
+        jack_position_t jackPosition;
+        jackPosition.frame_time         = _timeCode._frameTimeSeconds;
+        jackPosition.next_time          = _timeCode._nextFrameTimeSeconds;
+
+        jackPosition.bar                = _bbt._bar;
+        jackPosition.beat               = _bbt._beat;
+        jackPosition.tick               = _bbt._tick;
+        jackPosition.bar_start_tick     = _bbt._barStartTick;
+        jackPosition.beats_per_bar      = _bbt._timeSignatureNominator;
+        jackPosition.beat_type          = _bbt._timeSignatureDenominator;
+        jackPosition.ticks_per_beat     = _bbt._ticksPerBeat;
+        jackPosition.beats_per_minute   = _bbt._beatsPerMinute;
+        jackPosition.bbt_offset         = _bbt._frameOffset;
+
+        jackPosition.audio_frames_per_video_frame = _video._audioFramesPerVideoFrame;
+        jackPosition.video_offset                 = _video._audioToVideoFrameOffset;
+
+        jackPosition.valid              = _valid;
+        return jackPosition;
+    }
+
 private:
     // These four cannot be set from clients, the server sets them.
     // So we make them non-writable for the user to not confuse him.

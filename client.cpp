@@ -351,7 +351,7 @@ TransportState Client::transportState() {
     return TransportStateUnknown;
 }
 
-TransportPosition Client::transportPosition() {
+TransportPosition Client::queryTransportPosition() {
     if(!_jackClient) {
         return TransportPosition();
     }
@@ -359,6 +359,15 @@ TransportPosition Client::transportPosition() {
     jack_transport_query(_jackClient, &jackPosition);
 
     return TransportPosition(jackPosition);
+}
+
+bool Client::requestTransportReposition(TransportPosition transportPosition) {
+    if(!_jackClient) {
+        return false;
+    }
+
+    jack_position_t jackPosition = transportPosition.toJackPosition();
+    return jack_transport_reposition(_jackClient, &jackPosition) == 0;
 }
 
 void Client::setProcessor(Processor *audioProcessor) {
