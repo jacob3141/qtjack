@@ -80,14 +80,12 @@ bool Client::disconnectFromServer() {
         return false;
     }
 
-    if(jack_deactivate(_jackClient) == 0 && jack_client_close(_jackClient) == 0) {
-        _jackClient = 0;
-        emit disconnectedFromServer();
-        return true;
-    } else {
-        _jackClient = 0;
-        return false;
-    }
+    bool success = (jack_deactivate(_jackClient) == 0
+                 && jack_client_close(_jackClient) == 0);
+    _jackClient = 0;
+    emit disconnectedFromServer();
+
+    return success;
 }
 
 AudioPort Client::registerAudioOutPort(QString name) {
@@ -452,6 +450,7 @@ void Client::xrun() {
 }
 
 void Client::shutdown() {
+    emit disconnectFromServer();
     emit serverShutdown();
 }
 
