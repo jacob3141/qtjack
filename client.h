@@ -155,7 +155,7 @@ public:
      */
     bool requestTransportReposition(TransportPosition queryTransportPosition);
 
-signals:
+Q_SIGNALS:
     /** Emitted when successfully connected to JACK server. */
     void connectedToServer();
 

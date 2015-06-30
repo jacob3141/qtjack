@@ -38,11 +38,11 @@ System::System() {
 }
 
 void System::emitError(QString errorMessage) {
-    emit error(errorMessage);
+    Q_EMIT error(errorMessage);
 }
 
 void System::emitInformation(QString informationMessage) {
-    emit information(informationMessage);
+    Q_EMIT information(informationMessage);
 }
 
 System *System::instance() {

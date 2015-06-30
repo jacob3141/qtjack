@@ -67,7 +67,7 @@ public:
     static void informationCallback(const char* message);
 
 
-signals:
+Q_SIGNALS:
     /** This signal will be emitted when an error occurs. */
     void error(QString errorMessage);
 
