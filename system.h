@@ -44,10 +44,10 @@ public:
     };
 
     /** @returns a human readable version string for JACK. */
-    QString versionString() const;
+    QString versionString() const JACK2_ONLY;
 
     /** @returns a struct that contains the JACK version. */
-    Version version() const;
+    Version version() const JACK2_ONLY;
 #endif // QTJACK_JACK2_SUPPORT
 
     /** @returns the instance for this singleton. */

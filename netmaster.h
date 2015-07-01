@@ -38,7 +38,7 @@
 namespace QtJack {
 
 class NetMasterPrivate;
-class NetMaster {
+class NetMaster JACK2_ONLY {
 public:
    NetMaster();
    NetMaster(const NetMaster& other);

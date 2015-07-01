@@ -18,9 +18,17 @@ https://github.com/cybercatalyst/QtJack-Examples
 How To Build
 ============
 
-QtJack solely relies on a recent Qt and libjack-jack2-dev. Install using the following command on Ubuntu, for example:
+QtJack solely relies on a recent Qt and libjack/libjack2. Install using the following command on Ubuntu, for example:
 
 `sudo apt-get install libjack-jackd2-dev`
+
+By default, QtJack builds against JACK1, since many production systems still rely on it. If you want to use JACK2, remove the comment for
+
+`#DEFINES += QTJACK_JACK2_SUPPORT`
+
+and add that same line to you target project. Note that with JACK1, you have fewer functions available than with JACK2. Those are tagged with JACK2_ONLY.
+
+Methods considered to be realtime safe are marked with REALTIME_SAFE.
 
 You can add QtJack to your project easily by using qt-pods. Read more about qt-pods here:
 https://github.com/cybercatalyst/qt-pods

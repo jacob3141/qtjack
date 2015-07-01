@@ -46,7 +46,7 @@ namespace QtJack {
  * First create a master component and make it listen. Then connect
  * with the slave component.
  */
-class NetSlave : public QObject {
+class NetSlave : public QObject JACK2_ONLY {
     Q_OBJECT
 public:
     NetSlave(QObject *parent = 0);

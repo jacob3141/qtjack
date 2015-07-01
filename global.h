@@ -152,4 +152,5 @@ private:
 // those methods do not block for a large amount of time and thus are suited
 // for realtime operation.
 #define REALTIME_SAFE
+#define JACK2_ONLY
 

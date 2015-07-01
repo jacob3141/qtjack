@@ -56,12 +56,12 @@ public:
 
     QString name();
 #ifdef QTJACK_JACK2_SUPPORT
-    DriverType type();
+    DriverType type() JACK2_ONLY;
 #endif // QTJACK_JACK2_SUPPORT
     ParameterMap parameters();
 
 #ifdef QTJACK_JACK2_SUPPORT
-    int parseParameters(int argc, char* argv[]);
+    int parseParameters(int argc, char* argv[]) JACK2_ONLY;
 #endif // QTJACK_JACK2_SUPPORT
 
 private:
