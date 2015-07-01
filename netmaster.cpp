@@ -21,6 +21,8 @@
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
+#ifdef QTJACK_JACK2_SUPPORT
+
 // Own includes
 #include "netmaster.h"
 
@@ -90,3 +92,5 @@ int NetMaster::synchronizeOutputBuffers(int numberOfAudioBuffers,
 }
 
 } // namespace QtJack
+
+#endif // QTJACK_JACK2_SUPPORT

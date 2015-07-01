@@ -23,6 +23,8 @@
 
 #pragma once
 
+#ifdef QTJACK_JACK2_SUPPORT
+
 // JACK includes
 #include <jack/net.h>
 
@@ -117,3 +119,5 @@ public:
 };
 
 } // namespace QtJack
+
+#endif // QTJACK_JACK2_SUPPORT

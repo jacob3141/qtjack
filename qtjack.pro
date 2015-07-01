@@ -28,6 +28,8 @@ TARGET = qtjack
 OBJECTS_DIR = .obj
 MOC_DIR = .moc
 
+#DEFINES += QTJACK_JACK2_SUPPORT
+
 SOURCES += \
     system.cpp \
     buffer.cpp \

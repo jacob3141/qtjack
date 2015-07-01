@@ -23,6 +23,8 @@
 
 #pragma once
 
+#ifdef QTJACK_JACK2_SUPPORT
+
 // Qt includes
 #include <QObject>
 #include <QString>
@@ -94,3 +96,5 @@ private:
 };
 
 } // namespace QtJack
+
+#endif // QTJACK_JACK2_SUPPORT

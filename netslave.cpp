@@ -21,6 +21,8 @@
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
+#ifdef QTJACK_JACK2_SUPPORT
+
 // Own includes
 #include "netslave.h"
 
@@ -74,3 +76,5 @@ void NetSlave::setProcessor(Processor *audioProcessor) {
 }
 
 } // namespace QtJack
+
+#endif // QTJACK_JACK2_SUPPORT
