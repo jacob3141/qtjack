@@ -49,7 +49,7 @@ System *System::instance() {
     return &_instance;
 }
 
-#ifdef USING_JACK2
+#ifdef QTJACK_JACK2_SUPPORT
 
 QString System::versionString() const {
     return QString(jack_get_version_string());
@@ -64,7 +64,7 @@ System::Version System::version() const {
     return version;
 }
 
-#endif
+#endif // QTJACK_JACK2_SUPPORT
 
 void System::errorCallback(const char *message) {
     instance()->emitError(QString(message));

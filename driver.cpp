@@ -27,7 +27,6 @@
 // JACK includes
 #include <jack/control.h>
 
-
 namespace QtJack {
 
 Driver::Driver(jackctl_driver_t *driver)
@@ -43,6 +42,7 @@ QString Driver::name() {
     return QString(jackctl_driver_get_name(_jackDriver));
 }
 
+#ifdef QTJACK_JACK2_SUPPORT
 Driver::DriverType Driver::type() {
     if(!isValid()) {
         return DriverTypeInvalid;
@@ -57,6 +57,7 @@ Driver::DriverType Driver::type() {
         return DriverTypeInvalid;
     }
 }
+#endif // QTJACK_JACK2_SUPPORT
 
 ParameterMap Driver::parameters() {
     if(!isValid()) {
@@ -73,6 +74,7 @@ ParameterMap Driver::parameters() {
     return parameterMap;
 }
 
+#ifdef QTJACK_JACK2_SUPPORT
 int Driver::parseParameters(int argc, char* argv[]) {
     if(!isValid()) {
         return -1;
@@ -80,5 +82,6 @@ int Driver::parseParameters(int argc, char* argv[]) {
 
     return jackctl_driver_params_parse(_jackDriver, argc, argv);
 }
+#endif // QTJACK_JACK2_SUPPORT
 
 } // namespace QtJack

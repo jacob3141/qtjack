@@ -25,7 +25,11 @@
 
 // JACK includes
 #include <jack/types.h>
+#include <jack/transport.h>
+
+#ifdef QTJACK_JACK2_SUPPORT
 #include <jack/net.h>
+#endif
 
 namespace QtJack {
 typedef jack_default_audio_sample_t AudioSample;
@@ -149,4 +153,3 @@ private:
 // for realtime operation.
 #define REALTIME_SAFE
 
-#define USING_JACK2

@@ -40,14 +40,23 @@ Server::~Server() {
 bool Server::start(Driver driver) {
     return isValid()
         && driver.isValid()
+#ifdef QTJACK_JACK2_SUPPORT
         && jackctl_server_open(_jackServer, driver._jackDriver)
         && jackctl_server_start(_jackServer);
+#else
+        && jackctl_server_start(_jackServer, driver._jackDriver);
+#endif // QTJACK_JACK2_SUPPORT
 }
 
 bool Server::stop() {
     return isValid()
+#ifdef QTJACK_JACK2_SUPPORT
         && jackctl_server_stop(_jackServer)
         && jackctl_server_close(_jackServer);
+#else
+        && jackctl_server_stop(_jackServer);
+#endif // QTJACK_JACK2_SUPPORT
+
 }
 
 DriverMap Server::availableDrivers() const {

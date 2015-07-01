@@ -35,7 +35,7 @@ class System : public QObject {
     Q_OBJECT
 public:    
 
-#ifdef USING_JACK2
+#ifdef QTJACK_JACK2_SUPPORT
     struct Version {
         int major;
         int minor;
@@ -48,7 +48,7 @@ public:
 
     /** @returns a struct that contains the JACK version. */
     Version version() const;
-#endif
+#endif // QTJACK_JACK2_SUPPORT
 
     /** @returns the instance for this singleton. */
     static System *instance();
