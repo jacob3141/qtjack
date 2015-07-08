@@ -28,14 +28,9 @@ TARGET = qtjack
 OBJECTS_DIR = .obj
 MOC_DIR = .moc
 
-# Enable this if you want to build with JACK2
-#DEFINES += QTJACK_JACK2_SUPPORT
-
-!contains(DEFINES, QTJACK_JACK2_SUPPORT) {
-  QMAKE_CFLAGS = -fpermissive
-  QMAKE_CXXFLAGS = -fpermissive
-  QMAKE_LFLAGS = -fpermissive
-}
+QMAKE_CFLAGS = -fpermissive
+QMAKE_CXXFLAGS = -fpermissive
+QMAKE_LFLAGS = -fpermissive
 
 SOURCES += \
     system.cpp \
@@ -45,8 +40,6 @@ SOURCES += \
     parameter.cpp \
     port.cpp \
     server.cpp \
-    netslave.cpp \
-    netmaster.cpp \
     audioport.cpp \
     midiport.cpp \
     audiobuffer.cpp \
@@ -71,10 +64,6 @@ HEADERS += \
     Processor \
     ringbuffer.h \
     RingBuffer \
-    netslave.h \
-    NetSlave \
-    netmaster.h \
-    NetMaster \
     audioport.h \
     AudioPort \
     midiport.h \

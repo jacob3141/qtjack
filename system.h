@@ -33,23 +33,7 @@ namespace QtJack {
 
 class System : public QObject {
     Q_OBJECT
-public:    
-
-#ifdef QTJACK_JACK2_SUPPORT
-    struct Version {
-        int major;
-        int minor;
-        int micro;
-        int proto;
-    };
-
-    /** @returns a human readable version string for JACK. */
-    QString versionString() const JACK2_ONLY;
-
-    /** @returns a struct that contains the JACK version. */
-    Version version() const JACK2_ONLY;
-#endif // QTJACK_JACK2_SUPPORT
-
+public:
     /** @returns the instance for this singleton. */
     static System *instance();
 

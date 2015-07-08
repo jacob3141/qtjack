@@ -42,23 +42,6 @@ QString Driver::name() {
     return QString(jackctl_driver_get_name(_jackDriver));
 }
 
-#ifdef QTJACK_JACK2_SUPPORT
-Driver::DriverType Driver::type() {
-    if(!isValid()) {
-        return DriverTypeInvalid;
-    }
-
-    switch (jackctl_driver_get_type(_jackDriver)) {
-    case JackMaster:
-        return DriverTypeMaster;
-    case JackSlave:
-        return DriverTypeSlave;
-    default:
-        return DriverTypeInvalid;
-    }
-}
-#endif // QTJACK_JACK2_SUPPORT
-
 ParameterMap Driver::parameters() {
     if(!isValid()) {
         return ParameterMap();
@@ -73,15 +56,5 @@ ParameterMap Driver::parameters() {
     }
     return parameterMap;
 }
-
-#ifdef QTJACK_JACK2_SUPPORT
-int Driver::parseParameters(int argc, char* argv[]) {
-    if(!isValid()) {
-        return -1;
-    }
-
-    return jackctl_driver_params_parse(_jackDriver, argc, argv);
-}
-#endif // QTJACK_JACK2_SUPPORT
 
 } // namespace QtJack

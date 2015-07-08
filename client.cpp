@@ -60,9 +60,7 @@ bool Client::connectToServer(QString name) {
         jack_set_client_registration_callback(_jackClient, Client::clientRegistrationCallback, (void*)this);
         jack_set_port_registration_callback(_jackClient, Client::portRegistrationCallback, (void*)this);
         jack_set_port_connect_callback(_jackClient, Client::portConnectCallback, (void*)this);
-#ifdef QTJACK_JACK2_SUPPORT
-        jack_set_port_rename_callback(_jackClient, Client::portRenameCallback, (void*)this);
-#endif // QTJACK_JACK2_SUPPORT
+        //jack_set_port_rename_callback(_jackClient, Client::portRenameCallback, (void*)this);
         jack_set_graph_order_callback(_jackClient, Client::graphOrderCallback, (void*)this);
         jack_set_latency_callback(_jackClient, Client::latencyCallback, (void*)this);
         jack_set_buffer_size_callback(_jackClient, Client::bufferSizeCallback, (void*)this);
@@ -346,9 +344,6 @@ TransportState Client::transportState() {
         case JackTransportRolling: return TransportStateRolling; break;
         case JackTransportLooping: return TransportStateLooping; break;
         case JackTransportStarting: return TransportStateStarting; break;
-#ifdef QTJACK_JACK2_SUPPORT
-        case JackTransportNetStarting: return TransportStateNetStarting; break;
-#endif // QTJACK_JACK2_SUPPORT
         default: break;
     }
     return TransportStateUnknown;
@@ -509,18 +504,11 @@ void Client::portConnectCallback(jack_port_id_t a, jack_port_id_t b, int connect
     }
 }
 
-#ifdef QTJACK_JACK2_SUPPORT
-int Client::portRenameCallback(jack_port_id_t port, const char* oldName, const char* newName, void *argument) {
-#else
 void Client::portRenameCallback(jack_port_id_t port, const char* oldName, const char* newName, void *argument) {
-#endif // QTJACK_JACK2_SUPPORT
     Client *jackClient = static_cast<Client*>(argument);
     if(jackClient) {
         jackClient->portRename(port, oldName, newName);
     }
-#ifdef QTJACK_JACK2_SUPPORT
-    return 0;
-#endif // QTJACK_JACK2_SUPPORT
 }
 
 int Client::graphOrderCallback(void *argument) {

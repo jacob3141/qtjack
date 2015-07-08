@@ -239,11 +239,7 @@ private:
     static void clientRegistrationCallback(const char* name, int reg, void *argument);
     static void portRegistrationCallback(jack_port_id_t port, int reg, void *argument);
     static void portConnectCallback(jack_port_id_t a, jack_port_id_t b, int connect, void *argument);
-#ifdef QTJACK_JACK2_SUPPORT
-    static int portRenameCallback(jack_port_id_t port, const char* oldName, const char* newName, void *argument);
-#else
     static void portRenameCallback(jack_port_id_t port, const char* oldName, const char* newName, void *argument);
-#endif // QTJACK_JACK2_SUPPORT
     static int graphOrderCallback(void *argument);
     static void latencyCallback(jack_latency_callback_mode_t mode, void *argument);
     static int sampleRateCallback(jack_nframes_t sampleCount, void *argument);

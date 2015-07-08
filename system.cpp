@@ -49,23 +49,6 @@ System *System::instance() {
     return &_instance;
 }
 
-#ifdef QTJACK_JACK2_SUPPORT
-
-QString System::versionString() const {
-    return QString(jack_get_version_string());
-}
-
-System::Version System::version() const {
-    Version version;
-    jack_get_version(&version.major,
-                     &version.minor,
-                     &version.micro,
-                     &version.proto);
-    return version;
-}
-
-#endif // QTJACK_JACK2_SUPPORT
-
 void System::errorCallback(const char *message) {
     instance()->emitError(QString(message));
 }

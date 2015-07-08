@@ -44,25 +44,10 @@ public:
         _jackDriver = 0;
     }
 
-#ifdef QTJACK_JACK2_SUPPORT
-    enum DriverType {
-        DriverTypeMaster,
-        DriverTypeSlave,
-        DriverTypeInvalid
-    };
-#endif // QTJACK_JACK2_SUPPORT
-
     bool isValid() const { return _jackDriver != 0; }
 
     QString name();
-#ifdef QTJACK_JACK2_SUPPORT
-    DriverType type() JACK2_ONLY;
-#endif // QTJACK_JACK2_SUPPORT
     ParameterMap parameters();
-
-#ifdef QTJACK_JACK2_SUPPORT
-    int parseParameters(int argc, char* argv[]) JACK2_ONLY;
-#endif // QTJACK_JACK2_SUPPORT
 
 private:
     Driver(jackctl_driver_t *driver);
