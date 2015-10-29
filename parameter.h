@@ -29,9 +29,6 @@ typedef struct jackctl_parameter jackctl_parameter_t;
 // Qt includes
 #include <QString>
 #include <QMap>
-
-// Without the following define, the include leads to a compilation error
-#define QT_NO_SIGNALS_SLOTS_KEYWORDS
 #include <QVariant>
 
 // Own includes

@@ -155,7 +155,7 @@ public:
      */
     bool requestTransportReposition(TransportPosition queryTransportPosition);
 
-signals:
+Q_SIGNALS:
     /** Emitted when successfully connected to JACK server. */
     void connectedToServer();
 
@@ -239,7 +239,7 @@ private:
     static void clientRegistrationCallback(const char* name, int reg, void *argument);
     static void portRegistrationCallback(jack_port_id_t port, int reg, void *argument);
     static void portConnectCallback(jack_port_id_t a, jack_port_id_t b, int connect, void *argument);
-    static int portRenameCallback(jack_port_id_t port, const char* oldName, const char* newName, void *argument);
+    static void portRenameCallback(jack_port_id_t port, const char* oldName, const char* newName, void *argument);
     static int graphOrderCallback(void *argument);
     static void latencyCallback(jack_latency_callback_mode_t mode, void *argument);
     static int sampleRateCallback(jack_nframes_t sampleCount, void *argument);

@@ -40,12 +40,14 @@ Server::~Server() {
 bool Server::start(Driver driver) {
     return isValid()
         && driver.isValid()
+        // Note: Slightly different API than JACK1
         && jackctl_server_open(_jackServer, driver._jackDriver)
         && jackctl_server_start(_jackServer);
 }
 
 bool Server::stop() {
     return isValid()
+        // Note: Slightly different API than JACK1
         && jackctl_server_stop(_jackServer)
         && jackctl_server_close(_jackServer);
 }

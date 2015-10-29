@@ -38,33 +38,16 @@ System::System() {
 }
 
 void System::emitError(QString errorMessage) {
-    emit error(errorMessage);
+    Q_EMIT error(errorMessage);
 }
 
 void System::emitInformation(QString informationMessage) {
-    emit information(informationMessage);
+    Q_EMIT information(informationMessage);
 }
 
 System *System::instance() {
     return &_instance;
 }
-
-#ifdef USING_JACK2
-
-QString System::versionString() const {
-    return QString(jack_get_version_string());
-}
-
-System::Version System::version() const {
-    Version version;
-    jack_get_version(&version.major,
-                     &version.minor,
-                     &version.micro,
-                     &version.proto);
-    return version;
-}
-
-#endif
 
 void System::errorCallback(const char *message) {
     instance()->emitError(QString(message));

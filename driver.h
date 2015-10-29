@@ -44,19 +44,10 @@ public:
         _jackDriver = 0;
     }
 
-    enum DriverType {
-        DriverTypeMaster,
-        DriverTypeSlave,
-        DriverTypeInvalid
-    };
-
     bool isValid() const { return _jackDriver != 0; }
 
     QString name();
-    DriverType type();
     ParameterMap parameters();
-
-    int parseParameters(int argc, char* argv[]);
 
 private:
     Driver(jackctl_driver_t *driver);

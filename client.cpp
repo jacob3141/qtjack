@@ -60,7 +60,7 @@ bool Client::connectToServer(QString name) {
         jack_set_client_registration_callback(_jackClient, Client::clientRegistrationCallback, (void*)this);
         jack_set_port_registration_callback(_jackClient, Client::portRegistrationCallback, (void*)this);
         jack_set_port_connect_callback(_jackClient, Client::portConnectCallback, (void*)this);
-        jack_set_port_rename_callback(_jackClient, Client::portRenameCallback, (void*)this);
+        //jack_set_port_rename_callback(_jackClient, Client::portRenameCallback, (void*)this);
         jack_set_graph_order_callback(_jackClient, Client::graphOrderCallback, (void*)this);
         jack_set_latency_callback(_jackClient, Client::latencyCallback, (void*)this);
         jack_set_buffer_size_callback(_jackClient, Client::bufferSizeCallback, (void*)this);
@@ -69,7 +69,7 @@ bool Client::connectToServer(QString name) {
         jack_on_shutdown(_jackClient, Client::shutdownCallback, (void*)this);
         jack_on_info_shutdown(_jackClient, Client::infoShutdownCallback, (void*)this);
 
-        emit connectedToServer();
+        Q_EMIT connectedToServer();
         return true;
     }
 }
@@ -83,7 +83,7 @@ bool Client::disconnectFromServer() {
     bool success = (jack_deactivate(_jackClient) == 0
                  && jack_client_close(_jackClient) == 0);
     _jackClient = 0;
-    emit disconnectedFromServer();
+    Q_EMIT disconnectedFromServer();
 
     return success;
 }
@@ -232,7 +232,7 @@ bool Client::activate() {
     }
 
     if(jack_activate(_jackClient) == 0) {
-        emit activated();
+        Q_EMIT activated();
         return true;
     }
     return false;
@@ -244,7 +244,7 @@ bool Client::deactivate() {
     }
 
     if(jack_deactivate(_jackClient) == 0) {
-        emit deactivated();
+        Q_EMIT deactivated();
         return true;
     }
     return false;
@@ -298,7 +298,7 @@ bool Client::isRealtime() const {
 int Client::numberOfInputPorts(QString clientName) const {
     QList<Port> ports = portsForClient(clientName);
     int inputPortCount = 0;
-    foreach(Port port, ports) {
+    Q_FOREACH(Port port, ports) {
         if(port.isInput()) {
             inputPortCount++;
         }
@@ -309,7 +309,7 @@ int Client::numberOfInputPorts(QString clientName) const {
 int Client::numberOfOutputPorts(QString clientName) const {
     QList<Port> ports = portsForClient(clientName);
     int outputPortCount = 0;
-    foreach(Port port, ports) {
+    Q_FOREACH(Port port, ports) {
         if(port.isOutput()) {
             outputPortCount++;
         }
@@ -344,7 +344,6 @@ TransportState Client::transportState() {
         case JackTransportRolling: return TransportStateRolling; break;
         case JackTransportLooping: return TransportStateLooping; break;
         case JackTransportStarting: return TransportStateStarting; break;
-        case JackTransportNetStarting: return TransportStateNetStarting; break;
         default: break;
     }
     return TransportStateUnknown;
@@ -384,17 +383,17 @@ void Client::process(int samples) {
 
 void Client::freewheel(int starting) {
     if(starting == 0) {
-        emit stoppedFreewheeling();
+        Q_EMIT stoppedFreewheeling();
     } else {
-        emit startedFreewheeling();
+        Q_EMIT startedFreewheeling();
     }
 }
 
 void Client::clientRegistration(const char *name, int reg) {
     if(reg == 0) {
-        emit clientUnregistered(QString(name));
+        Q_EMIT clientUnregistered(QString(name));
     } else {
-        emit clientRegistered(QString(name));
+        Q_EMIT clientRegistered(QString(name));
     }
 }
 
@@ -402,9 +401,9 @@ void Client::portRegistration(jack_port_id_t portId, int reg) {
     QtJack::Port port(jack_port_by_id(_jackClient, portId));
     if(port.isValid()) {
         if(reg == 0) {
-            emit portUnregistered(port);
+            Q_EMIT portUnregistered(port);
         } else {
-            emit portRegistered(port);
+            Q_EMIT portRegistered(port);
         }
     }
 }
@@ -415,9 +414,9 @@ void Client::portConnect(jack_port_id_t a, jack_port_id_t b, int connect) {
 
     if(portA.isValid() && portB.isValid()) {
         if(connect == 0) {
-            emit portsDisconnected(portA, portB);
+            Q_EMIT portsDisconnected(portA, portB);
         } else {
-            emit portsConnected(portA, portB);
+            Q_EMIT portsConnected(portA, portB);
         }
     }
 }
@@ -425,12 +424,12 @@ void Client::portConnect(jack_port_id_t a, jack_port_id_t b, int connect) {
 void Client::portRename(jack_port_id_t portId, const char *oldName, const char *newName) {
     QtJack::Port port(jack_port_by_id(_jackClient, portId));
     if(port.isValid()) {
-        emit portRenamed(port, QString(oldName), QString(newName));
+        Q_EMIT portRenamed(port, QString(oldName), QString(newName));
     }
 }
 
 void Client::graphOrder() {
-    emit graphOrderHasChanged();
+    Q_EMIT graphOrderHasChanged();
 }
 
 void Client::latency(jack_latency_callback_mode_t mode) {
@@ -438,26 +437,25 @@ void Client::latency(jack_latency_callback_mode_t mode) {
 }
 
 void Client::sampleRate(int samples) {
-    emit sampleRateChanged(samples);
+    Q_EMIT sampleRateChanged(samples);
 }
 
 void Client::bufferSize(int samples) {
-    emit bufferSizeChanged(samples);
+    Q_EMIT bufferSizeChanged(samples);
 }
 
 void Client::xrun() {
-    emit xrunOccured();
+    Q_EMIT xrunOccured();
 }
 
 void Client::shutdown() {
-    emit disconnectFromServer();
-    emit serverShutdown();
+    Q_EMIT disconnectFromServer();
+    Q_EMIT serverShutdown();
 }
 
 void Client::infoShutdown(jack_status_t code, const char *reason) {
     Q_UNUSED(code);
     Q_UNUSED(reason);
-    qDebug() << "s2";
 }
 
 // Static callbacks
@@ -506,12 +504,11 @@ void Client::portConnectCallback(jack_port_id_t a, jack_port_id_t b, int connect
     }
 }
 
-int Client::portRenameCallback(jack_port_id_t port, const char* oldName, const char* newName, void *argument) {
+void Client::portRenameCallback(jack_port_id_t port, const char* oldName, const char* newName, void *argument) {
     Client *jackClient = static_cast<Client*>(argument);
     if(jackClient) {
         jackClient->portRename(port, oldName, newName);
     }
-    return 0;
 }
 
 int Client::graphOrderCallback(void *argument) {

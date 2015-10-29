@@ -2,7 +2,7 @@
 
 Support this and other free software projects of mine by donating bitcoins:
 ```cpp
-1HdLeSj4SfRC77tb6pDUPqeXGiw3T2RqrG
+1Hk5EkcZRaio4uGXSU453E1bNFTecsZEpt
 ```
 
 Say Hello To QtJack
@@ -18,9 +18,11 @@ https://github.com/cybercatalyst/QtJack-Examples
 How To Build
 ============
 
-QtJack solely relies on a recent Qt and libjack-jack2-dev. Install using the following command on Ubuntu, for example:
+QtJack solely relies on a recent Qt and libjack/libjack2. Install using the following command on Ubuntu, for example:
 
-`sudo apt-get install libjack-jackd2-dev`
+`sudo apt-get install libjack-jackd2-dev jackd2`
+
+Methods considered to be realtime safe are marked with REALTIME_SAFE.
 
 You can add QtJack to your project easily by using qt-pods. Read more about qt-pods here:
 https://github.com/cybercatalyst/qt-pods
