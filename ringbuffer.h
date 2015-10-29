@@ -116,6 +116,7 @@ private:
     QSharedPointer<RingBufferPrivate> _p;
 };
 
-typedef RingBuffer<jack_default_audio_sample_t> AudioRingBuffer;
+typedef RingBuffer<AudioSample> AudioRingBuffer;
+typedef RingBuffer<MidiSample> MidiRingBuffer;
 
 } // namespace QtJack

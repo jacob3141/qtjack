@@ -29,6 +29,7 @@
 
 namespace QtJack {
 typedef jack_default_audio_sample_t AudioSample;
+typedef char MidiSample;
 
 enum TransportState {
     TransportStateStopped,

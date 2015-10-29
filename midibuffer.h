@@ -34,10 +34,42 @@ class MidiBuffer : public Buffer {
 public:
     MidiBuffer();
     MidiBuffer(const MidiBuffer& other);
+    virtual ~MidiBuffer();
+
+    /** Sets all samples to zero. */
+    bool clear() REALTIME_SAFE;
+
+    /** @returns sample at position i in the midi buffer. */
+    MidiSample read(int i, bool *ok = 0) const REALTIME_SAFE;
+
+    /** Writes sample at position i in the midi buffer. */
+    bool write(int i, MidiSample value) REALTIME_SAFE;
+
+    /**
+     * Copies all samples from this buffer to the given buffer.
+     * If the source buffer is greater than the target buffer, samples
+     * will be truncated. If the target buffer is greater than the
+     * source buffer, this operation affects the n samples at the
+     * beginning of the target buffer.
+     */
+    bool copyTo(MidiBuffer targetBuffer) const REALTIME_SAFE;
+
+    /**
+     * Pushes the contents of this buffer to the specified ring buffer.
+     * @param ringBuffer The ring buffer to write to.
+     * @returns true on succes, false otherwise.
+     */
+    bool push(MidiRingBuffer& ringBuffer) REALTIME_SAFE;
+
+    /**
+     * Pops the contents of this buffer from the specified ring buffer.
+     * @param ringBuffer The ring buffer to read from.
+     * @returns true on succes, false otherwise.
+     */
+    bool pop(MidiRingBuffer& ringBuffer) REALTIME_SAFE;
 
 protected:
     MidiBuffer(int size, void *buffer);
-
 };
 
 } // namespace QtJack

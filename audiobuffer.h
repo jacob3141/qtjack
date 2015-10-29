@@ -92,10 +92,6 @@ public:
      */
     bool pop(AudioRingBuffer& ringBuffer) REALTIME_SAFE;
 
-protected:
-    void allocateMemory();
-    void releaseMemory();
-
 private:
     AudioBuffer(int size, void *buffer);
 };
