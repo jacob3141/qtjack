@@ -36,12 +36,15 @@ public:
     MidiBuffer(const MidiBuffer& other);
     virtual ~MidiBuffer();
 
+#if 0
     /** Sets all samples to zero. */
     bool clear() REALTIME_SAFE;
+#endif
 
     /** @returns sample at position i in the midi buffer. */
-    MidiSample read(int i, bool *ok = 0) const REALTIME_SAFE;
+    bool read(MidiEvent *ms, int i, bool *ok = 0) const REALTIME_SAFE;
 
+#if 0
     /** Writes sample at position i in the midi buffer. */
     bool write(int i, MidiSample value) REALTIME_SAFE;
 
@@ -67,6 +70,7 @@ public:
      * @returns true on succes, false otherwise.
      */
     bool pop(MidiRingBuffer& ringBuffer) REALTIME_SAFE;
+#endif
 
     /**
      * @returns the number of midi events in the buffer.
