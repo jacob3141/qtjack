@@ -46,12 +46,12 @@ bool MidiBuffer::clear() {
         return false;
     }
     for(int i = 0; i < _size; i++) {
-        ((MidiSample*)_jackBuffer)[i] = 0.0;
+        ((MidiData*)_jackBuffer)[i] = 0.0;
     }
     return true;
 }
 
-MidiSample MidiBuffer::read(int i, bool *ok) const {
+MidiData MidiBuffer::read(int i, bool *ok) const {
     if(!isValid()) {
         if(ok) {
             (*ok) = false;
@@ -62,17 +62,89 @@ MidiSample MidiBuffer::read(int i, bool *ok) const {
     if(ok) {
         (*ok) = true;
     }
-    return (double)((i >= 0 && i < _size) ? ((MidiSample*)(_jackBuffer))[i] : 0.0);
+    return (double)((i >= 0 && i < _size) ? ((MidiData*)(_jackBuffer))[i] : 0.0);
 }
 
-bool MidiBuffer::write(int i, MidiSample value) {
+int MidiBuffer::numberOfEvents() {
+    return jack_midi_get_event_count(_jackBuffer);
+}
+
+MidiEvent MidiBuffer::readEvent(int index, bool *ok) {
+    if(!isValid()) {
+        if(ok) {
+            (*ok) = false;
+        }
+        return MidiEvent();
+    }
+
+    MidiEvent midiEvent;
+    bool success = (jack_midi_event_get(
+        &midiEvent,
+        _jackBuffer,
+        index) == 0);
+
+    if(ok) {
+        (*ok) = success;
+    }
+
+    return midiEvent;
+}
+
+bool MidiBuffer::write(int i, MidiData value) {
     if(!isValid()) {
         return false;
     }
     if(i >= 0 && i < _size) {
-        ((MidiSample*)_jackBuffer)[i] = (MidiSample)value;
+        ((MidiData*)_jackBuffer)[i] = (MidiData)value;
     }
     return true;
+}
+
+void MidiBuffer::clearEventBuffer() {
+    if(!isValid()) {
+        return;
+    }
+
+    jack_midi_clear_buffer(_jackBuffer);
+}
+
+void MidiBuffer::resetEventBuffer() {
+    if(!isValid()) {
+        return;
+    }
+
+    jack_midi_reset_buffer(_jackBuffer);
+}
+
+size_t MidiBuffer::maximumEventSize() {
+    if(!isValid()) {
+        return 0;
+    }
+
+    return jack_midi_max_event_size(_jackBuffer);
+}
+
+MidiData* MidiBuffer::reserveEvent(int sample, size_t dataSize) {
+    if(!isValid()) {
+        return 0;
+    }
+
+    return jack_midi_event_reserve(
+        _jackBuffer,
+        (jack_nframes_t)sample,
+        dataSize);
+}
+
+bool MidiBuffer::writeEvent(int sample, MidiData *midiData, size_t dataSize) {
+    if(!isValid()) {
+        return false;
+    }
+
+    return (jack_midi_event_write(
+        _jackBuffer,
+        (jack_nframes_t)sample,
+        (const jack_midi_data_t *)midiData,
+        dataSize) == 0);
 }
 
 bool MidiBuffer::copyTo(MidiBuffer targetBuffer) const {
@@ -82,7 +154,7 @@ bool MidiBuffer::copyTo(MidiBuffer targetBuffer) const {
 
     int size = _size < targetBuffer.size() ? _size : targetBuffer.size();
     for(int i = 0; i < size; i++) {
-        ((MidiSample*)targetBuffer._jackBuffer)[i] = ((MidiSample*)_jackBuffer)[i];
+        ((MidiData*)targetBuffer._jackBuffer)[i] = ((MidiData*)_jackBuffer)[i];
     }
 
     return true;
@@ -90,7 +162,7 @@ bool MidiBuffer::copyTo(MidiBuffer targetBuffer) const {
 
 bool MidiBuffer::push(MidiRingBuffer &ringBuffer) {
     if(_size <= ringBuffer.numberOfElementsCanBeWritten()) {
-        ringBuffer.write((MidiSample*)_jackBuffer, _size);
+        ringBuffer.write((MidiData*)_jackBuffer, _size);
         return true;
     }
     return false;
@@ -98,10 +170,18 @@ bool MidiBuffer::push(MidiRingBuffer &ringBuffer) {
 
 bool MidiBuffer::pop(MidiRingBuffer &ringBuffer) {
     if(ringBuffer.numberOfElementsAvailableForRead() >= _size) {
-        ringBuffer.read((MidiSample*)_jackBuffer, _size);
+        ringBuffer.read((MidiData*)_jackBuffer, _size);
         return true;
     }
     return false;
+}
+
+int MidiBuffer::lostEventCount() {
+    if(!isValid()) {
+        return -1;
+    }
+
+    return jack_midi_get_lost_event_count(_jackBuffer);
 }
 
 } // namespace QtJack

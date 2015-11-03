@@ -43,7 +43,8 @@ SOURCES += \
     audioport.cpp \
     midiport.cpp \
     audiobuffer.cpp \
-    midibuffer.cpp
+    midibuffer.cpp \
+    midievent.cpp
 
 HEADERS += \
     system.h \
@@ -72,8 +73,11 @@ HEADERS += \
     AudioBuffer \
     MidiBuffer \
     global.h \
-    MidiPort
+    MidiPort \
+    midievent.h \
+    MidiEvent
 
 OTHER_FILES = \
     README.md \
     LICENSE
+

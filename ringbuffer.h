@@ -117,6 +117,6 @@ private:
 };
 
 typedef RingBuffer<AudioSample> AudioRingBuffer;
-typedef RingBuffer<MidiSample> MidiRingBuffer;
+typedef RingBuffer<MidiData> MidiRingBuffer;
 
 } // namespace QtJack

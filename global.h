@@ -26,10 +26,11 @@
 // JACK includes
 #include <jack/types.h>
 #include <jack/transport.h>
+#include <jack/midiport.h>
 
 namespace QtJack {
 typedef jack_default_audio_sample_t AudioSample;
-typedef char MidiSample;
+typedef jack_midi_data_t MidiData;
 
 enum TransportState {
     TransportStateStopped,
@@ -149,5 +150,3 @@ private:
 // those methods do not block for a large amount of time and thus are suited
 // for realtime operation.
 #define REALTIME_SAFE
-#define JACK2_ONLY
-

@@ -26,6 +26,7 @@
 // Own includes
 #include "global.h"
 #include "buffer.h"
+#include "midievent.h"
 
 namespace QtJack {
 
@@ -40,10 +41,40 @@ public:
     bool clear() REALTIME_SAFE;
 
     /** @returns sample at position i in the midi buffer. */
-    MidiSample read(int i, bool *ok = 0) const REALTIME_SAFE;
+    MidiData read(int i, bool *ok = 0) const REALTIME_SAFE;
+
+    /** @returns the number of MIDI events in the buffer. */
+    int numberOfEvents();
+
+    /** @returns the MIDI event at the given index. */
+    MidiEvent readEvent(int index, bool *ok = 0);
 
     /** Writes sample at position i in the midi buffer. */
-    bool write(int i, MidiSample value) REALTIME_SAFE;
+    bool write(int i, MidiData value) REALTIME_SAFE;
+
+    /** Clears the event buffer of an output port. */
+    void clearEventBuffer();
+
+    /** Reset the event buffer (for memory buffers). */
+    void resetEventBuffer();
+
+    /** Get the size of the largest event fitting into this buffer. */
+    size_t maximumEventSize();
+
+    /**
+     * Reserves space for an event to be written to the buffer.
+     * @returns a valid pointer to a data area or NULL or error.
+     */
+    MidiData *reserveEvent(int sample, size_t dataSize);
+
+    /**
+     * Writes an event to the event buffer.
+     * @param sample The sample offset.
+     * @param midiData A pointer to the beginning of a MIDI data buffer.
+     * @param dataSize The size of the data buffer.
+     * @returns true on success, false otherwise.
+     */
+    bool writeEvent(int sample, MidiData *midiData, size_t dataSize);
 
     /**
      * Copies all samples from this buffer to the given buffer.
@@ -67,6 +98,9 @@ public:
      * @returns true on succes, false otherwise.
      */
     bool pop(MidiRingBuffer& ringBuffer) REALTIME_SAFE;
+
+    /** Get the number of events that could not be written to the buffer. */
+    int lostEventCount();
 
 protected:
     MidiBuffer(int size, void *buffer);
