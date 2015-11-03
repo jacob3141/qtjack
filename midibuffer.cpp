@@ -105,7 +105,7 @@ bool MidiBuffer::pop(MidiRingBuffer &ringBuffer) {
 }
 
 unsigned int MidiBuffer::getEventCount() {
-    return (int)jack_midi_get_event_count(_jackBuffer);
+    return (unsigned int)jack_midi_get_event_count(_jackBuffer);
 }
 
 } // namespace QtJack
