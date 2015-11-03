@@ -26,6 +26,7 @@
 // JACK includes
 #include <jack/types.h>
 #include <jack/transport.h>
+#include <jack/midiport.h>
 
 namespace QtJack {
 typedef jack_default_audio_sample_t AudioSample;

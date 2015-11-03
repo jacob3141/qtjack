@@ -68,6 +68,11 @@ public:
      */
     bool pop(MidiRingBuffer& ringBuffer) REALTIME_SAFE;
 
+    /**
+     * @returns the number of midi events in the buffer.
+     */
+    unsigned int getEventCount();
+
 protected:
     MidiBuffer(int size, void *buffer);
 };
