@@ -41,6 +41,7 @@ MidiBuffer::MidiBuffer(int size, void *buffer)
 MidiBuffer::~MidiBuffer() {
 }
 
+#if 0
 bool MidiBuffer::clear() {
     if(!isValid()) {
         return false;
@@ -50,20 +51,30 @@ bool MidiBuffer::clear() {
     }
     return true;
 }
+#endif
 
-MidiSample MidiBuffer::read(int i, bool *ok) const {
+bool MidiBuffer::read(MidiEvent *ms, int i, bool *ok) const {
     if(!isValid()) {
         if(ok) {
             (*ok) = false;
         }
-        return 0.0;
+        return false;
     }
 
     if(ok) {
         (*ok) = true;
     }
-    return (double)((i >= 0 && i < _size) ? ((MidiSample*)(_jackBuffer))[i] : 0.0);
+
+#if 0
+    if(i < 0 || i >= this->getEventCount()) {
+        return false;
+    }
+#endif
+
+    return (jack_midi_event_get(ms, _jackBuffer, i) ? false : true);
 }
+
+#if 0
 
 bool MidiBuffer::write(int i, MidiSample value) {
     if(!isValid()) {
@@ -102,6 +113,12 @@ bool MidiBuffer::pop(MidiRingBuffer &ringBuffer) {
         return true;
     }
     return false;
+}
+
+#endif
+
+unsigned int MidiBuffer::getEventCount() {
+    return (unsigned int)jack_midi_get_event_count(_jackBuffer);
 }
 
 } // namespace QtJack

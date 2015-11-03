@@ -26,10 +26,11 @@
 // JACK includes
 #include <jack/types.h>
 #include <jack/transport.h>
+#include <jack/midiport.h>
 
 namespace QtJack {
 typedef jack_default_audio_sample_t AudioSample;
-typedef char MidiSample;
+typedef jack_midi_event_t MidiEvent;
 
 enum TransportState {
     TransportStateStopped,
