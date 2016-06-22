@@ -51,4 +51,8 @@ int Buffer::size() const {
     return _size;
 }
 
+void *Buffer::internalMemory() const {
+    return _jackBuffer;
+}
+
 } // namespace QtJack

@@ -43,8 +43,14 @@ public:
 
     bool isValid() const REALTIME_SAFE { return _jackBuffer != 0; }
 
-    /** @return the buffer size. */
+    /** @returns the buffer size. */
     int size() const;
+
+    /**
+     * @returns a direct pointer to the internal buffer memory.
+     * @warning Use this only if you exactly know what you're doing!
+     */
+    void *internalMemory() const;
 
 protected:
     Buffer();
