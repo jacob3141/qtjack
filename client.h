@@ -104,7 +104,7 @@ public:
     /** Assigns a processor that will handle audio processing.
       * @param processor The processor that will handle audio processing.
       */
-    void setProcessor(Processor *processor);
+    void setMainProcessor(Processor *processor);
 
     /** Activates audio processing for this client. */
     bool activate();

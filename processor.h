@@ -34,11 +34,9 @@ namespace QtJack {
  */
 class Processor {
 public:
-    Processor() { }
-
     /** Constructs a new processor. */
-    Processor(Client& client) {
-        client.setProcessor(this);
+    Processor(Client& client) :
+        _client(client) {
     }
 
     /** Destructor. */
@@ -49,6 +47,9 @@ public:
      * Warning: This method is time-critical.
      */
     virtual void process(int samples) { Q_UNUSED(samples); }
+
+protected:
+    Client& _client;
 };
 
 } // namespace QtJack

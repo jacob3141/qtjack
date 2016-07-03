@@ -368,7 +368,7 @@ bool Client::requestTransportReposition(TransportPosition transportPosition) {
     return jack_transport_reposition(_jackClient, &jackPosition) == 0;
 }
 
-void Client::setProcessor(Processor *audioProcessor) {
+void Client::setMainProcessor(Processor *audioProcessor) {
     _processor = audioProcessor;
 }
 
